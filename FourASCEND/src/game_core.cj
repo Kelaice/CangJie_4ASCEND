@@ -3,6 +3,13 @@ package FourASCEND
 import std.collection.*
 import std.math.*
 
+type Board = (Array<Array<Int64>>,
+                Array<Array<Int64>>,
+                Array<Array<Int64>>,
+                Int64,
+                Int64,
+                Int64)
+
 public class FourAscendGame{
 
     let board_size :Int64
@@ -23,11 +30,12 @@ public class FourAscendGame{
         this.grid_count = this.board_size * this.board_size
     }
 
+        
+    /*
+    获取初始棋盘状态
+    返回: (棋子矩阵, 魔法植物矩阵, 升华状态矩阵, 玩家1血量, 玩家2血量, 植物计时器)
+    */
     func getInitBoard() {
-        """
-        获取初始棋盘状态
-        返回: (棋子矩阵, 魔法植物矩阵, 升华状态矩阵, 玩家1血量, 玩家2血量, 植物计时器)
-        """
         var pieces = nc.zeros(board_size,board_size)
         var magic_plants = nc.zeros(board_size,board_size)
         var ascend_state = nc.zeros(board_size,board_size)
@@ -42,11 +50,11 @@ public class FourAscendGame{
         )
     }
 
+    /*
+    获取当前玩家所有合法落子位置
+    返回: 一维数组，1表示可落子，0表示不可落子
+    */
     func getValidMoves(pieces :Array<Array<Int64>>, hp1 :Int64, hp2 :Int64, player :Int64) {
-        """
-        获取当前玩家所有合法落子位置
-        返回: 一维数组，1表示可落子，0表示不可落子
-        """
         if((player==1 && hp1<=0)||(player==-1 && hp2<=0)) {
             return nc.zeros(this.grid_count)
         }
@@ -65,29 +73,29 @@ public class FourAscendGame{
         return valid
     }
 
-    func getNextState(
-        pieces :Array<Array<Int64>>,
-        magic_plants :Array<Array<Int64>>,
-        ascend_state :Array<Array<Int64>>,
-        hp1:Int64,
-        hp2 :Int64,
-        player :Int64,
-        action :Int64
+    /*
+    根据玩家行动，返回下一步棋盘状态和下一个玩家
+    action: 落子编号（0~80）
+    */
+    func getNextState(board :Board, player :Int64, action :Int64
         ) {
-        """
-        根据玩家行动，返回下一步棋盘状态和下一个玩家
-        action: 落子编号（0~80）
-        """
-        var pieces_copy = nc.copy(pieces)
-        var magic_plants_copy = nc.copy(magic_plants)
-        var ascend_state_copy = nc.copy(ascend_state)
+        var pieces = board[0]
+        var magic_plants = board[1]
+        var ascend_state = board[2]
+        var hp1 = board[3]
+        var hp2 = board[4]
+        var plant_timer = board[5]
+
+        var pieces_copy = pieces.clone()
+        var magic_plants_copy = magic_plants.clone()
+        var ascend_state_copy = ascend_state.clone()
 
         let row = action / this.board_size
         let col = action % this.board_size
         pieces_copy[row][col] = player
 
         var is_defence_turn :Bool = nc.any(ascend_state_copy,1)
-
+        //防御阶段
         if(is_defence_turn) {
             var defence_power = ascend(
                 pieces_copy,
@@ -100,6 +108,7 @@ public class FourAscendGame{
             )
             ascend_state_copy[row][col] = 0
             var attack_power = 0
+            //计算所有升华棋子的总攻击力
             for(y in 0..ascend_state_copy.size) {
                 for(x in 0..ascend_state_copy[0].size) {
                     if(ascend_state_copy[x][y]==1) {
@@ -114,10 +123,97 @@ public class FourAscendGame{
                 if(player==1) {
                     hp1 -= damage
                 }
+                else {
+                    hp2 -= damage
+                }
+            }
+            else if(attack_power < defence_power) {
+                if(player==1) {
+                    hp2 -= damage
+                }
+                else {
+                    hp1 -= damage
+                }
+            }
+            //更新血量
+            hp1 = max(0,hp1)
+            hp2 = max(0,hp2)
+            //重置升华棋子处的魔法植物
+            for(y in 0..ascend_state_copy.size) {
+                for(x in 0..ascend_state_copy[0].size) {
+                    if(ascend_state_copy[x][y]==1) {
+                        magic_plants_copy[x][y] = 0
+                    }
+                }
+            }
+            nc.fill(ascend_state_copy,0)
+
+            //补充魔法植物
+            if( nc.sum(magic_plants_copy) < 8) {
+                spawn_magic_plants(pieces, magic_plants, 2)
             }
         }
+        //攻击阶段，attack_power无实际用途
+        else {
+            var attack_power = ascend(
+                pieces_copy,
+                magic_plants_copy,
+                ascend_state_copy,
+                row,
+                col,
+                player,
+                true
+            )
+        }
+        //魔法植物计时器
+        plant_timer += 1
+        if(plant_timer > 6) {
+            spawn_magic_plants(pieces, magic_plants, 2)
+            plant_timer = 0
+        }
+        //返回最新棋盘状态和血量
+        return board
     }
 
+    /*
+    判断游戏是否结束，返回胜负结果
+    -999 - 未结束
+    1    - 玩家1胜
+    -1   - 玩家2胜
+    0    - 平局
+    */
+    func getGameEnded(board :Board) {
+        var pieces = board[0]
+        var hp1 = board[3]
+        var hp2 = board[4]
+
+        if(hp1 <= 0 && hp2 <= 0) {
+            return 0
+        }
+        else if(hp1 <= 0){
+            return -1
+        }
+        else if(hp2 <= 0) {
+            return 1
+        }
+        if(!nc.any(pieces,0)) {
+            if(hp1 > hp2) {
+                return 1
+            }
+            else if(hp2 > hp1) {
+                return -1
+            }
+            else {
+                return 0
+            }
+        }
+        //未结束
+        return -999
+    }
+
+    /*
+    计算升华状态相关数据
+    */
     func ascend(
         pieces :Array<Array<Int64>>,
         magic_plants :Array<Array<Int64>>,
@@ -130,7 +226,7 @@ public class FourAscendGame{
             var total_power = 0
             var suc_connextion = false
             let directions = [[0,1],[1,0],[1,1],[1,-1]]
-
+            //计算是否连线
             for(i in directions) {
                 var dx = i[0]
                 var dy = i[1]
@@ -190,5 +286,32 @@ public class FourAscendGame{
             }
 
             return total_power
+    }
+
+    /*
+    在棋盘上随机生成魔法植物
+    count: 生成数量
+    */
+    func spawn_magic_plants(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, count :Int64) {
+        //查找可以生成魔法植物的位置
+        var empty_indices :ArrayList<Array<Int64>> = ArrayList()
+        for(y in 0..pieces.size) {
+            for(x in 0..pieces[0].size) {
+                if(pieces[x][y]==0 && magic_plants[x][y]<2) {
+                    empty_indices.add([x,y])
+                }
+            }
         }
+        //在随机位置生成魔法植物
+        if(empty_indices.size >= count) {
+            var selected_idx = nc.random_choice(empty_indices.size,
+                                                count,
+                                                replace: false)
+            for(idx in selected_idx) {
+                var x = empty_indices[Int64(idx)][0]
+                var y = empty_indices[Int64(idx)][1]
+                magic_plants[x][y] += 1
+            }
+        }
+    }
 }
