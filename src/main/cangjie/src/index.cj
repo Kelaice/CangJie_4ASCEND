@@ -8,6 +8,9 @@ import std.collection.*
 import cj_res_entry.*
 import ohos.hilog.Hilog
 import ohos_app_cangjie_entry.game_body.*
+import std.sync.*
+import ohos.font.*
+import std.time.*
 
 //所需的类型定义
 type ObservedMatrix = ObservedArray<Int64>
@@ -32,6 +35,29 @@ class EntryView {
     var player :Int64 = 1
     @State//step:游戏显示状态指示器
     var step :Int64 = 0
+    @State
+    var WelFlag :Bool = true
+    var timer: ?Timer = None
+
+    protected override func onPageShow() {
+        // 创建定时器，每秒钟触发一次游戏更新
+        if(step == 0)
+        {
+            this.timer = Timer.repeat(Duration.Zero, Duration.second,
+                {
+                    => this.WelFlag = !this.WelFlag
+                }
+                , style: CatchupStyle.Skip)
+        }
+        if(step != 0){
+            this.timer?.cancel() // 取消定时器，避免资源浪费
+        }
+    }
+
+    protected override func onPageHide(): Unit {
+        this.timer?.cancel() // 取消定时器，避免资源浪费
+    }
+
 
     func build()  {
         Column {
@@ -42,17 +68,17 @@ class EntryView {
             .position(x: 0, y: 0)
 
             if(step == 0) {//标题界面
-                Image(@r(app.media.titleBackground))
-                .height(400)
-                .width(860)
-                .position(x: 0, y: 0)
-                .onClick({evt => step=1 })
+                WelcomePageFont(WelFlag :this.WelFlag,step :this.step)
             }
-            else if(step == 1) {//游戏界面
+            else if(step == 1)
+            {
+                MenuPage(step :this.step)
+            }
+            else if(step == 2) {//游戏界面
                 testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step)
                 playerstate(game_state :this.game_state)
             }
-            else if(step == 2) {//结束界面
+            else if(step == 3) {//结束界面
                 Image(@r(app.media.Game_End_Image))
                 .height(400)
                 .width(860)

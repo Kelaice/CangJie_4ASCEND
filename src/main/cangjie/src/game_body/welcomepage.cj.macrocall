@@ -1,0 +1,135 @@
+/**
+ * Created on 2025/9/17
+ */
+package ohos_app_cangjie_entry.game_body
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import cj_res_entry.*
+import std.sync.*
+import ohos.font.*
+import std.time.*
+
+
+/* ===== Emitted by MacroCall @Component in welcomepage.cj:16:1 ===== */
+/* 16.1 */public class WelcomePageFont <: CustomView {
+/* 16.2 */    
+/* 16.3 */    
+/* 16.4 */    var timer:?Timer = None
+/* 16.5 */    
+/* 16.6 */    
+/* 16.7 */    private var stateVarDecl_WelFlag_: ObservedProperty < Bool >
+/* 16.8 */    
+/* 16.9 */    
+/* 16.10 */    private mut prop WelFlag: Bool {
+/* 16.11 */        get() {
+/* 16.12 */            return this.stateVarDecl_WelFlag_.get()
+/* 16.13 */        }
+/* 16.14 */        set(v) {
+/* 16.15 */            this.stateVarDecl_WelFlag_.set(v)
+/* 16.16 */        }
+/* 16.17 */    }
+/* 16.18 */    
+/* 16.19 */    
+/* 16.20 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 16.21 */    
+/* 16.22 */    
+/* 16.23 */    private mut prop step: Int64 {
+/* 16.24 */        get() {
+/* 16.25 */            return this.stateVarDecl_step_.get()
+/* 16.26 */        }
+/* 16.27 */        set(v) {
+/* 16.28 */            this.stateVarDecl_step_.set(v)
+/* 16.29 */        }
+/* 16.30 */    }
+/* 16.31 */    
+/* 16.32 */    
+/* 16.33 */    func BtoV(): Visibility {
+/* 16.34 */        if(this.WelFlag) {
+/* 16.35 */            return Visible
+/* 16.36 */        }
+/* 16.37 */        else {
+/* 16.38 */            return Hidden
+/* 16.39 */        }
+/* 16.40 */    }
+/* 16.41 */    
+/* 16.42 */    
+/* 16.43 */    
+/* 16.44 */    public func build() {
+/* 16.45 */        
+/* 16.46 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 16.47 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.titleBackground, "app.media.titleBackground",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 16.48 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("Press Any Key To Continue.").position(x: 300, y: 300).fontSize(20).visibility(BtoV()).fontColor(0x838383) }) }.onClick({ evt => step = 1 })
+/* 16.49 */        })
+/* 16.50 */        
+/* 16.51 */        ()
+/* 16.52 */        
+/* 16.53 */    }
+/* 16.54 */    
+/* 16.55 */    
+/* 16.56 */    public init(parent: Option < CustomView >, timer!: Option < ObservedProperty <?Timer >>= None, WelFlag!: ObservedProperty < Bool >, step!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
+/* 16.57 */        super(parent, localStorage)
+/* 16.58 */        
+/* 16.59 */        
+/* 16.60 */        match(timer) {
+/* 16.61 */            case Some(v) => this.timer = v.get()
+/* 16.62 */            case _ =>()
+/* 16.63 */        }
+/* 16.64 */        
+/* 16.65 */        this.stateVarDecl_WelFlag_ = WelFlag
+/* 16.66 */        
+/* 16.67 */        this.stateVarDecl_step_ = step
+/* 16.68 */        
+/* 16.69 */        
+/* 16.70 */        this.stateVarDecl_WelFlag_.subscribeEx(this)
+/* 16.71 */        
+/* 16.72 */        this.stateVarDecl_step_.subscribeEx(this)
+/* 16.73 */        
+/* 16.74 */        SubscriberManager.getInstance().add(this)
+/* 16.75 */        
+/* 16.76 */        
+/* 16.77 */        registerSelf()
+/* 16.78 */        parent?.addChildById(id(), this)
+/* 16.79 */    }
+/* 16.80 */    
+/* 16.81 */    
+/* 16.82 */    public override func aboutToBeDeleted() {
+/* 16.83 */        
+/* 16.84 */        this.stateVarDecl_WelFlag_.unsubscribeEx(this)
+/* 16.85 */        
+/* 16.86 */        this.stateVarDecl_step_.unsubscribeEx(this)
+/* 16.87 */        
+/* 16.88 */        SubscriberManager.getInstance().delete(this)
+/* 16.89 */        this.aboutToBeDeletedInternal()
+/* 16.90 */    }
+/* 16.91 */    
+/* 16.92 */    
+/* 16.93 */    func updateWithValueParams(timer!: Option <?Timer >= Option <?Timer >.None, WelFlag!: Option < Bool >= Option < Bool >.None, step!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 16.94 */        
+/* 16.95 */    }
+/* 16.96 */    
+/* 16.97 */    
+/* 16.98 */    public func rerender() {
+/* 16.99 */        this.updateDirtyElements()
+/* 16.100 */    }
+/* 16.101 */    
+/* 16.102 */    
+/* 16.103 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 16.104 */        
+/* 16.105 */        this.stateVarDecl_WelFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 16.106 */        
+/* 16.107 */        this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 16.108 */        
+/* 16.109 */    }
+/* 16.110 */    
+/* 16.111 */    
+/* 16.112 */    public func forceRerender(deep!: Bool = false) {
+/* 16.113 */        this.forceCompleteRerender(deep)
+/* 16.114 */    }
+/* 16.115 */    
+/* 16.116 */    
+/* 16.117 */}
+/* 16.118 */
+/* ===== End of the Emit ===== */
