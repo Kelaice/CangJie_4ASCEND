@@ -35,24 +35,37 @@ class EntryView {
     var player :Int64 = 1
     @State//step:游戏显示状态指示器
     var step :Int64 = 0
+    @State//pre_step:动画状态显示器
+    var pre_step = -1
+    //计时器
+    var timer: ?Timer = None
+    //欢迎界面动画参量
     @State
     var Welopa :Float64 = 1.0
-    var timer: ?Timer = None
+    @State
+    var WelAniOpa :Float64 = 1.0
     var WelFlag: Bool = true
+    //菜单界面动画参量
+    @State
+    var MenuAniOpa :Float64 = 0.0
+    @State var PVP_Button_x :Int64 = 325
+    @State var PVP_Button_y :Int64 = 150
+    @State var Learn_Button_x :Int64 = 325
+    @State var Learn_Button_y :Int64 = 150
 
     protected override func onPageShow() {
         // 创建定时器，每秒钟触发一次游戏更新
         if(step == 0)
         {
-            this.timer = Timer.repeat(Duration.Zero, Duration.second / 10,
-                {
-                    =>
-                        if(WelFlag)
-                        {
-                        this.Welopa -= 0.05
+            this.timer = Timer.repeat(Duration.Zero, Duration.second / 50,
+                {=>
+//---------------------------------以下是欢迎页面的动画处理--------------------------------------------------
+                        if(WelFlag){
+                        this.Welopa -= 0.01
                     }
-                    else{
-                        this.Welopa += 0.05
+                    else
+                    {
+                        this.Welopa += 0.01
                     }
 
                     if(this.Welopa < 0.5)
@@ -63,6 +76,36 @@ class EntryView {
                     {
                         this.WelFlag = true
                     }
+                    //欢迎页面切换至菜单页面动画
+                    if (this.pre_step == 0 && this.step == 1)
+                    {
+                        this.WelAniOpa -= 0.04
+                        if(WelAniOpa <= 0.0)
+                        {
+                            this.pre_step = -1
+                        }
+                    }
+//------------------------------------以下是菜单页面的动画处理-----------------------------------------------
+                    if (this.step == 1 && this.pre_step == -1)
+                    {
+                        if(MenuAniOpa < 1.0)
+                        {
+                            MenuAniOpa += 0.04
+                        }
+                        if (MenuAniOpa >= 1.0)
+                        {
+                            if (PVP_Button_x > 200)
+                            {
+                                PVP_Button_x -= 5
+                                PVP_Button_y -= 4
+                            }
+                            if (Learn_Button_x < 450)
+                            {
+                                Learn_Button_x += 5
+                                Learn_Button_y += 4
+                            }
+                        }
+                    }
                 }
                 , style: CatchupStyle.Skip)
         }
@@ -72,9 +115,7 @@ class EntryView {
     }
 
     protected override func onPageHide(): Unit {
-        this.timer?.cancel() // 取消定时器，避免资源浪费
     }
-
 
     func build()  {
         Column {
@@ -84,26 +125,25 @@ class EntryView {
             .width(860)
             .position(x: 0, y: 0)
 
-            if(step == 0) {//标题界面
-                WelcomePageFont(Welopa :this.Welopa,step :this.step)
+            if(step == 0 || pre_step == 0) {
+                //标题界面
+                WelcomePageFont(Welopa :this.Welopa,step :this.step,pre_step :this.pre_step,WelAniOpa :this.WelAniOpa)
             }
             else if(step == 1)
             {
-                MenuPage(step :this.step)
+               MenuPage(step :this.step
+                    ,MenuAniOpa :this.MenuAniOpa
+                    ,PVP_Button_x :this.PVP_Button_x
+                    ,PVP_Button_y :this.PVP_Button_y
+                    ,Learn_Button_x :this.Learn_Button_x
+                    ,Learn_Button_y :this.Learn_Button_y)
             }
             else if(step == 2) {//游戏界面
                 testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step)
                 playerstate(game_state :this.game_state)
             }
             else if(step == 3) {//结束界面
-                Image(@r(app.media.Game_End_Image))
-                .height(400)
-                .width(860)
-                .position(x: 0, y: 0)
-
-                Text("Game Over!")
-                .position(x: 350, y: 200)
-                .fontSize(50)
+                GameEndPage(hp1 :this.game_state[3],hp2 :this.game_state[4],step :this.step)
             }
 
         }

@@ -28,7 +28,6 @@ public class testboard {
                                 Image(@r(app.media.chessGridItem))
                                 .onClick(
                                     {evt =>
-
                                         var back :(Int64,Int64,Board)= run(this.data, this.game, this.game_state, index, this.player, this.step)
                                         this.step = back[0]
                                         this.player = back[1]
@@ -76,6 +75,10 @@ public class playerstate {
 
     func build() {
         Column {
+            Image(@r(app.media.player))
+            .position(x: 90, y: 135)
+            .height(62)
+            .width(63)
             Image(@r(app.media.HP_Image))
             .position(x: x_pos, y: y_pos)
             .height(37)
@@ -88,6 +91,10 @@ public class playerstate {
             .height(50)
             .height(50)
 
+            Image(@r(app.media.enemy))
+            .position(x: 690, y: 135)
+            .height(57)
+            .width(58)
             Image(@r(app.media.HP_Image))
             .position(x:x_pos +600, y: y_pos)
             .height(37)

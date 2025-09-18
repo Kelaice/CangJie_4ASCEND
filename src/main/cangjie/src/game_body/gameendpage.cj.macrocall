@@ -1,0 +1,148 @@
+/**
+ * Created on 2025/9/18
+ */
+package ohos_app_cangjie_entry.game_body
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import cj_res_entry.*
+import std.sync.*
+import ohos.font.*
+import std.time.*
+
+/* ===== Emitted by MacroCall @Component in gameendpage.cj:14:1 ===== */
+/* 14.1 */public class GameEndPage <: CustomView {
+/* 14.2 */    
+/* 14.3 */    
+/* 14.4 */    private var stateVarDecl_hp1_: ObservedProperty < Int64 >
+/* 14.5 */    
+/* 14.6 */    
+/* 14.7 */    private mut prop hp1: Int64 {
+/* 14.8 */        get() {
+/* 14.9 */            return this.stateVarDecl_hp1_.get()
+/* 14.10 */        }
+/* 14.11 */        set(v) {
+/* 14.12 */            this.stateVarDecl_hp1_.set(v)
+/* 14.13 */        }
+/* 14.14 */    }
+/* 14.15 */    
+/* 14.16 */    
+/* 14.17 */    private var stateVarDecl_hp2_: ObservedProperty < Int64 >
+/* 14.18 */    
+/* 14.19 */    
+/* 14.20 */    private mut prop hp2: Int64 {
+/* 14.21 */        get() {
+/* 14.22 */            return this.stateVarDecl_hp2_.get()
+/* 14.23 */        }
+/* 14.24 */        set(v) {
+/* 14.25 */            this.stateVarDecl_hp2_.set(v)
+/* 14.26 */        }
+/* 14.27 */    }
+/* 14.28 */    
+/* 14.29 */    
+/* 14.30 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 14.31 */    
+/* 14.32 */    
+/* 14.33 */    private mut prop step: Int64 {
+/* 14.34 */        get() {
+/* 14.35 */            return this.stateVarDecl_step_.get()
+/* 14.36 */        }
+/* 14.37 */        set(v) {
+/* 14.38 */            this.stateVarDecl_step_.set(v)
+/* 14.39 */        }
+/* 14.40 */    }
+/* 14.41 */    
+/* 14.42 */    
+/* 14.43 */    
+/* 14.44 */    public func build() {
+/* 14.45 */        
+/* 14.46 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 14.47 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 3) {
+/* 14.48 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Game_End_Image, "app.media.Game_End_Image",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 14.49 */                this.observeComponentCreation({ elmtId, isInitialRender => If { if(hp1 > 0) {
+/* 14.50 */                    this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P1 Wins!").position(x: 300, y: 50).fontSize(50) }) })
+/* 14.51 */                }
+/* 14.52 */                else {
+/* 14.53 */                    this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P2 Wins!").position(x: 300, y: 50).fontSize(50) }) })
+/* 14.54 */                }
+/* 14.55 */            } }) })
+/* 14.56 */        }
+/* 14.57 */        else {
+/* 14.58 */            If.branchId(1)
+/* 14.59 */        }
+/* 14.60 */    } }) }
+/* 14.61 */})
+/* 14.62 */
+/* 14.63 */()
+/* 14.64 */
+/* 14.65 */}
+/* 14.66 */
+/* 14.67 */
+/* 14.68 */public init(parent: Option < CustomView >, hp1!: ObservedProperty < Int64 >, hp2!: ObservedProperty < Int64 >, step!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
+/* 14.69 */super(parent, localStorage)
+/* 14.70 */
+/* 14.71 */
+/* 14.72 */this.stateVarDecl_hp1_ = hp1
+/* 14.73 */
+/* 14.74 */this.stateVarDecl_hp2_ = hp2
+/* 14.75 */
+/* 14.76 */this.stateVarDecl_step_ = step
+/* 14.77 */
+/* 14.78 */
+/* 14.79 */this.stateVarDecl_hp1_.subscribeEx(this)
+/* 14.80 */
+/* 14.81 */this.stateVarDecl_hp2_.subscribeEx(this)
+/* 14.82 */
+/* 14.83 */this.stateVarDecl_step_.subscribeEx(this)
+/* 14.84 */
+/* 14.85 */SubscriberManager.getInstance().add(this)
+/* 14.86 */
+/* 14.87 */
+/* 14.88 */registerSelf()
+/* 14.89 */parent?.addChildById(id(), this)
+/* 14.90 */}
+/* 14.91 */
+/* 14.92 */
+/* 14.93 */public override func aboutToBeDeleted() {
+/* 14.94 */
+/* 14.95 */this.stateVarDecl_hp1_.unsubscribeEx(this)
+/* 14.96 */
+/* 14.97 */this.stateVarDecl_hp2_.unsubscribeEx(this)
+/* 14.98 */
+/* 14.99 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 14.100 */
+/* 14.101 */SubscriberManager.getInstance().delete(this)
+/* 14.102 */this.aboutToBeDeletedInternal()
+/* 14.103 */}
+/* 14.104 */
+/* 14.105 */
+/* 14.106 */func updateWithValueParams(hp1!: Option < Int64 >= Option < Int64 >.None, hp2!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 14.107 */
+/* 14.108 */}
+/* 14.109 */
+/* 14.110 */
+/* 14.111 */public func rerender() {
+/* 14.112 */this.updateDirtyElements()
+/* 14.113 */}
+/* 14.114 */
+/* 14.115 */
+/* 14.116 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 14.117 */
+/* 14.118 */this.stateVarDecl_hp1_.purgeDependencyOnElmtId(rmElmtId)
+/* 14.119 */
+/* 14.120 */this.stateVarDecl_hp2_.purgeDependencyOnElmtId(rmElmtId)
+/* 14.121 */
+/* 14.122 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 14.123 */
+/* 14.124 */}
+/* 14.125 */
+/* 14.126 */
+/* 14.127 */public func forceRerender(deep!: Bool = false) {
+/* 14.128 */this.forceCompleteRerender(deep)
+/* 14.129 */}
+/* 14.130 */
+/* 14.131 */
+/* 14.132 */}
+/* 14.133 */
+/* ===== End of the Emit ===== */

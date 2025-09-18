@@ -16,6 +16,12 @@ public class MenuPage{
 
     var MenuFlag :Bool = true
     @Link var step :Int64
+    @Link var MenuAniOpa :Float64
+
+    @Link var PVP_Button_x :Int64
+    @Link var PVP_Button_y :Int64
+    @Link var Learn_Button_x :Int64
+    @Link var Learn_Button_y :Int64
 
     public func build()
     {
@@ -33,7 +39,18 @@ public class MenuPage{
             Image(@r(app.media.Menu_Button_PVP))
             .height(86)
             .width(203)
-            .position(x: 200, y: 50)
+            .position(x: PVP_Button_x, y: PVP_Button_y)
+            .objectFit(ImageFit.Contain)
+            .onClick({
+                evt=>
+                this.step = 2
+            })
+
+
+            Image(@r(app.media.Menu_Button_Learn))
+            .height(86)
+            .width(203)
+            .position(x: Learn_Button_x, y: Learn_Button_y)
             .objectFit(ImageFit.Contain)
             .onClick({
                 evt=>
@@ -49,16 +66,6 @@ public class MenuPage{
                 evt=>
                 this.step = 2
             })
-
-            Image(@r(app.media.Menu_Button_Learn))
-            .height(86)
-            .width(203)
-            .position(x: 450, y: 250)
-            .objectFit(ImageFit.Contain)
-            .onClick({
-                evt=>
-                this.step = 2
-            })
-        }
+        }.opacity(this.MenuAniOpa)
     }
 }

@@ -19,8 +19,8 @@ public class WelcomePageFont{
 
     @Link var Welopa :Float64
     @Link var step :Int64
-
-
+    @Link var pre_step :Int64
+    @Link var WelAniOpa :Float64
     func build()
     {
         Stack{
@@ -36,8 +36,13 @@ public class WelcomePageFont{
             .width(450)
             .opacity(this.Welopa * 0.8)
         }.onClick({
-            evt=> step = 1
-        })
+            evt=>
+            if (step == 0)
+                {
+                    step = 1;pre_step = 0
+                }
+
+        }).opacity(this.WelAniOpa)
     }
 
 }

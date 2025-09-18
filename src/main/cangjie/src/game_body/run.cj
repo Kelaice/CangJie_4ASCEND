@@ -32,7 +32,7 @@ public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, i
             next_player = -player
         }
         else {
-            new_step = 2
+            new_step = 3
         }
 
         return (new_step, next_player, new_game_state)
