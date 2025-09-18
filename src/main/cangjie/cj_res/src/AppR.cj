@@ -24,6 +24,7 @@ public class AppMedia {
 	public var Menu_Button_Red = 16777235
 	public var Menu_Image = 16777236
 	public var Menu_border = 16777237
+	public var WelFont = 16777247
 	public var White_Chess_Plant = 16777238
 	public var background = 16777217
 	public var background4 = 16777239

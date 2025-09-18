@@ -36,16 +36,33 @@ class EntryView {
     @State//step:游戏显示状态指示器
     var step :Int64 = 0
     @State
-    var WelFlag :Bool = true
+    var Welopa :Float64 = 1.0
     var timer: ?Timer = None
+    var WelFlag: Bool = true
 
     protected override func onPageShow() {
         // 创建定时器，每秒钟触发一次游戏更新
         if(step == 0)
         {
-            this.timer = Timer.repeat(Duration.Zero, Duration.second,
+            this.timer = Timer.repeat(Duration.Zero, Duration.second / 10,
                 {
-                    => this.WelFlag = !this.WelFlag
+                    =>
+                        if(WelFlag)
+                        {
+                        this.Welopa -= 0.05
+                    }
+                    else{
+                        this.Welopa += 0.05
+                    }
+
+                    if(this.Welopa < 0.5)
+                    {
+                        this.WelFlag = false
+                    }
+                    else if (this.Welopa > 1.0)
+                    {
+                        this.WelFlag = true
+                    }
                 }
                 , style: CatchupStyle.Skip)
         }
@@ -68,7 +85,7 @@ class EntryView {
             .position(x: 0, y: 0)
 
             if(step == 0) {//标题界面
-                WelcomePageFont(WelFlag :this.WelFlag,step :this.step)
+                WelcomePageFont(Welopa :this.Welopa,step :this.step)
             }
             else if(step == 1)
             {

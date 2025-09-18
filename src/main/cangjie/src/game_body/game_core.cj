@@ -313,3 +313,82 @@ public class FourAscendGame{
         }
     }
 }
+
+
+public class StupidFourAscendPlayer{
+    var game :FourAscendGame
+    var directions :Array<Array<Int64>>
+    public init(game : FourAscendGame)
+    {
+        this.game = game
+        this.directions = [[0,1],[1,0],[1,1],[1,-1]]
+    }
+
+    public func getValidAction(valid :Array<Int64>)
+    {
+        var temp = 0
+        var valid_actions = Array<Int64>(80,{_=>0})
+        for(i in 0..81)
+        {
+            if (valid[i] == 1)
+            {
+                valid_actions[temp] = i
+                temp += 1
+            }
+        }
+
+        return valid_actions[0..temp]
+    }
+
+
+    public func play(board :Board)
+    {
+        var pieces = board[0]
+        var magic_plants = board[1]
+        var ascend_state = board[2]
+        var hp1 = board[3]
+        var hp2 = board[4]
+        var plant_timer = board[5]
+        var valid = this.game.getValidMoves(board[0], board[3], board[4], -1)
+        var valid_action =getValidAction(valid)
+        if (valid_action == [])
+        {
+
+        }
+    }
+
+    public func _choose_defence_move(board :Board, valid_actions :Array<Int64>)
+    {
+        var player = -1
+        var pieces = board[0]
+        var magic_plants = board[1]
+        var ascend_state = board[2]
+        var hp1 = board[3]
+        var hp2 = board[4]
+        var plant_timer = board[5]
+        var opponent_player = -player
+        var original_opponent_power = nc.sum(ascend_state)// + nc.sum(magic_plants)缺少魔法植物结算
+        var candidate = Array<Int64>()
+        for (action in valid_actions)
+        {
+            var row = action / this.game.board_size
+            var col = action % this.game.board_size
+            var test_pieces = pieces.clone()
+            var test_magic_plants = magic_plants.clone()
+            var test_ascend_state = ascend_state.clone()
+            var can_remove_opponent_piece = ascend_state[row][col] == opponent_player
+            var reduced_opponent_power = 0
+            if (can_remove_opponent_piece)
+            {
+                test_ascend_state[row][col] = 0//原文是false
+                reduced_opponent_power = nc.sum(test_ascend_state) //+ np.sum(magic_plants[test_ascend_state]
+            }
+            else
+            {
+                reduced_opponent_power = original_opponent_power
+            }
+            test_pieces[row][col] = player
+            
+        }
+    }
+}

@@ -17,18 +17,8 @@ import std.time.*
 public class WelcomePageFont{
     var timer: ?Timer = None
 
-    @Link var WelFlag :Bool
+    @Link var Welopa :Float64
     @Link var step :Int64
-    func BtoV(): Visibility
-    {
-        if (this.WelFlag)
-        {
-            return Visible
-        }
-        else{
-            return Hidden
-        }
-    }
 
 
     func build()
@@ -39,11 +29,12 @@ public class WelcomePageFont{
             .width(860)
             .position(x: 0, y: 0)
 
-            Text("Press Any Key To Continue.")
-            .position(x: 300, y: 300)
-            .fontSize(20)
-            .visibility(BtoV())
-            .fontColor(0x838383)
+            Image(@r(app.media.WelFont))
+            .position(x: 200, y: 300)
+            .objectFit(ImageFit.Contain)
+            .height(35)
+            .width(450)
+            .opacity(this.Welopa * 0.8)
         }.onClick({
             evt=> step = 1
         })
