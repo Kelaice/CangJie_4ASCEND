@@ -96,7 +96,7 @@ public class FourAscendGame{
         let col = action % this.board_size
         pieces_copy[row][col] = player
 
-        var is_defence_turn :Bool = nc.any(ascend_state_copy,1)
+        var is_defence_turn :Bool = nc.any(ascend_state_copy,1) || nc.any(ascend_state_copy,-1)
         //防御阶段
         if(is_defence_turn) {
             var defence_power = ascend(
@@ -113,7 +113,7 @@ public class FourAscendGame{
             //计算所有升华棋子的总攻击力
             for(y in 0..ascend_state_copy.size) {
                 for(x in 0..ascend_state_copy[0].size) {
-                    if(ascend_state_copy[x][y]==1) {
+                    if(ascend_state_copy[x][y] != 0) {
                         attack_power += 1 +magic_plants_copy[x][y]
                     }
                 }
@@ -122,7 +122,7 @@ public class FourAscendGame{
 
             //结算血量
             if(attack_power > defence_power) {
-                if(player==1) {
+                if(player == 1) {
                     hp1 -= damage
                 }
                 else {
@@ -130,7 +130,7 @@ public class FourAscendGame{
                 }
             }
             else if(attack_power < defence_power) {
-                if(player==1) {
+                if(player == 1) {
                     hp2 -= damage
                 }
                 else {
@@ -143,13 +143,12 @@ public class FourAscendGame{
             //重置升华棋子处的魔法植物
             for(y in 0..ascend_state_copy.size) {
                 for(x in 0..ascend_state_copy[0].size) {
-                    if(ascend_state_copy[x][y]==1) {
+                    if(ascend_state_copy[x][y] != 0) {
                         magic_plants_copy[x][y] = 0
                     }
                 }
             }
             nc.fill(ascend_state_copy,0)
-
         }
         //攻击阶段
         else {
@@ -235,7 +234,7 @@ public class FourAscendGame{
 
                 r = row +dx
                 c = col +dy
-                while((0<=r && r<this.board_size) && (0<=c && c<this.board_size) && pieces[r][c]==player) {
+                while((0<=r && r<this.board_size) && (0<=c && c<this.board_size) && pieces[r][c] == player) {
                     connected_pos.append([r,c])
                     r = r +dx
                     c = c +dy
@@ -243,12 +242,11 @@ public class FourAscendGame{
 
                 r = row -dx
                 c = col -dy
-                while((0<=r && r<this.board_size) && (0<=c && c<this.board_size) && pieces[r][c]==player) {
+                while((0<=r && r<this.board_size) && (0<=c && c<this.board_size) && pieces[r][c]== player) {
                     connected_pos.append([r,c])
                     r = r -dx
                     c = c -dy
                 }
-
                 power = connected_pos.size
                 if(power >= 3) {
                     var magic_bonus = 0
@@ -257,14 +255,13 @@ public class FourAscendGame{
                     }
                     suc_connextion = true
                     total_power += power + magic_bonus
-
                     for(i in connected_pos) {
                         r = i[0]
                         c = i[1]
                         if(r!=row || c != col) {
                             pieces[r][c] = 0
-                            if(set_ascend_value)    {ascend_state[r][c]=1}
-                            else                    {ascend_state[r][c]=0}
+                            if(set_ascend_value)    {ascend_state[r][c] = player}
+                            else                    {ascend_state[r][c] = 0}
                             if(!set_ascend_value) {
                                 magic_plants[r][c] = 0
                             }
@@ -276,8 +273,8 @@ public class FourAscendGame{
             if(suc_connextion)  {
                 total_power += 1 + magic_plants[row][col]
                 pieces[row][col] = 0
-                if(set_ascend_value)    {ascend_state[row][col]=1}
-                else                    {ascend_state[row][col]=0}
+                if(set_ascend_value)    {ascend_state[row][col] = player}
+                else                    {ascend_state[row][col] = 0}
                 if(!set_ascend_value) {
                     magic_plants[row][col] = 0
                 }

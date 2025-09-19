@@ -52,34 +52,41 @@ class EntryView {
     @State var PVP_Button_y :Int64 = 150
     @State var Learn_Button_x :Int64 = 325
     @State var Learn_Button_y :Int64 = 150
+    //ascend状态动画参量
+    @State
+    var ascendOpa :Float64 = 0.8
+    var ascendFlag: Bool = true
 
     protected override func onPageShow() {
-        // 创建定时器，每秒钟触发一次游戏更新
+        // 创建定时器，每0.02秒触发一次游戏更新
         if(step == 0)
         {
-            this.timer = Timer.repeat(Duration.Zero, Duration.second / 50,
+            this.timer = Timer.repeat(Duration.Zero, Duration.second / 25,
                 {=>
 //---------------------------------以下是欢迎页面的动画处理--------------------------------------------------
-                        if(WelFlag){
-                        this.Welopa -= 0.01
-                    }
-                    else
+                        if(this.step == 0)
                     {
-                        this.Welopa += 0.01
+                        if(WelFlag){
+                            this.Welopa -= 0.02
+                        }
+                        else
+                        {
+                            this.Welopa += 0.02
+                        }
+                        if(this.Welopa < 0.5)
+                        {
+                            this.WelFlag = false
+                        }
+                        else if (this.Welopa > 1.0)
+                        {
+                            this.WelFlag = true
+                        }
                     }
 
-                    if(this.Welopa < 0.5)
-                    {
-                        this.WelFlag = false
-                    }
-                    else if (this.Welopa > 1.0)
-                    {
-                        this.WelFlag = true
-                    }
                     //欢迎页面切换至菜单页面动画
                     if (this.pre_step == 0 && this.step == 1)
                     {
-                        this.WelAniOpa -= 0.04
+                        this.WelAniOpa -= 0.08
                         if(WelAniOpa <= 0.0)
                         {
                             this.pre_step = -1
@@ -90,27 +97,46 @@ class EntryView {
                     {
                         if(MenuAniOpa < 1.0)
                         {
-                            MenuAniOpa += 0.04
+                            MenuAniOpa += 0.08
                         }
                         if (MenuAniOpa >= 1.0)
                         {
                             if (PVP_Button_x > 200)
                             {
-                                PVP_Button_x -= 5
-                                PVP_Button_y -= 4
+                                PVP_Button_x -= 10
+                                PVP_Button_y -= 8
                             }
                             if (Learn_Button_x < 450)
                             {
-                                Learn_Button_x += 5
-                                Learn_Button_y += 4
+                                Learn_Button_x += 10
+                                Learn_Button_y += 8
                             }
                         }
                     }
+//------------------------------------以下是ascend状态的动画处理-----------------------------------------------
+                    if (this.step == 2)
+                    {
+                        if(ascendFlag){
+                            this.ascendOpa -= 0.02
+                        }
+                        else
+                        {
+                            this.ascendOpa += 0.02
+                        }
+                        if(this.ascendOpa <= 0.3)
+                        {
+                            this.ascendFlag = false
+                        }
+                        else if (this.ascendOpa >= 0.8)
+                        {
+                            this.ascendFlag = true
+                        }
+                    }
+
                 }
                 , style: CatchupStyle.Skip)
         }
         if(step != 0){
-            this.timer?.cancel() // 取消定时器，避免资源浪费
         }
     }
 
@@ -139,7 +165,8 @@ class EntryView {
                     ,Learn_Button_y :this.Learn_Button_y)
             }
             else if(step == 2) {//游戏界面
-                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step)
+                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step
+                    , ascendOpa: this.ascendOpa)
                 playerstate(game_state :this.game_state)
             }
             else if(step == 3) {//结束界面

@@ -19,37 +19,49 @@ public class testboard {
     @Link var game_state :Board
     @Link var player :Int64
     @Link var step :Int64
+    @Link var ascendOpa :Float64
+
+    protected func CheckAscendState(index :Int64)
+    {
+        if (game_state[2][index / 9][index % 9] != 0)
+        {
+            return ascendOpa
+        }
+        else{
+            return 1.0
+        }
+    }
 
     func build() {
         Stack {
             Grid {
                 ForEach(data, itemGeneratorFunc :{entity :Int64, index :Int64 =>
                             GridItem {
+                            Stack{
                                 Image(@r(app.media.chessGridItem))
-                                .onClick(
+
+                                //显示白子
+                                if(data[index] == 1 || game_state[2][index / 9][index % 9] == 1) {
+                                    Image(@r(app.media.white_Chess))
+                                    .height(30)
+                                    .width(30)
+                                    .opacity(CheckAscendState(index))
+                                }
+                                //显示黑子
+                                else if(data[index] == -1 || game_state[2][index / 9][index % 9] == -1) {
+                                    Image(@r(app.media.black_Chess))
+                                    .height(30)
+                                    .width(30)
+                                    .opacity(CheckAscendState(index))
+                                }
+                            }.onClick(
                                     {evt =>
                                         var back :(Int64,Int64,Board)= run(this.data, this.game, this.game_state, index, this.player, this.step)
                                         this.step = back[0]
                                         this.player = back[1]
                                         this.game_state = back[2]
-
                                     }
                                 )
-
-                                //显示白子
-                                if(data[index]==1) {
-                                    Image(@r(app.media.white_Chess))
-                                    .alt(@r(app.media.chessGridItem))
-                                    .height(30)
-                                    .width(30)
-                                }
-                                //显示黑子
-                                else if(data[index] == -1) {
-                                    Image(@r(app.media.black_Chess))
-                                    .alt(@r(app.media.chessGridItem))
-                                    .height(30)
-                                    .width(30)
-                                }
                             }
                             .height(40)
                             .width(40)
