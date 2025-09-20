@@ -14,7 +14,7 @@ src文件夹请放在entry/src/main/cangjie模块下使用，在那之前，请�
 - 现在testboard组件和playerstate组件被分离到src/game_body/draw.cj中
 - 桥接显示层和逻辑层的运算函数被分离到src/game_body/run.cj中
 
-### 2025.9.20更新
+#### 2025.9.20更新
 写了一些基于屎山的动画处理
 - 现在用多个cj文件分开处理多个页面状态，之后要进行合并
 - 计时器存在暂时不知如何修复的BUG需要优化
