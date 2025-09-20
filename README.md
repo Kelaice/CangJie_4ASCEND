@@ -14,7 +14,7 @@ src文件夹请放在entry/src/main/cangjie模块下使用，在那之前，请�
 - 现在testboard组件和playerstate组件被分离到src/game_body/draw.cj中
 - 桥接显示层和逻辑层的运算函数被分离到src/game_body/run.cj中
 
-### 2025.9.20更新
+#### 2025.9.20更新
 优化了游戏内容
 - 添加了菜单页面和结束页面
 - 升华状态的棋子现在有显示了
