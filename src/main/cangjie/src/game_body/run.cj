@@ -31,7 +31,7 @@ public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, i
             next_player = -player
         }
         else {
-            new_step = step
+            new_step = 4
         }
 
         return (new_step, next_player, new_game_state)
@@ -63,3 +63,4 @@ public func ai_move(ai :StupidFourAscendPlayer, board :Board) {
     var action = ai.play(board_copy)
     return action
 }
+
