@@ -8,6 +8,9 @@ import std.collection.*
 import cj_res_entry.*
 import ohos.hilog.Hilog
 import ohos_app_cangjie_entry.game_body.*
+import std.sync.*
+import ohos.font.*
+import std.time.*
 
 //所需的类型定义
 type ObservedMatrix = ObservedArray<Int64>
@@ -18,8 +21,9 @@ type Board = (Array<Array<Int64>>,
                 Int64,
                 Int64)
 
-//游戏类型初始化
+//游戏初始化
 var game :FourAscendGame = FourAscendGame(9, 6, 6)
+var ai :StupidFourAscendPlayer = StupidFourAscendPlayer(game)
 
 @Entry
 @Component
@@ -41,26 +45,31 @@ class EntryView {
             .width(860)
             .position(x: 0, y: 0)
 
-            if(step == 0) {//标题界面
-                Image(@r(app.media.titleBackground))
-                .height(400)
-                .width(860)
-                .position(x: 0, y: 0)
-                .onClick({evt => step=1 })
+            if(step == 0) {
+                //标题界面
+                WelcomePage(step :this.step)
             }
-            else if(step == 1) {//游戏界面
-                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step)
+            else if(step == 1)
+            {
+               MenuPage(step :this.step)
+            }
+            else if(step == 2) {//PVP游戏界面
+                chessGrid()
+
+                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step, mode :1, AI :ai)
                 playerstate(game_state :this.game_state)
             }
-            else if(step == 2) {//结束界面
-                Image(@r(app.media.Game_End_Image))
-                .height(400)
-                .width(860)
-                .position(x: 0, y: 0)
+            else if(step == 3) {//PVE游戏界面
+                chessGrid()
 
-                Text("Game Over!")
-                .position(x: 350, y: 200)
-                .fontSize(50)
+                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step, mode :2, AI :ai)
+                playerstate(game_state :this.game_state)
+            }
+            else if(step == 4) {//结束界面
+                GameEndPage(game :game, step :this.step)
+            }
+            else if(step == 5) {//教学界面
+
             }
 
         }

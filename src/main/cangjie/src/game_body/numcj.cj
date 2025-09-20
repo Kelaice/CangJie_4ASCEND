@@ -31,9 +31,9 @@ public class nc {
     public static func any(array :Array<Array<Int64>>, val :Int64)
     :Bool {
         var b :Bool = false
-        for(y in 0..array.size) {
-            for(x in 0..array[0].size) {
-                if(array[x][y]==val) {
+        for(row in 0..array.size) {
+            for(col in 0..array[0].size) {
+                if(array[row][col]==val) {
                     b = true
                 }
             }
@@ -53,10 +53,10 @@ public class nc {
     public static func sum(array :Array<Array<Int64>>)
     :Int64{
         var sum :Int64= 0
-        for(y in 0..array.size) {
-            for(x in 0..array[0].size)
+        for(row in 0..array.size) {
+            for(col in 0..array[0].size)
             {
-                sum += array[x][y]
+                sum += array[row][col]
             }
         }
         return sum
@@ -73,12 +73,33 @@ public class nc {
     public static func fill(array :Array<Array<Int64>>, val :Int64)
     :Unit {
 //        array.fill(Array<Int64>(array[0].size,{_=>val}))
-        for(y in 0..array.size) {
-            for(x in 0..array[0].size) {
-                array[x][y] = val
+        for(row in 0..array.size) {
+            for(col in 0..array[0].size) {
+                array[row][col] = val
             }
         }
     }
+
+    //深拷贝数组
+    static func copy(array :Array<Int64>)
+    :Array<Int64> {
+        var copy = Array<Int64>(array.size, {_=>0})
+        for(i in 0..array.size) {
+            copy[i] = array[i]
+        }
+        return copy
+    }
+    static func copy(array :Array<Array<Int64>>)
+    :Array<Array<Int64>> {
+        var copy = Array<Array<Int64>>(array.size, {_=>Array<Int64>(array[0].size, {_=>0})})
+        for(row in 0..array.size) {
+            for(col in 0..array[0].size) {
+                copy[row][col] = array[row][col]
+            }
+        }
+        return copy
+    }
+
 
     //生成随机数组
     public static func random_choice(len :Int64, size :Int64, replace !:Bool)
