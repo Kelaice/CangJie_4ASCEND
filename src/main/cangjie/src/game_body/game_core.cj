@@ -96,8 +96,7 @@ public class FourAscendGame{
         let col = action % this.board_size
         pieces_copy[row][col] = player
 
-        var is_defence_turn :Bool = nc.any(ascend_state_copy,1) || nc.any(ascend_state_copy,-1)
-        //防御阶段
+        var is_defence_turn :Bool = nc.any(ascend_state_copy, -player)
         if(is_defence_turn) {
             var defence_power = ascend(
                 pieces_copy,
@@ -113,7 +112,7 @@ public class FourAscendGame{
             //计算所有升华棋子的总攻击力
             for(y in 0..ascend_state_copy.size) {
                 for(x in 0..ascend_state_copy[0].size) {
-                    if(ascend_state_copy[x][y] != 0) {
+                    if(ascend_state_copy[x][y] == -player) {
                         attack_power += 1 +magic_plants_copy[x][y]
                     }
                 }
@@ -184,13 +183,13 @@ public class FourAscendGame{
         var hp1 = board[3]
         var hp2 = board[4]
 
-        if(hp1 <= 0 && hp2 <= 0) {
-            return 0
+        if(hp2 <= 0) {
+            return -1
         }
         else if(hp1 <= 0){
             return -1
         }
-        else if(hp2 <= 0) {
+        else if(hp2 <= 0 && hp1 <= 0) {
             return 1
         }
         if(!nc.any(pieces,0)) {
@@ -214,7 +213,7 @@ public class FourAscendGame{
     public func ascend(
         pieces :Array<Array<Int64>>,
         magic_plants :Array<Array<Int64>>,
-        ascend_state :Array<Array<                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Int64>>,
+        ascend_state :Array<Array<Int64>>,
         row :Int64,
         col :Int64,
         player :Int64,

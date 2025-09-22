@@ -81,22 +81,22 @@ type ObservedMatrix = ObservedArray<Int64>
 /* 15.66 */    }
 /* 15.67 */    
 /* 15.68 */    
-/* 15.69 */    private var stateVarDecl_ascendOpa_: ObservedProperty < Float64 >
+/* 15.69 */    private var stateVarDecl_ascendSize_: ObservedProperty < Float64 >
 /* 15.70 */    
 /* 15.71 */    
-/* 15.72 */    private mut prop ascendOpa: Float64 {
+/* 15.72 */    private mut prop ascendSize: Float64 {
 /* 15.73 */        get() {
-/* 15.74 */            return this.stateVarDecl_ascendOpa_.get()
+/* 15.74 */            return this.stateVarDecl_ascendSize_.get()
 /* 15.75 */        }
 /* 15.76 */        set(v) {
-/* 15.77 */            this.stateVarDecl_ascendOpa_.set(v)
+/* 15.77 */            this.stateVarDecl_ascendSize_.set(v)
 /* 15.78 */        }
 /* 15.79 */    }
 /* 15.80 */    
 /* 15.81 */    
-/* 15.82 */    protected func CheckAscendState(index: Int64) {
+/* 15.82 */    protected func GetStateOpa(index: Int64) {
 /* 15.83 */        if(game_state[2][index / 9][index % 9] != 0) {
-/* 15.84 */            return ascendOpa
+/* 15.84 */            return 0.6
 /* 15.85 */        }
 /* 15.86 */        else {
 /* 15.87 */            return 1.0
@@ -104,230 +104,240 @@ type ObservedMatrix = ObservedArray<Int64>
 /* 15.89 */    }
 /* 15.90 */    
 /* 15.91 */    
-/* 15.92 */    
-/* 15.93 */    public func build() {
-/* 15.94 */        
-/* 15.95 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 15.96 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.chessGridItem, "app.media.chessGridItem",[], 20000)) })
-/* 15.97 */            this.observeComponentCreation({ elmtId, isInitialRender => If { if(data[index] == 1 || game_state[2][index / 9][index % 9] == 1) {
-/* 15.98 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).height(30).width(30).opacity(CheckAscendState(index)) }) })
-/* 15.99 */            }
-/* 15.100 */            else if(data[index] == - 1 || game_state[2][index / 9][index % 9] == - 1) {
-/* 15.101 */                this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).height(30).width(30).opacity(CheckAscendState(index)) }) })
-/* 15.102 */            }
-/* 15.103 */            else {
-/* 15.104 */                If.branchId(2)
-/* 15.105 */            }
-/* 15.106 */        } }) }.onClick({ evt => var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, index, this.player, this.step)
-/* 15.107 */            
-/* 15.108 */            this.step = back[0]
-/* 15.109 */            this.player = back[1]
-/* 15.110 */        this.game_state = back[2] }) }) }.height(40).width(40) }) }
-/* 15.111 */        
-/* 15.112 */    this.forEachUpdateFunction(elmtId, data, itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 0, y: 10) }) }
-/* 15.113 */})
-/* 15.114 */
-/* 15.115 */()
-/* 15.116 */
-/* 15.117 */}
-/* 15.118 */
-/* 15.119 */
-/* 15.120 */public init(parent: Option < CustomView >, data!: ObservedProperty < ObservedMatrix >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, player!: ObservedProperty < Int64 >, step!: ObservedProperty < Int64 >, ascendOpa!: ObservedProperty < Float64 >, localStorage!: Option < LocalStorage >= None) {
-/* 15.121 */super(parent, localStorage)
-/* 15.122 */
-/* 15.123 */
-/* 15.124 */this.stateVarDecl_data_ = data
-/* 15.125 */
-/* 15.126 */this.stateVarDecl_game_ = game
-/* 15.127 */
-/* 15.128 */this.stateVarDecl_game_state_ = game_state
+/* 15.92 */    protected func GetStateSize(index: Int64) {
+/* 15.93 */        if(game_state[2][index / 9][index % 9] != 0) {
+/* 15.94 */            return ascendSize
+/* 15.95 */        }
+/* 15.96 */        else {
+/* 15.97 */            return 1.0
+/* 15.98 */        }
+/* 15.99 */    }
+/* 15.100 */    
+/* 15.101 */    
+/* 15.102 */    
+/* 15.103 */    public func build() {
+/* 15.104 */        
+/* 15.105 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 15.106 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.chessGridItem, "app.media.chessGridItem",[], 20000)) })
+/* 15.107 */            this.observeComponentCreation({ elmtId, isInitialRender => If { if(data[index] == 1 || game_state[2][index / 9][index % 9] == 1) {
+/* 15.108 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).height(30.0 * GetStateSize(index)).width(30.0 * GetStateSize(index)).opacity(GetStateOpa(index)) }) })
+/* 15.109 */            }
+/* 15.110 */            else if(data[index] == - 1 || game_state[2][index / 9][index % 9] == - 1) {
+/* 15.111 */                this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).height(30.0 * GetStateSize(index)).width(30.0 * GetStateSize(index)).opacity(GetStateOpa(index)) }) })
+/* 15.112 */            }
+/* 15.113 */            else {
+/* 15.114 */                If.branchId(2)
+/* 15.115 */            }
+/* 15.116 */        } }) }.onClick({ evt => var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, index, this.player, this.step)
+/* 15.117 */            
+/* 15.118 */            this.step = back[0]
+/* 15.119 */            this.player = back[1]
+/* 15.120 */        this.game_state = back[2] }) }) }.height(40).width(40) }) }
+/* 15.121 */        
+/* 15.122 */    this.forEachUpdateFunction(elmtId, data, itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 0, y: 10) }) }
+/* 15.123 */})
+/* 15.124 */
+/* 15.125 */()
+/* 15.126 */
+/* 15.127 */}
+/* 15.128 */
 /* 15.129 */
-/* 15.130 */this.stateVarDecl_player_ = player
-/* 15.131 */
-/* 15.132 */this.stateVarDecl_step_ = step
+/* 15.130 */public init(parent: Option < CustomView >, data!: ObservedProperty < ObservedMatrix >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, player!: ObservedProperty < Int64 >, step!: ObservedProperty < Int64 >, ascendSize!: ObservedProperty < Float64 >, localStorage!: Option < LocalStorage >= None) {
+/* 15.131 */super(parent, localStorage)
+/* 15.132 */
 /* 15.133 */
-/* 15.134 */this.stateVarDecl_ascendOpa_ = ascendOpa
+/* 15.134 */this.stateVarDecl_data_ = data
 /* 15.135 */
-/* 15.136 */
-/* 15.137 */this.stateVarDecl_data_.subscribeEx(this)
-/* 15.138 */
-/* 15.139 */this.stateVarDecl_game_.subscribeEx(this)
-/* 15.140 */
-/* 15.141 */this.stateVarDecl_game_state_.subscribeEx(this)
-/* 15.142 */
-/* 15.143 */this.stateVarDecl_player_.subscribeEx(this)
-/* 15.144 */
-/* 15.145 */this.stateVarDecl_step_.subscribeEx(this)
+/* 15.136 */this.stateVarDecl_game_ = game
+/* 15.137 */
+/* 15.138 */this.stateVarDecl_game_state_ = game_state
+/* 15.139 */
+/* 15.140 */this.stateVarDecl_player_ = player
+/* 15.141 */
+/* 15.142 */this.stateVarDecl_step_ = step
+/* 15.143 */
+/* 15.144 */this.stateVarDecl_ascendSize_ = ascendSize
+/* 15.145 */
 /* 15.146 */
-/* 15.147 */this.stateVarDecl_ascendOpa_.subscribeEx(this)
+/* 15.147 */this.stateVarDecl_data_.subscribeEx(this)
 /* 15.148 */
-/* 15.149 */SubscriberManager.getInstance().add(this)
+/* 15.149 */this.stateVarDecl_game_.subscribeEx(this)
 /* 15.150 */
-/* 15.151 */
-/* 15.152 */registerSelf()
-/* 15.153 */parent?.addChildById(id(), this)
-/* 15.154 */}
-/* 15.155 */
+/* 15.151 */this.stateVarDecl_game_state_.subscribeEx(this)
+/* 15.152 */
+/* 15.153 */this.stateVarDecl_player_.subscribeEx(this)
+/* 15.154 */
+/* 15.155 */this.stateVarDecl_step_.subscribeEx(this)
 /* 15.156 */
-/* 15.157 */public override func aboutToBeDeleted() {
+/* 15.157 */this.stateVarDecl_ascendSize_.subscribeEx(this)
 /* 15.158 */
-/* 15.159 */this.stateVarDecl_data_.unsubscribeEx(this)
+/* 15.159 */SubscriberManager.getInstance().add(this)
 /* 15.160 */
-/* 15.161 */this.stateVarDecl_game_.unsubscribeEx(this)
-/* 15.162 */
-/* 15.163 */this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 15.164 */
-/* 15.165 */this.stateVarDecl_player_.unsubscribeEx(this)
+/* 15.161 */
+/* 15.162 */registerSelf()
+/* 15.163 */parent?.addChildById(id(), this)
+/* 15.164 */}
+/* 15.165 */
 /* 15.166 */
-/* 15.167 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 15.167 */public override func aboutToBeDeleted() {
 /* 15.168 */
-/* 15.169 */this.stateVarDecl_ascendOpa_.unsubscribeEx(this)
+/* 15.169 */this.stateVarDecl_data_.unsubscribeEx(this)
 /* 15.170 */
-/* 15.171 */SubscriberManager.getInstance().delete(this)
-/* 15.172 */this.aboutToBeDeletedInternal()
-/* 15.173 */}
+/* 15.171 */this.stateVarDecl_game_.unsubscribeEx(this)
+/* 15.172 */
+/* 15.173 */this.stateVarDecl_game_state_.unsubscribeEx(this)
 /* 15.174 */
-/* 15.175 */
-/* 15.176 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, ascendOpa!: Option < Float64 >= Option < Float64 >.None): Unit {
-/* 15.177 */
-/* 15.178 */}
-/* 15.179 */
+/* 15.175 */this.stateVarDecl_player_.unsubscribeEx(this)
+/* 15.176 */
+/* 15.177 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 15.178 */
+/* 15.179 */this.stateVarDecl_ascendSize_.unsubscribeEx(this)
 /* 15.180 */
-/* 15.181 */public func rerender() {
-/* 15.182 */this.updateDirtyElements()
+/* 15.181 */SubscriberManager.getInstance().delete(this)
+/* 15.182 */this.aboutToBeDeletedInternal()
 /* 15.183 */}
 /* 15.184 */
 /* 15.185 */
-/* 15.186 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 15.186 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, ascendSize!: Option < Float64 >= Option < Float64 >.None): Unit {
 /* 15.187 */
-/* 15.188 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.188 */}
 /* 15.189 */
-/* 15.190 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
-/* 15.191 */
-/* 15.192 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 15.193 */
-/* 15.194 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.190 */
+/* 15.191 */public func rerender() {
+/* 15.192 */this.updateDirtyElements()
+/* 15.193 */}
+/* 15.194 */
 /* 15.195 */
-/* 15.196 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.196 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
 /* 15.197 */
-/* 15.198 */this.stateVarDecl_ascendOpa_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.198 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
 /* 15.199 */
-/* 15.200 */}
+/* 15.200 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
 /* 15.201 */
-/* 15.202 */
-/* 15.203 */public func forceRerender(deep!: Bool = false) {
-/* 15.204 */this.forceCompleteRerender(deep)
-/* 15.205 */}
-/* 15.206 */
+/* 15.202 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.203 */
+/* 15.204 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 15.205 */
+/* 15.206 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
 /* 15.207 */
-/* 15.208 */}
+/* 15.208 */this.stateVarDecl_ascendSize_.purgeDependencyOnElmtId(rmElmtId)
 /* 15.209 */
+/* 15.210 */}
+/* 15.211 */
+/* 15.212 */
+/* 15.213 */public func forceRerender(deep!: Bool = false) {
+/* 15.214 */this.forceCompleteRerender(deep)
+/* 15.215 */}
+/* 15.216 */
+/* 15.217 */
+/* 15.218 */}
+/* 15.219 */
 /* ===== End of the Emit ===== */
 
 //玩家状态绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:81:1 ===== */
-/* 81.1 */public class playerstate <: CustomView {
-/* 81.2 */    
-/* 81.3 */    
-/* 81.4 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
-/* 81.5 */    
-/* 81.6 */    
-/* 81.7 */    private mut prop game_state: Board {
-/* 81.8 */        get() {
-/* 81.9 */            return this.stateVarDecl_game_state_.get()
-/* 81.10 */        }
-/* 81.11 */        set(v) {
-/* 81.12 */            this.stateVarDecl_game_state_.set(v)
-/* 81.13 */        }
-/* 81.14 */    }
-/* 81.15 */    
-/* 81.16 */    
-/* 81.17 */    var y_pos = 200
-/* 81.18 */    
-/* 81.19 */    
-/* 81.20 */    var x_pos = 100
-/* 81.21 */    
-/* 81.22 */    
-/* 81.23 */    
-/* 81.24 */    public func build() {
-/* 81.25 */        
-/* 81.26 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 81.27 */            Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).position(x: 90, y: 135).height(62).width(63) })
-/* 81.28 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos, y: y_pos).height(37).width(40) })
-/* 81.29 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[3]}").textAlign(TextAlign.Center).fontSize(30).fontColor(0xfc037f).position(x: x_pos + 10, y: y_pos + 50).height(50).height(50) })
-/* 81.30 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).position(x: 690, y: 135).height(57).width(58) })
-/* 81.31 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos + 600, y: y_pos).height(37).width(40) })
-/* 81.32 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[4]}").textAlign(TextAlign.Center).fontSize(30).fontColor(0xfc037f).position(x: x_pos + 600 + 10, y: y_pos + 50).height(50).height(50) }) }
-/* 81.33 */        })
-/* 81.34 */        
-/* 81.35 */        ()
-/* 81.36 */        
-/* 81.37 */    }
-/* 81.38 */    
-/* 81.39 */    
-/* 81.40 */    public init(parent: Option < CustomView >, game_state!: ObservedProperty < Board >, y_pos!: Option < ObservedProperty < Int64 >>= None, x_pos!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
-/* 81.41 */        super(parent, localStorage)
-/* 81.42 */        
-/* 81.43 */        
-/* 81.44 */        this.stateVarDecl_game_state_ = game_state.createProp("stateVarDecl_game_state_")
-/* 81.45 */        
-/* 81.46 */        match(y_pos) {
-/* 81.47 */            case Some(v) => this.y_pos = v.get()
-/* 81.48 */            case _ =>()
-/* 81.49 */        }
-/* 81.50 */        
-/* 81.51 */        match(x_pos) {
-/* 81.52 */            case Some(v) => this.x_pos = v.get()
-/* 81.53 */            case _ =>()
-/* 81.54 */        }
-/* 81.55 */        
-/* 81.56 */        
-/* 81.57 */        this.stateVarDecl_game_state_.subscribeEx(this)
-/* 81.58 */        
-/* 81.59 */        SubscriberManager.getInstance().add(this)
-/* 81.60 */        
-/* 81.61 */        
-/* 81.62 */        registerSelf()
-/* 81.63 */        parent?.addChildById(id(), this)
-/* 81.64 */    }
-/* 81.65 */    
-/* 81.66 */    
-/* 81.67 */    public override func aboutToBeDeleted() {
-/* 81.68 */        
-/* 81.69 */        this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 81.70 */        
-/* 81.71 */        SubscriberManager.getInstance().delete(this)
-/* 81.72 */        this.aboutToBeDeletedInternal()
-/* 81.73 */    }
-/* 81.74 */    
-/* 81.75 */    
-/* 81.76 */    func updateWithValueParams(game_state!: Option < Board >= Option < Board >.None, y_pos!: Option < Int64 >= Option < Int64 >.None, x_pos!: Option < Int64 >= Option < Int64 >.None): Unit {
-/* 81.77 */        
-/* 81.78 */        match(game_state) {
-/* 81.79 */            case Some(v) => this.game_state = v
-/* 81.80 */            case _ =>()
-/* 81.81 */        }
-/* 81.82 */        
-/* 81.83 */    }
-/* 81.84 */    
-/* 81.85 */    
-/* 81.86 */    public func rerender() {
-/* 81.87 */        this.updateDirtyElements()
-/* 81.88 */    }
-/* 81.89 */    
-/* 81.90 */    
-/* 81.91 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 81.92 */        
-/* 81.93 */        this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 81.94 */        
-/* 81.95 */    }
-/* 81.96 */    
-/* 81.97 */    
-/* 81.98 */    public func forceRerender(deep!: Bool = false) {
-/* 81.99 */        this.forceCompleteRerender(deep)
-/* 81.100 */    }
-/* 81.101 */    
-/* 81.102 */    
-/* 81.103 */}
-/* 81.104 */
+/* ===== Emitted by MacroCall @Component in draw.cj:92:1 ===== */
+/* 92.1 */public class playerstate <: CustomView {
+/* 92.2 */    
+/* 92.3 */    
+/* 92.4 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
+/* 92.5 */    
+/* 92.6 */    
+/* 92.7 */    private mut prop game_state: Board {
+/* 92.8 */        get() {
+/* 92.9 */            return this.stateVarDecl_game_state_.get()
+/* 92.10 */        }
+/* 92.11 */        set(v) {
+/* 92.12 */            this.stateVarDecl_game_state_.set(v)
+/* 92.13 */        }
+/* 92.14 */    }
+/* 92.15 */    
+/* 92.16 */    
+/* 92.17 */    var y_pos = 200
+/* 92.18 */    
+/* 92.19 */    
+/* 92.20 */    var x_pos = 100
+/* 92.21 */    
+/* 92.22 */    
+/* 92.23 */    
+/* 92.24 */    public func build() {
+/* 92.25 */        
+/* 92.26 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 92.27 */            Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).position(x: 90, y: 135).height(62).width(63) })
+/* 92.28 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos, y: y_pos).height(37).width(40) })
+/* 92.29 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[3]}").textAlign(TextAlign.Center).fontSize(50).fontColor(0xfc037f).position(x: x_pos + 10, y: y_pos + 50).height(50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) })
+/* 92.30 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).position(x: 690, y: 135).height(57).width(58) })
+/* 92.31 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos + 600, y: y_pos).height(37).width(40) })
+/* 92.32 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[4]}").textAlign(TextAlign.Center).fontSize(50).fontColor(0xfc037f).position(x: x_pos + 600 + 10, y: y_pos + 50).height(50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) }
+/* 92.33 */        })
+/* 92.34 */        
+/* 92.35 */        ()
+/* 92.36 */        
+/* 92.37 */    }
+/* 92.38 */    
+/* 92.39 */    
+/* 92.40 */    public init(parent: Option < CustomView >, game_state!: ObservedProperty < Board >, y_pos!: Option < ObservedProperty < Int64 >>= None, x_pos!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 92.41 */        super(parent, localStorage)
+/* 92.42 */        
+/* 92.43 */        
+/* 92.44 */        this.stateVarDecl_game_state_ = game_state.createProp("stateVarDecl_game_state_")
+/* 92.45 */        
+/* 92.46 */        match(y_pos) {
+/* 92.47 */            case Some(v) => this.y_pos = v.get()
+/* 92.48 */            case _ =>()
+/* 92.49 */        }
+/* 92.50 */        
+/* 92.51 */        match(x_pos) {
+/* 92.52 */            case Some(v) => this.x_pos = v.get()
+/* 92.53 */            case _ =>()
+/* 92.54 */        }
+/* 92.55 */        
+/* 92.56 */        
+/* 92.57 */        this.stateVarDecl_game_state_.subscribeEx(this)
+/* 92.58 */        
+/* 92.59 */        SubscriberManager.getInstance().add(this)
+/* 92.60 */        
+/* 92.61 */        
+/* 92.62 */        registerSelf()
+/* 92.63 */        parent?.addChildById(id(), this)
+/* 92.64 */    }
+/* 92.65 */    
+/* 92.66 */    
+/* 92.67 */    public override func aboutToBeDeleted() {
+/* 92.68 */        
+/* 92.69 */        this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 92.70 */        
+/* 92.71 */        SubscriberManager.getInstance().delete(this)
+/* 92.72 */        this.aboutToBeDeletedInternal()
+/* 92.73 */    }
+/* 92.74 */    
+/* 92.75 */    
+/* 92.76 */    func updateWithValueParams(game_state!: Option < Board >= Option < Board >.None, y_pos!: Option < Int64 >= Option < Int64 >.None, x_pos!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 92.77 */        
+/* 92.78 */        match(game_state) {
+/* 92.79 */            case Some(v) => this.game_state = v
+/* 92.80 */            case _ =>()
+/* 92.81 */        }
+/* 92.82 */        
+/* 92.83 */    }
+/* 92.84 */    
+/* 92.85 */    
+/* 92.86 */    public func rerender() {
+/* 92.87 */        this.updateDirtyElements()
+/* 92.88 */    }
+/* 92.89 */    
+/* 92.90 */    
+/* 92.91 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 92.92 */        
+/* 92.93 */        this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 92.94 */        
+/* 92.95 */    }
+/* 92.96 */    
+/* 92.97 */    
+/* 92.98 */    public func forceRerender(deep!: Bool = false) {
+/* 92.99 */        this.forceCompleteRerender(deep)
+/* 92.100 */    }
+/* 92.101 */    
+/* 92.102 */    
+/* 92.103 */}
+/* 92.104 */
 /* ===== End of the Emit ===== */

@@ -54,11 +54,25 @@ class EntryView {
     @State var Learn_Button_y :Int64 = 150
     //ascend状态动画参量
     @State
-    var ascendOpa :Float64 = 0.8
+    var ascendSize :Float64 = 1.0
     var ascendFlag: Bool = true
 
+    protected override func aboutToAppear() {
+        Font.registerFont(
+            familyName: "Deyihei",
+            familySrc: "/resources/rawfile/SmileySans-Oblique.ttf"
+        )
+
+            Font.registerFont(
+                familyName: @r(app.string.ProggyTinySZ),
+                familySrc: @rawfile("ProggyTinySZ.ttf")
+            )
+        }
+
+
+
     protected override func onPageShow() {
-        // 创建定时器，每0.02秒触发一次游戏更新
+        // 创建定时器，每0.04秒触发一次游戏更新
         if(step == 0)
         {
             this.timer = Timer.repeat(Duration.Zero, Duration.second / 25,
@@ -114,20 +128,20 @@ class EntryView {
                         }
                     }
 //------------------------------------以下是ascend状态的动画处理-----------------------------------------------
-                    if (this.step == 2)
+                    if (this.step == 2 && game_state[2].size > 0)
                     {
                         if(ascendFlag){
-                            this.ascendOpa -= 0.02
+                            this.ascendSize -= 0.02
                         }
                         else
                         {
-                            this.ascendOpa += 0.02
+                            this.ascendSize += 0.02
                         }
-                        if(this.ascendOpa <= 0.3)
+                        if(this.ascendSize <= 0.8)
                         {
                             this.ascendFlag = false
                         }
-                        else if (this.ascendOpa >= 0.8)
+                        else if (this.ascendSize >= 1.0)
                         {
                             this.ascendFlag = true
                         }
@@ -137,10 +151,12 @@ class EntryView {
                 , style: CatchupStyle.Skip)
         }
         if(step != 0){
+            timer?.cancel()
         }
     }
 
     protected override func onPageHide(): Unit {
+        timer?.cancel()
     }
 
     func build()  {
@@ -166,7 +182,7 @@ class EntryView {
             }
             else if(step == 2) {//游戏界面
                 testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step
-                    , ascendOpa: this.ascendOpa)
+                    , ascendSize: this.ascendSize)
                 playerstate(game_state :this.game_state)
             }
             else if(step == 3) {//结束界面

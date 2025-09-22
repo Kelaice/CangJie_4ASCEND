@@ -19,13 +19,24 @@ public class testboard {
     @Link var game_state :Board
     @Link var player :Int64
     @Link var step :Int64
-    @Link var ascendOpa :Float64
+    @Link var ascendSize :Float64
 
-    protected func CheckAscendState(index :Int64)
+    protected func GetStateOpa(index :Int64)
     {
         if (game_state[2][index / 9][index % 9] != 0)
         {
-            return ascendOpa
+            return 0.6
+        }
+        else{
+            return 1.0
+        }
+    }
+
+    protected func GetStateSize(index :Int64)
+    {
+        if (game_state[2][index / 9][index % 9] != 0)
+        {
+            return ascendSize
         }
         else{
             return 1.0
@@ -43,16 +54,16 @@ public class testboard {
                                 //显示白子
                                 if(data[index] == 1 || game_state[2][index / 9][index % 9] == 1) {
                                     Image(@r(app.media.white_Chess))
-                                    .height(30)
-                                    .width(30)
-                                    .opacity(CheckAscendState(index))
+                                    .height(30.0 * GetStateSize(index))
+                                    .width(30.0 * GetStateSize(index))
+                                    .opacity(GetStateOpa(index))
                                 }
                                 //显示黑子
                                 else if(data[index] == -1 || game_state[2][index / 9][index % 9] == -1) {
                                     Image(@r(app.media.black_Chess))
-                                    .height(30)
-                                    .width(30)
-                                    .opacity(CheckAscendState(index))
+                                    .height(30.0 * GetStateSize(index))
+                                    .width(30.0 * GetStateSize(index))
+                                    .opacity(GetStateOpa(index))
                                 }
                             }.onClick(
                                     {evt =>
@@ -97,11 +108,12 @@ public class playerstate {
             .width(40)
             Text("${game_state[3]}")
             .textAlign(TextAlign.Center)
-            .fontSize(30)
+            .fontSize(50)
             .fontColor(0xfc037f)
             .position(x: x_pos +10, y: y_pos +50)
             .height(50)
             .height(50)
+            .fontFamily(@r(app.string.ProggyTinySZ))
 
             Image(@r(app.media.enemy))
             .position(x: 690, y: 135)
@@ -113,11 +125,12 @@ public class playerstate {
             .width(40)
             Text("${game_state[4]}")
             .textAlign(TextAlign.Center)
-            .fontSize(30)
+            .fontSize(50)
             .fontColor(0xfc037f)
             .position(x: x_pos +600 +10, y: y_pos +50)
             .height(50)
             .height(50)
+            .fontFamily(@r(app.string.ProggyTinySZ))
         }
     }
 }

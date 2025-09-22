@@ -29,15 +29,17 @@ public class GameEndPage
                 .position(x: 0, y: 0)
                 if(hp1 > 0)
                 {
-                     Text("P1 Wins!")
+                    Text("P1 Wins!")
                     .position(x: 300, y: 50)
                     .fontSize(50)
+                    .fontFamily(@r(app.string.ProggyTinySZ))
                 }
-                else
+                if(hp2 > 0)
                 {
                     Text("P2 Wins!")
                     .position(x: 300, y: 50)
                     .fontSize(50)
+                    .fontFamily(@r(app.string.ProggyTinySZ))
                 }
 
             }

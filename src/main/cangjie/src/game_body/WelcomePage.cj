@@ -44,5 +44,4 @@ public class WelcomePageFont{
 
         }).opacity(this.WelAniOpa)
     }
-
 }
