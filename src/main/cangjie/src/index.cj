@@ -11,9 +11,11 @@ import ohos_app_cangjie_entry.game_body.*
 import std.sync.*
 import ohos.font.*
 import std.time.*
+import ohos.router.*
 
 //所需的类型定义
 type ObservedMatrix = ObservedArray<Int64>
+type OpacityMatrix = ObservedArray<Float64>
 type Board = (Array<Array<Int64>>,
                 Array<Array<Int64>>,
                 Array<Array<Int64>>,
@@ -21,142 +23,37 @@ type Board = (Array<Array<Int64>>,
                 Int64,
                 Int64)
 
-//游戏类型初始化
+//游戏初始化
 var game :FourAscendGame = FourAscendGame(9, 6, 6)
+var ai :StupidFourAscendPlayer = StupidFourAscendPlayer(game)
 
 @Entry
 @Component
 class EntryView {
     @State//data:棋盘数据
     var data :ObservedMatrix = ObservedArray<Int64>(Array<Int64>(81,{_=>0}))
+
+    @State//opacityArray:棋子透明度
+    var opacityArray :OpacityMatrix = ObservedArray<Float64>(Array<Float64>(81,{_=>0.8}))
+
     @State//game_state:游戏状态
     var game_state :Board = game.getInitBoard()
     @State//player:当前玩家，1为1号，-1为2号
     var player :Int64 = 1
     @State//step:游戏显示状态指示器
     var step :Int64 = 0
-    @State//pre_step:动画状态显示器
-    var pre_step = -1
-    //计时器
-    var timer: ?Timer = None
-    //欢迎界面动画参量
+
     @State
-    var Welopa :Float64 = 1.0
+    var WelFontOpacity :Float64 = 0.8
     @State
-    var WelAniOpa :Float64 = 1.0
-    var WelFlag: Bool = true
-    //菜单界面动画参量
-    @State
-    var MenuAniOpa :Float64 = 0.0
-    @State var PVP_Button_x :Int64 = 325
-    @State var PVP_Button_y :Int64 = 150
-    @State var Learn_Button_x :Int64 = 325
-    @State var Learn_Button_y :Int64 = 150
-    //ascend状态动画参量
-    @State
-    var ascendSize :Float64 = 1.0
-    var ascendFlag: Bool = true
+    var WelOpacity :Float64 = 1.0
+
 
     protected override func aboutToAppear() {
         Font.registerFont(
-            familyName: "Deyihei",
-            familySrc: "/resources/rawfile/SmileySans-Oblique.ttf"
+            familyName: @r(app.string.ProggyTinySZ),
+            familySrc: @rawfile("ProggyTinySZ.ttf")
         )
-
-            Font.registerFont(
-                familyName: @r(app.string.ProggyTinySZ),
-                familySrc: @rawfile("ProggyTinySZ.ttf")
-            )
-        }
-
-
-
-    protected override func onPageShow() {
-        // 创建定时器，每0.04秒触发一次游戏更新
-        if(step == 0)
-        {
-            this.timer = Timer.repeat(Duration.Zero, Duration.second / 25,
-                {=>
-//---------------------------------以下是欢迎页面的动画处理--------------------------------------------------
-                        if(this.step == 0)
-                    {
-                        if(WelFlag){
-                            this.Welopa -= 0.02
-                        }
-                        else
-                        {
-                            this.Welopa += 0.02
-                        }
-                        if(this.Welopa < 0.5)
-                        {
-                            this.WelFlag = false
-                        }
-                        else if (this.Welopa > 1.0)
-                        {
-                            this.WelFlag = true
-                        }
-                    }
-
-                    //欢迎页面切换至菜单页面动画
-                    if (this.pre_step == 0 && this.step == 1)
-                    {
-                        this.WelAniOpa -= 0.08
-                        if(WelAniOpa <= 0.0)
-                        {
-                            this.pre_step = -1
-                        }
-                    }
-//------------------------------------以下是菜单页面的动画处理-----------------------------------------------
-                    if (this.step == 1 && this.pre_step == -1)
-                    {
-                        if(MenuAniOpa < 1.0)
-                        {
-                            MenuAniOpa += 0.08
-                        }
-                        if (MenuAniOpa >= 1.0)
-                        {
-                            if (PVP_Button_x > 200)
-                            {
-                                PVP_Button_x -= 10
-                                PVP_Button_y -= 8
-                            }
-                            if (Learn_Button_x < 450)
-                            {
-                                Learn_Button_x += 10
-                                Learn_Button_y += 8
-                            }
-                        }
-                    }
-//------------------------------------以下是ascend状态的动画处理-----------------------------------------------
-                    if (this.step == 2 && game_state[2].size > 0)
-                    {
-                        if(ascendFlag){
-                            this.ascendSize -= 0.02
-                        }
-                        else
-                        {
-                            this.ascendSize += 0.02
-                        }
-                        if(this.ascendSize <= 0.8)
-                        {
-                            this.ascendFlag = false
-                        }
-                        else if (this.ascendSize >= 1.0)
-                        {
-                            this.ascendFlag = true
-                        }
-                    }
-
-                }
-                , style: CatchupStyle.Skip)
-        }
-        if(step != 0){
-            timer?.cancel()
-        }
-    }
-
-    protected override func onPageHide(): Unit {
-        timer?.cancel()
     }
 
     func build()  {
@@ -167,26 +64,53 @@ class EntryView {
             .width(860)
             .position(x: 0, y: 0)
 
-            if(step == 0 || pre_step == 0) {
+            if(step == 0) {
                 //标题界面
-                WelcomePageFont(Welopa :this.Welopa,step :this.step,pre_step :this.pre_step,WelAniOpa :this.WelAniOpa)
+                WelcomePage(
+                    step :this.step,
+                    WelFontOpacity :this.WelFontOpacity,
+                    WelOpacity :this.WelOpacity)
             }
             else if(step == 1)
             {
-               MenuPage(step :this.step
-                    ,MenuAniOpa :this.MenuAniOpa
-                    ,PVP_Button_x :this.PVP_Button_x
-                    ,PVP_Button_y :this.PVP_Button_y
-                    ,Learn_Button_x :this.Learn_Button_x
-                    ,Learn_Button_y :this.Learn_Button_y)
+               MenuPage(step :this.step)
             }
-            else if(step == 2) {//游戏界面
-                testboard(data :this.data, game :game, game_state :this.game_state, player :this.player, step :this.step
-                    , ascendSize: this.ascendSize)
+            else if(step == 2) {//PVP游戏界面
+                chessGrid()
+
+                testboard(
+                    data :this.data,
+                    game :game,
+                    game_state :this.game_state,
+                    player :this.player,
+                    step :this.step,
+                    opacityArray :this.opacityArray,
+                    mode :1,
+                    AI :ai
+                    )
+
                 playerstate(game_state :this.game_state)
             }
-            else if(step == 3) {//结束界面
-                GameEndPage(hp1 :this.game_state[3],hp2 :this.game_state[4],step :this.step)
+            else if(step == 3) {//PVE游戏界面
+                chessGrid()
+
+                testboard(
+                    data :this.data,
+                    game :game,
+                    game_state :this.game_state,
+                    player :this.player,
+                    step :this.step,
+                    mode :2,
+                    AI :ai,
+                    opacityArray :this.opacityArray)
+
+                playerstate(game_state :this.game_state)
+            }
+            else if(step == 4) {//结束界面
+                GameEndPage(game :game, step :this.step)
+            }
+            else if(step == 5) {//教学界面
+
             }
 
         }

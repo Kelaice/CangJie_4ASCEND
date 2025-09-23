@@ -5,7 +5,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-
 //一次落子之后的数据运算，并返回新的状态
 public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, index :Int64, player :Int64, step :Int64)
 :(Int64, Int64, Board){
@@ -24,7 +23,7 @@ public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, i
                             game_state[5]
                             ),
                             player, index
-                                                    )
+            )
         var pieces2 = nc.flatten(new_game_state[0], 81)
         AtoO(data,pieces2)
 
@@ -32,7 +31,7 @@ public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, i
             next_player = -player
         }
         else {
-            new_step = 3
+            new_step = 4
         }
 
         return (new_step, next_player, new_game_state)
@@ -40,6 +39,7 @@ public func run(data :ObservedMatrix, game :FourAscendGame, game_state :Board, i
     return (step, player, game_state)
 }
 
+//辅助函数
 private func OtoA(data :ObservedMatrix) {
         var res = Array<Int64>(81, {_=>0})
         for(i in 0..81) {
@@ -53,3 +53,14 @@ private func AtoO(data :ObservedMatrix, array :Array<Int64>) {
         data[i] = array[i]
     }
 }
+
+//
+public func ai_move(ai :StupidFourAscendPlayer, board :Board) {
+    var pieces_copy = nc.copy(board[0])
+    var magic_plants_copy = nc.copy(board[1])
+    var ascend_state_copy = nc.copy(board[2])
+    var board_copy = (pieces_copy, magic_plants_copy, ascend_state_copy, board[3], board[4], board[5])
+    var action = ai.play(board_copy)
+    return action
+}
+

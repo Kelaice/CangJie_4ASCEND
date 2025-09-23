@@ -10,6 +10,7 @@ type Board = (Array<Array<Int64>>,
                 Int64,
                 Int64)
 
+
 public class FourAscendGame{
 
     let board_size :Int64
@@ -55,8 +56,11 @@ public class FourAscendGame{
     获取当前玩家所有合法落子位置
     返回: 一维数组，1表示可落子，0表示不可落子
     */
-    //暂无实际用途
-    public func getValidMoves(pieces :Array<Array<Int64>>, hp1 :Int64, hp2 :Int64, player :Int64) {
+    public func getValidMoves(board :Board, player :Int64) {
+        var pieces = nc.copy(board[0])
+        var hp1 = board[3]
+        var hp2 = board[4]
+
         if((player==1 && hp1<=0)||(player==-1 && hp2<=0)) {
             return nc.zeros(this.grid_count)
         }
@@ -88,15 +92,16 @@ public class FourAscendGame{
         var hp2 = board[4]
         var plant_timer = board[5]
 
-        var pieces_copy = pieces.clone()
-        var magic_plants_copy = magic_plants.clone()
-        var ascend_state_copy = ascend_state.clone()
+        var pieces_copy = nc.copy(pieces)
+        var magic_plants_copy = nc.copy(magic_plants)
+        var ascend_state_copy = nc.copy(ascend_state)
 
         let row = action / this.board_size
         let col = action % this.board_size
         pieces_copy[row][col] = player
 
-        var is_defence_turn :Bool = nc.any(ascend_state_copy, -player)
+        var is_defence_turn :Bool = nc.any(ascend_state_copy,-player)
+        //防御阶段
         if(is_defence_turn) {
             var defence_power = ascend(
                 pieces_copy,
@@ -110,10 +115,10 @@ public class FourAscendGame{
             ascend_state_copy[row][col] = 0
             var attack_power = 0
             //计算所有升华棋子的总攻击力
-            for(y in 0..ascend_state_copy.size) {
-                for(x in 0..ascend_state_copy[0].size) {
-                    if(ascend_state_copy[x][y] == -player) {
-                        attack_power += 1 +magic_plants_copy[x][y]
+            for(row in 0..ascend_state_copy.size) {
+                for(col in 0..ascend_state_copy[0].size) {
+                    if(ascend_state_copy[row][col] == -player) {
+                        attack_power += 1 +magic_plants_copy[row][col]
                     }
                 }
             }
@@ -140,10 +145,10 @@ public class FourAscendGame{
             hp1 = max(0,hp1)
             hp2 = max(0,hp2)
             //重置升华棋子处的魔法植物
-            for(y in 0..ascend_state_copy.size) {
-                for(x in 0..ascend_state_copy[0].size) {
-                    if(ascend_state_copy[x][y] != 0) {
-                        magic_plants_copy[x][y] = 0
+            for(row in 0..ascend_state_copy.size) {
+                for(col in 0..ascend_state_copy[0].size) {
+                    if(ascend_state_copy[row][col] != 0) {
+                        magic_plants_copy[row][col] = 0
                     }
                 }
             }
@@ -183,13 +188,13 @@ public class FourAscendGame{
         var hp1 = board[3]
         var hp2 = board[4]
 
-        if(hp2 <= 0) {
-            return -1
+        if(hp1 <= 0 && hp2 <= 0) {
+            return 0
         }
         else if(hp1 <= 0){
             return -1
         }
-        else if(hp2 <= 0 && hp1 <= 0) {
+        else if(hp2 <= 0) {
             return 1
         }
         if(!nc.any(pieces,0)) {
@@ -218,6 +223,8 @@ public class FourAscendGame{
         col :Int64,
         player :Int64,
         set_ascend_value :Bool
+
+
         ) {
             var total_power = 0
             var suc_connextion = false
@@ -289,10 +296,10 @@ public class FourAscendGame{
     public func spawn_magic_plants(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, count :Int64) {
         //查找可以生成魔法植物的位置
         var empty_indices :ArrayList<Array<Int64>> = ArrayList()
-        for(y in 0..9) {
-            for(x in 0..9) {
-                if(pieces[x][y]==0 && magic_plants[x][y]<2) {
-                    empty_indices.append([x,y])
+        for(row in 0..9) {
+            for(col in 0..9) {
+                if(pieces[row][col]==0 && magic_plants[row][col]<2) {
+                    empty_indices.append([row,col])
                 }
             }
         }
@@ -310,81 +317,469 @@ public class FourAscendGame{
     }
 }
 
-
-public class StupidFourAscendPlayer{
+public class StupidFourAscendPlayer {
     var game :FourAscendGame
-    var directions :Array<Array<Int64>>
-    public init(game : FourAscendGame)
-    {
+    let directions :Array<(Int64,Int64)>
+
+    /*
+    初始化
+    */
+    public init(game: FourAscendGame) {
         this.game = game
-        this.directions = [[0,1],[1,0],[1,1],[1,-1]]
+        this.directions = [(0, 1), (1, 0), (1, 1), (1, -1)]
     }
 
-    public func getValidAction(valid :Array<Int64>)
-    {
-        var temp = 0
-        var valid_actions = Array<Int64>(80,{_=>0})
-        for(i in 0..81)
-        {
-            if (valid[i] == 1)
-            {
-                valid_actions[temp] = i
-                temp += 1
+    /*
+    落一个子
+    */
+    public func play(board :Board) {
+        var ascend_state = board[2]
+        var valid = game.getValidMoves(board, -1)
+        //获取可落子的位置的索引
+        var valid_actions = ArrayList<Int64>()
+        for(i in 0..valid.size) {
+            if(valid[i] == 1) {
+                valid_actions.append(i)
             }
         }
 
-        return valid_actions[0..temp]
-    }
-
-
-    public func play(board :Board)
-    {
-        var pieces = board[0]
-        var magic_plants = board[1]
-        var ascend_state = board[2]
-        var hp1 = board[3]
-        var hp2 = board[4]
-        var plant_timer = board[5]
-        var valid = this.game.getValidMoves(board[0], board[3], board[4], -1)
-        var valid_action =getValidAction(valid)
-        if (valid_action == [])
-        {
-
+        if(valid_actions.size == 0) {
+            return -1
+        }
+        var is_defense_turn = nc.any(ascend_state, 1)
+        if(is_defense_turn) {
+            return choose_defence_move(board, valid_actions)
+        }
+        else {
+            return choose_attack_move(board, valid_actions)
         }
     }
 
-    public func _choose_defence_move(board :Board, valid_actions :Array<Int64>)
-    {
-        var player = -1
-        var pieces = board[0]
+    /*
+    防御阶段的落子
+    */
+    public func choose_defence_move(board :Board, valid_actions :ArrayList<Int64>, player !:Int64 = -1) {
+        var pieces =board[0]
         var magic_plants = board[1]
         var ascend_state = board[2]
-        var hp1 = board[3]
-        var hp2 = board[4]
-        var plant_timer = board[5]
         var opponent_player = -player
-        var original_opponent_power = nc.sum(ascend_state)// + nc.sum(magic_plants)缺少魔法植物结算
-        var candidate = Array<Int64>()
-        for (action in valid_actions)
-        {
-            var row = action / this.game.board_size
-            var col = action % this.game.board_size
-            var test_pieces = pieces.clone()
-            var test_magic_plants = magic_plants.clone()
-            var test_ascend_state = ascend_state.clone()
-            var can_remove_opponent_piece = ascend_state[row][col] == opponent_player
-            var reduced_opponent_power = 0
-            if (can_remove_opponent_piece)
-            {
-                test_ascend_state[row][col] = 0//原文是false
-                reduced_opponent_power = nc.sum(test_ascend_state) //+ np.sum(magic_plants[test_ascend_state]
+        var candidates :ArrayList<(Int64,Int64,Int64)> = ArrayList()
+        //计算对方的原始攻击力
+        var original_opponent_power = 0
+        for(row in 0..ascend_state.size) {
+            for(col in 0..ascend_state[0].size) {
+                if(ascend_state[row][col] == 1) {
+                    original_opponent_power +=  1 + magic_plants[row][col]
+                }
             }
-            else
-            {
-                reduced_opponent_power = original_opponent_power
-            }
-            test_pieces[row][col] = player
-            
         }
+
+        for(action in valid_actions) {
+            let row = action / this.game.board_size
+            let col = action % this.game.board_size
+            var test_pieces = nc.copy(pieces)
+            var test_magic_plants = nc.copy(magic_plants)
+            var test_ascend_state = nc.copy(ascend_state)
+            var can_remove_opponent_piece =
+                (ascend_state[row][col] == opponent_player)
+            var reduced_opponent_power = original_opponent_power
+            var denfence_power = 0
+            var final_opponent_power = 0
+            var my_damage = 0
+            var opponent_damage = 0
+
+            //检查是否可以移除对方升华状态的棋子
+            if(can_remove_opponent_piece) {
+                test_ascend_state[row][col] = 0
+                reduced_opponent_power = nc.sum(test_ascend_state)
+                for(row in 0..test_ascend_state.size) {
+                    for(col in 0..test_ascend_state[0].size) {
+                        if(test_ascend_state[row][col] == 1) {
+                            reduced_opponent_power += 1
+                        }
+                    }
+                }
+            }
+
+            test_pieces[row][col] = player
+            denfence_power = game.ascend(
+                test_pieces,
+                test_magic_plants,
+                test_ascend_state,
+                row,
+                col,
+                player,
+                false
+            )
+            final_opponent_power = reduced_opponent_power
+            var damage = abs(final_opponent_power - denfence_power)
+            if(final_opponent_power > denfence_power) {
+                my_damage = damage
+                opponent_damage = 0
+            }
+            else if(final_opponent_power < denfence_power) {
+                my_damage = 0
+                opponent_damage = damage
+            }
+            else {
+                my_damage = 0
+                opponent_damage = 0
+            }
+
+            candidates.append((action, my_damage, opponent_damage))
+        }
+
+        //无法落子
+        if(candidates.size == 0) {
+            return valid_actions[0]
+        }
+        //选择对自己伤害最小的位置
+        var min_my_damage = candidates[0][1]
+        for(i in candidates) {
+            if(i[1] < min_my_damage) {
+                min_my_damage = i[1]
+            }
+        }
+        //在对自己伤害最小的位置中，选择对对手伤害最大的位置
+        var best_candidates :ArrayList<(Int64,Int64,Int64)> = ArrayList()
+        for(i in candidates) {
+            if(i[1] == min_my_damage) {
+                best_candidates.append(i)
+            }
+        }
+        var max_opponent_damage = best_candidates[0][2]
+        for(i in best_candidates) {
+            if(i[2] > max_opponent_damage) {
+                max_opponent_damage = i[2]
+            }
+        }
+        var best_action = best_candidates[0][0]
+        for(i in best_candidates) {
+            if(i[2] == max_opponent_damage) {
+                best_action = i[0]
+            }
+        }
+
+        return best_action
     }
-}
+
+    /*
+    攻击阶段：优先阻止对方高伤害位置，但检查自身安全；否则延长自己连线
+    */
+    public func choose_attack_move(board :Board, valid_actions :ArrayList<Int64>) {
+        var pieces = board[0]
+        var magic_plants = board[1]
+
+        //阻止对方攻击力高的位置
+        var max_damage = 0
+        var best_action = -1
+
+        for(action in valid_actions) {
+            var damage = calculate_potential_damage(board, action, 1)
+            if(damage > max_damage) {
+                max_damage = damage
+                best_action = action
+            }
+        }
+        if(best_action!=-1 && max_damage>0) {
+            if(is_safe_to_attack(board, best_action)) {
+                return best_action
+            }
+        }
+
+        //尝试连成3子
+        var three_move = find_three_connection_move(pieces, magic_plants, -1, valid_actions)
+        if(three_move != -1) {
+            return three_move
+        }
+
+        //尝试连成4子
+        var win_move = find_winning_move(pieces, magic_plants, -1, valid_actions)
+        if(win_move != -1) {
+            return win_move
+        }
+
+        //尝试寻找一般情况下的最佳位置
+        return choose_best_position(pieces, magic_plants, -1, valid_actions)
+    }
+
+    /*
+    寻找能连成4子的位置
+    */
+    public func find_winning_move(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, player :Int64, valid_actions :ArrayList<Int64>) {
+        var best_action = -1
+
+        for(action in valid_actions) {
+            let row = action / this.game.board_size
+            let col = action % this.game.board_size
+            if(can_form_four(pieces, row, col, player)) {
+                best_action =  action
+            }
+        }
+
+        return best_action
+    }
+
+    /*
+    寻找能连成3子的位置
+    */
+    public func find_three_connection_move(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, player :Int64, valid_actions :ArrayList<Int64>) {
+        var best_action = -1
+        var best_power = 0
+
+        for(action in valid_actions) {
+            let row = action / this.game.board_size
+            let col = action % this.game.board_size
+            var test_pieces = nc.copy(pieces)
+            var test_magic_plants = nc.copy(magic_plants)
+            var test_ascend_state = nc.zeros(pieces.size, pieces[0].size)
+
+            test_pieces[row][col] = player
+            var power = game.ascend(
+                test_pieces,
+                test_magic_plants,
+                test_ascend_state,
+                row,
+                col,
+                player,
+                true
+            )
+            if(power!=0 && power>best_power) {
+                best_power = power
+                best_action = action
+            }
+        }
+
+        return best_action
+    }
+
+    /*
+    检查在指定位置下棋是否能连成4子
+    */
+    public func can_form_four(pieces :Array<Array<Int64>>, row :Int64, col :Int64, player :Int64) {
+        var test_pieces = nc.copy(pieces)
+
+        test_pieces[row][col] = player
+        for(pos in this.directions) {
+            let dx = pos[0]
+            let dy = pos[1]
+            var count = 1
+
+            var r = row + dx
+            var c = col + dy
+            while(
+                (0<=r && r<this.game.board_size) && (0<=c && c<this.game.board_size) &&
+                    test_pieces[r][c] == player
+            ) {
+                count += 1
+                r = r + dx
+                c = c + dy
+            }
+
+            r = row - dx
+            c = col - dy
+            while(
+                (0<=r && r<this.game.board_size) && (0<=c && c<this.game.board_size) &&
+                    test_pieces[r][c] == player
+            ) {
+                count += 1
+                r = r - dx
+                c = c - dy
+            }
+
+            if(count >= 4) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    /*
+    选择最佳位置
+    */
+    public func choose_best_position(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, player :Int64, valid_actions :ArrayList<Int64>) {
+        var best_action = -1
+        var best_score = 0
+
+        for(action in valid_actions) {
+            let row = action / this.game.board_size
+            let col = action % this.game.board_size
+            var score = evaluate_position(pieces, magic_plants, row, col, player)
+
+            if(score > best_score) {
+                best_score = score
+                best_action = action
+            }
+        }
+
+        return best_action
+    }
+
+    /*
+    评估位置价值（启发式评估）
+    */
+    public func evaluate_position(pieces :Array<Array<Int64>>, magic_plants :Array<Array<Int64>>, row :Int64, col :Int64, player :Int64) {
+        var score = 0
+        var center = this.game.board_size / 2
+        var distance_to_center = 0
+
+        score += magic_plants[row][col] * 2
+        distance_to_center = abs(row- center) + abs(col - center)
+        score += max(0 , center - distance_to_center)
+        for(i in this.directions) {
+            let dx = i[0]
+            let dy = i[1]
+
+            var line_score = evaluate_line(pieces, row, col, dx, dy, player)
+            score += line_score
+        }
+
+        return score
+    }
+
+    /*
+    评估某个方向的连接潜力
+    */
+    public func evaluate_line(pieces :Array<Array<Int64>>, row :Int64, col :Int64, dx :Int64, dy :Int64, player :Int64) {
+        var score = 0
+        var my_pieces = 0
+        var empty_spaces = 0
+        var opponent_pieces = 0
+
+        for(d in [1, -1]) {
+            var r = row + d * dx
+            var c = col + d * dy
+
+            for(i in 0..3) {
+                if((0<=r && r<this.game.board_size) && (0<=c && c<this.game.board_size)) {
+                    if(pieces[r][c] == player) {
+                        my_pieces += 1
+                    }
+                    else if(pieces[r][c] == 0) {
+                        empty_spaces += 0
+                    }
+                    else {
+                        opponent_pieces += 1
+                        break
+                    }
+                    r = r + d * dx
+                    c = c + d * dy
+                }
+                else {
+                    break
+                }
+            }
+        }
+
+        if(opponent_pieces == 0) {
+            if(my_pieces >= 2) {
+                score += 10 * my_pieces
+            }
+            else if(my_pieces == 1) {
+                score += 3
+            }
+            score += empty_spaces
+        }
+
+        return score
+    }
+
+    /*
+    计算对方下子后的潜在攻击威力
+    */
+    public func calculate_potential_damage(board :Board, action :Int64, opponent_player :Int64) {
+        let pieces = board[0]
+        let magic_plants = board[1]
+        let ascend_state = board[2]
+        var pieces_copy = nc.copy(pieces)
+        var magic_plants_copy = nc.copy(magic_plants)
+        var ascend_state_copy = nc.copy(ascend_state)
+
+        let row = action / this.game.board_size
+        let col = action % this.game.board_size
+        pieces_copy[row][col] = opponent_player
+
+        var attack_power = game.ascend(
+            pieces_copy,
+            magic_plants_copy,
+            ascend_state_copy,
+            row,
+            col,
+            opponent_player,
+            true
+        )
+        return attack_power
+    }
+
+    //检查下子后是否会导致自己受到伤害
+    public func is_safe_to_attack(board :Board, action :Int64) {
+        let pieces = board[0]
+        let magic_plants = board[1]
+        let ascend_state = board[2]
+        var hp1 = board[3]
+        var hp2 = board[4]
+        var plant_timer = board[5]
+
+        let row = action / this.game.board_size
+        let col = action % this.game.board_size
+        var pieces_copy = nc.copy(pieces)
+        var magic_plants_copy = nc.copy(magic_plants)
+        var ascend_state_copy = nc.copy(ascend_state)
+
+        pieces_copy[row][col] = -1
+        var attack_power = game.ascend(
+            pieces_copy,
+            magic_plants_copy,
+            ascend_state_copy,
+            row,
+            col,
+            -1,
+            true
+        )
+        //不会对对手造成伤害
+        if(attack_power == 0) {
+            return true
+        }
+        //对对手有伤害，模拟对手防御
+        var opponent_ai = StupidFourAscendPlayer(this.game)
+        var valid = game.getValidMoves((pieces_copy, magic_plants_copy, ascend_state_copy, hp1, hp2, plant_timer), 1)
+        var valid_actions = ArrayList<Int64>()
+        for(i in 0..valid.size) {
+            if(valid[i] == 1) {
+                valid_actions.append(i)
+            }
+        }
+        if(valid_actions.size == 0) {
+            return true
+        }
+        var denfence_action = opponent_ai.choose_defence_move((pieces_copy, magic_plants_copy, ascend_state_copy, hp1, hp2, plant_timer), valid_actions, player :1)
+
+        //模拟对手下子
+        var d_row = denfence_action / this.game.board_size
+        var d_col = denfence_action % this.game.board_size
+        var pieces_copy2 = nc.copy(pieces)
+        var magic_plants_copy2 = nc.copy(magic_plants)
+        var ascend_state_copy2 = nc.copy(ascend_state)
+
+        pieces_copy2[d_row][d_col] = 1
+        var denfence_power = game.ascend(
+            pieces_copy2,
+            magic_plants_copy2,
+            ascend_state_copy2,
+            d_row,
+            d_col,
+            1,
+            false
+        )
+        //计算是否受伤
+        if(attack_power > denfence_power) {
+            return false
+        }
+        else {
+            return true
+        }
+
+    }
+
+ }
