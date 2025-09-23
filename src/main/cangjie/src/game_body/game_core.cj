@@ -10,6 +10,7 @@ type Board = (Array<Array<Int64>>,
                 Int64,
                 Int64)
 
+
 public class FourAscendGame{
 
     let board_size :Int64
@@ -217,11 +218,13 @@ public class FourAscendGame{
     public func ascend(
         pieces :Array<Array<Int64>>,
         magic_plants :Array<Array<Int64>>,
-        ascend_state :Array<Array<                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Int64>>,
+        ascend_state :Array<Array<Int64>>,
         row :Int64,
         col :Int64,
         player :Int64,
         set_ascend_value :Bool
+
+
         ) {
             var total_power = 0
             var suc_connextion = false

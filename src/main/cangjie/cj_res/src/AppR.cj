@@ -3,6 +3,7 @@ package cj_res_entry
 public class AppString {
 	public var EntryAbility_desc = 16777220
 	public var EntryAbility_label = 16777221
+	public var ProggyTinySZ = 16777248
 	public var app_name = 16777216
 	public var module_desc = 16777222
 }
