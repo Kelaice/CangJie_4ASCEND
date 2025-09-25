@@ -11,9 +11,11 @@ import ohos_app_cangjie_entry.game_body.*
 import std.sync.*
 import ohos.font.*
 import std.time.*
+import ohos.router.*
 
 //所需的类型定义
 type ObservedMatrix = ObservedArray<Int64>
+type OpacityMatrix = ObservedArray<Float64>
 type Board = (Array<Array<Int64>>,
                 Array<Array<Int64>>,
                 Array<Array<Int64>>,
@@ -21,431 +23,386 @@ type Board = (Array<Array<Int64>>,
                 Int64,
                 Int64)
 
-//游戏类型初始化
+//游戏初始化
 var game :FourAscendGame = FourAscendGame(9, 6, 6)
+var ai :StupidFourAscendPlayer = StupidFourAscendPlayer(game)
 
-/* ===== Emitted by MacroCall @Entry in index.cj:27:1 ===== */
-/* 27.1 */class EntryView <: CustomView {
-/* 27.2 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >= ObservedProperty < ObservedMatrix >("stateVarDecl_data_", ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 })))
-/* 27.3 */    private mut prop data: ObservedMatrix {
-/* 27.4 */        get() {
-/* 27.5 */            return this.stateVarDecl_data_.get()
-/* 27.6 */        }
-/* 27.7 */        set(v) {
-/* 27.8 */            this.stateVarDecl_data_.set(v)
-/* 27.9 */        }
-/* 27.10 */    }
-/* 27.11 */    private var stateVarDecl_game_state_: ObservedProperty < Board >= ObservedProperty < Board >("stateVarDecl_game_state_", game.getInitBoard())
-/* 27.12 */    private mut prop game_state: Board {
-/* 27.13 */        get() {
-/* 27.14 */            return this.stateVarDecl_game_state_.get()
-/* 27.15 */        }
-/* 27.16 */        set(v) {
-/* 27.17 */            this.stateVarDecl_game_state_.set(v)
-/* 27.18 */        }
-/* 27.19 */    }
-/* 27.20 */    private var stateVarDecl_player_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_player_", 1)
-/* 27.21 */    private mut prop player: Int64 {
-/* 27.22 */        get() {
-/* 27.23 */            return this.stateVarDecl_player_.get()
-/* 27.24 */        }
-/* 27.25 */        set(v) {
-/* 27.26 */            this.stateVarDecl_player_.set(v)
-/* 27.27 */        }
-/* 27.28 */    }
-/* 27.29 */    private var stateVarDecl_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_", 0)
-/* 27.30 */    private mut prop step: Int64 {
-/* 27.31 */        get() {
-/* 27.32 */            return this.stateVarDecl_step_.get()
-/* 27.33 */        }
-/* 27.34 */        set(v) {
-/* 27.35 */            this.stateVarDecl_step_.set(v)
-/* 27.36 */        }
-/* 27.37 */    }
-/* 27.38 */    private var stateVarDecl_pre_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_pre_step_", - 1)
-/* 27.39 */    private mut prop pre_step: Int64 {
-/* 27.40 */        get() {
-/* 27.41 */            return this.stateVarDecl_pre_step_.get()
-/* 27.42 */        }
-/* 27.43 */        set(v) {
-/* 27.44 */            this.stateVarDecl_pre_step_.set(v)
-/* 27.45 */        }
-/* 27.46 */    }
-/* 27.47 */    var timer:?Timer = None
-/* 27.48 */    private var stateVarDecl_Welopa_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_Welopa_", 1.0)
-/* 27.49 */    private mut prop Welopa: Float64 {
-/* 27.50 */        get() {
-/* 27.51 */            return this.stateVarDecl_Welopa_.get()
-/* 27.52 */        }
-/* 27.53 */        set(v) {
-/* 27.54 */            this.stateVarDecl_Welopa_.set(v)
-/* 27.55 */        }
-/* 27.56 */    }
-/* 27.57 */    private var stateVarDecl_WelAniOpa_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelAniOpa_", 1.0)
-/* 27.58 */    private mut prop WelAniOpa: Float64 {
-/* 27.59 */        get() {
-/* 27.60 */            return this.stateVarDecl_WelAniOpa_.get()
-/* 27.61 */        }
-/* 27.62 */        set(v) {
-/* 27.63 */            this.stateVarDecl_WelAniOpa_.set(v)
-/* 27.64 */        }
-/* 27.65 */    }
-/* 27.66 */    var WelFlag: Bool = true
-/* 27.67 */    private var stateVarDecl_MenuAniOpa_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_MenuAniOpa_", 0.0)
-/* 27.68 */    private mut prop MenuAniOpa: Float64 {
-/* 27.69 */        get() {
-/* 27.70 */            return this.stateVarDecl_MenuAniOpa_.get()
-/* 27.71 */        }
-/* 27.72 */        set(v) {
-/* 27.73 */            this.stateVarDecl_MenuAniOpa_.set(v)
-/* 27.74 */        }
-/* 27.75 */    }
-/* 27.76 */    private var stateVarDecl_PVP_Button_x_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_PVP_Button_x_", 325)
-/* 27.77 */    private mut prop PVP_Button_x: Int64 {
-/* 27.78 */        get() {
-/* 27.79 */            return this.stateVarDecl_PVP_Button_x_.get()
-/* 27.80 */        }
-/* 27.81 */        set(v) {
-/* 27.82 */            this.stateVarDecl_PVP_Button_x_.set(v)
-/* 27.83 */        }
-/* 27.84 */    }
-/* 27.85 */    private var stateVarDecl_PVP_Button_y_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_PVP_Button_y_", 150)
-/* 27.86 */    private mut prop PVP_Button_y: Int64 {
-/* 27.87 */        get() {
-/* 27.88 */            return this.stateVarDecl_PVP_Button_y_.get()
-/* 27.89 */        }
-/* 27.90 */        set(v) {
-/* 27.91 */            this.stateVarDecl_PVP_Button_y_.set(v)
-/* 27.92 */        }
-/* 27.93 */    }
-/* 27.94 */    private var stateVarDecl_Learn_Button_x_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_Learn_Button_x_", 325)
-/* 27.95 */    private mut prop Learn_Button_x: Int64 {
-/* 27.96 */        get() {
-/* 27.97 */            return this.stateVarDecl_Learn_Button_x_.get()
-/* 27.98 */        }
-/* 27.99 */        set(v) {
-/* 27.100 */            this.stateVarDecl_Learn_Button_x_.set(v)
-/* 27.101 */        }
-/* 27.102 */    }
-/* 27.103 */    private var stateVarDecl_Learn_Button_y_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_Learn_Button_y_", 150)
-/* 27.104 */    private mut prop Learn_Button_y: Int64 {
-/* 27.105 */        get() {
-/* 27.106 */            return this.stateVarDecl_Learn_Button_y_.get()
-/* 27.107 */        }
-/* 27.108 */        set(v) {
-/* 27.109 */            this.stateVarDecl_Learn_Button_y_.set(v)
-/* 27.110 */        }
-/* 27.111 */    }
-/* 27.112 */    private var stateVarDecl_ascendSize_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_ascendSize_", 1.0)
-/* 27.113 */    private mut prop ascendSize: Float64 {
-/* 27.114 */        get() {
-/* 27.115 */            return this.stateVarDecl_ascendSize_.get()
-/* 27.116 */        }
-/* 27.117 */        set(v) {
-/* 27.118 */            this.stateVarDecl_ascendSize_.set(v)
-/* 27.119 */        }
-/* 27.120 */    }
-/* 27.121 */    var ascendFlag: Bool = true
-/* 27.122 */    protected override func aboutToAppear() {
-/* 27.123 */        Font.registerFont(familyName: "Deyihei", familySrc: "/resources/rawfile/SmileySans-Oblique.ttf")
-/* 27.124 */        Font.registerFont(familyName: __GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003), familySrc: CJResource(0, 30000, "ProggyTinySZ.ttf",["ProggyTinySZ.ttf"], moduleName: "", bundleName: "", moduleType: ""))
-/* 27.125 */    }
-/* 27.126 */    protected override func onPageShow() {
-/* 27.127 */        if(step == 0) {
-/* 27.128 */            this.timer = Timer.repeat(Duration.Zero, Duration.second / 25, { => if(this.step == 0) {
-/* 27.129 */                if(WelFlag) {
-/* 27.130 */                    this.Welopa -= 0.02
-/* 27.131 */                }
-/* 27.132 */                else {
-/* 27.133 */                    this.Welopa += 0.02
-/* 27.134 */                }
-/* 27.135 */                if(this.Welopa < 0.5) {
-/* 27.136 */                    this.WelFlag = false
-/* 27.137 */                }
-/* 27.138 */                else if(this.Welopa > 1.0) {
-/* 27.139 */                    this.WelFlag = true
-/* 27.140 */                }
-/* 27.141 */            }
-/* 27.142 */            
-/* 27.143 */            if(this.pre_step == 0 && this.step == 1) {
-/* 27.144 */                this.WelAniOpa -= 0.08
-/* 27.145 */                if(WelAniOpa <= 0.0) {
-/* 27.146 */                    this.pre_step = - 1
-/* 27.147 */                }
-/* 27.148 */            }
-/* 27.149 */            
-/* 27.150 */            if(this.step == 1 && this.pre_step == - 1) {
-/* 27.151 */                if(MenuAniOpa < 1.0) {
-/* 27.152 */                    MenuAniOpa += 0.08
-/* 27.153 */                }
-/* 27.154 */                if(MenuAniOpa >= 1.0) {
-/* 27.155 */                    if(PVP_Button_x > 200) {
-/* 27.156 */                        PVP_Button_x -= 10
-/* 27.157 */                        PVP_Button_y -= 8
-/* 27.158 */                    }
-/* 27.159 */                    if(Learn_Button_x < 450) {
-/* 27.160 */                        Learn_Button_x += 10
-/* 27.161 */                        Learn_Button_y += 8
-/* 27.162 */                    }
-/* 27.163 */                }
-/* 27.164 */            }
-/* 27.165 */            
-/* 27.166 */            if(this.step == 2 && game_state[2].size > 0) {
-/* 27.167 */                if(ascendFlag) {
-/* 27.168 */                    this.ascendSize -= 0.02
-/* 27.169 */                }
-/* 27.170 */                else {
-/* 27.171 */                    this.ascendSize += 0.02
-/* 27.172 */                }
-/* 27.173 */                if(this.ascendSize <= 0.8) {
-/* 27.174 */                    this.ascendFlag = false
-/* 27.175 */                }
-/* 27.176 */                else if(this.ascendSize >= 1.0) {
-/* 27.177 */                    this.ascendFlag = true
-/* 27.178 */                }
-/* 27.179 */            }
-/* 27.180 */        }, style: CatchupStyle.Skip)
-/* 27.181 */    }
-/* 27.182 */    if(step != 0) {
-/* 27.183 */        timer?.cancel()
-/* 27.184 */    }
-/* 27.185 */}
-/* 27.186 */protected override func onPageHide(): Unit {
-/* 27.187 */    timer?.cancel()
-/* 27.188 */}
-/* 27.189 */public func build() {
-/* 27.190 */    this.observeComponentCreation({ elmtId, isInitialRender => Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
-/* 27.191 */    this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 0 || pre_step == 0) {
-/* 27.192 */        this.ifElseBranchUpdateFunction(0, { => match(WelcomePageFont(this, Welopa: stateVarDecl_Welopa_, step: stateVarDecl_step_, pre_step: stateVarDecl_pre_step_, WelAniOpa: stateVarDecl_WelAniOpa_)) {
-/* 27.193 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 27.194 */            CustomView.create(cv)
-/* 27.195 */            ViewStackProcessor.StopGetAccessRecording()
-/* 27.196 */            case vb: ViewBuilder => vb.build()
-/* 27.197 */            case _ => LegalCallCheck.check(WelcomePageFont(this, Welopa: stateVarDecl_Welopa_, step: stateVarDecl_step_, pre_step: stateVarDecl_pre_step_, WelAniOpa: stateVarDecl_WelAniOpa_))
-/* 27.198 */        } })
-/* 27.199 */    }
-/* 27.200 */    else if(step == 1) {
-/* 27.201 */        this.ifElseBranchUpdateFunction(1, { => match(MenuPage(this, step: stateVarDecl_step_, MenuAniOpa: stateVarDecl_MenuAniOpa_, PVP_Button_x: stateVarDecl_PVP_Button_x_, PVP_Button_y: stateVarDecl_PVP_Button_y_, Learn_Button_x: stateVarDecl_Learn_Button_x_, Learn_Button_y: stateVarDecl_Learn_Button_y_)) {
-/* 27.202 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 27.203 */            CustomView.create(cv)
-/* 27.204 */            ViewStackProcessor.StopGetAccessRecording()
-/* 27.205 */            case vb: ViewBuilder => vb.build()
-/* 27.206 */            case _ => LegalCallCheck.check(MenuPage(this, step: stateVarDecl_step_, MenuAniOpa: stateVarDecl_MenuAniOpa_, PVP_Button_x: stateVarDecl_PVP_Button_x_, PVP_Button_y: stateVarDecl_PVP_Button_y_, Learn_Button_x: stateVarDecl_Learn_Button_x_, Learn_Button_y: stateVarDecl_Learn_Button_y_))
-/* 27.207 */        } })
-/* 27.208 */    }
-/* 27.209 */    else if(step == 2) {
-/* 27.210 */        this.ifElseBranchUpdateFunction(2, { => match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, ascendSize: stateVarDecl_ascendSize_)) {
-/* 27.211 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 27.212 */            CustomView.create(cv)
-/* 27.213 */            ViewStackProcessor.StopGetAccessRecording()
-/* 27.214 */            case vb: ViewBuilder => vb.build()
-/* 27.215 */            case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, ascendSize: stateVarDecl_ascendSize_))
-/* 27.216 */        }
-/* 27.217 */        match(playerstate(this, game_state: stateVarDecl_game_state_)) {
-/* 27.218 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 27.219 */            CustomView.create(cv)
-/* 27.220 */            ViewStackProcessor.StopGetAccessRecording()
-/* 27.221 */            case vb: ViewBuilder => vb.build()
-/* 27.222 */            case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_))
-/* 27.223 */        } })
-/* 27.224 */    }
-/* 27.225 */    else if(step == 3) {
-/* 27.226 */        this.ifElseBranchUpdateFunction(3, { => match(GameEndPage(this, hp1: ObservedProperty("", this.game_state[3]), hp2: ObservedProperty("", this.game_state[4]), step: stateVarDecl_step_)) {
-/* 27.227 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 27.228 */            CustomView.create(cv)
-/* 27.229 */            ViewStackProcessor.StopGetAccessRecording()
-/* 27.230 */            case vb: ViewBuilder => vb.build()
-/* 27.231 */            case _ => LegalCallCheck.check(GameEndPage(this, hp1: ObservedProperty("", this.game_state[3]), hp2: ObservedProperty("", this.game_state[4]), step: stateVarDecl_step_))
-/* 27.232 */        } })
-/* 27.233 */    }
-/* 27.234 */    else {
-/* 27.235 */        If.branchId(4)
-/* 27.236 */    }
-/* 27.237 */} }) }.width(100.percent).height(100.percent) })
-/* 27.238 */()
-/* 27.239 */}
-/* 27.240 */public init(parent: Option < CustomView >, data!: Option < ObservedProperty < ObservedMatrix >>= None, game_state!: Option < ObservedProperty < Board >>= None, player!: Option < ObservedProperty < Int64 >>= None, step!: Option < ObservedProperty < Int64 >>= None, pre_step!: Option < ObservedProperty < Int64 >>= None, timer!: Option < ObservedProperty <?Timer >>= None, Welopa!: Option < ObservedProperty < Float64 >>= None, WelAniOpa!: Option < ObservedProperty < Float64 >>= None, WelFlag!: Option < ObservedProperty < Bool >>= None, MenuAniOpa!: Option < ObservedProperty < Float64 >>= None, PVP_Button_x!: Option < ObservedProperty < Int64 >>= None, PVP_Button_y!: Option < ObservedProperty < Int64 >>= None, Learn_Button_x!: Option < ObservedProperty < Int64 >>= None, Learn_Button_y!: Option < ObservedProperty < Int64 >>= None, ascendSize!: Option < ObservedProperty < Float64 >>= None, ascendFlag!: Option < ObservedProperty < Bool >>= None, localStorage!: Option < LocalStorage >= None) {
-/* 27.241 */super(parent, localStorage)
-/* 27.242 */match(data) {
-/* 27.243 */    case Some(v) => this.stateVarDecl_data_ = ObservedProperty < ObservedMatrix >("stateVarDecl_data_", v.get())
-/* 27.244 */    case _ =>()
-/* 27.245 */}
-/* 27.246 */match(game_state) {
-/* 27.247 */    case Some(v) => this.stateVarDecl_game_state_ = ObservedProperty < Board >("stateVarDecl_game_state_", v.get())
-/* 27.248 */    case _ =>()
-/* 27.249 */}
-/* 27.250 */match(player) {
-/* 27.251 */    case Some(v) => this.stateVarDecl_player_ = ObservedProperty < Int64 >("stateVarDecl_player_", v.get())
-/* 27.252 */    case _ =>()
-/* 27.253 */}
-/* 27.254 */match(step) {
-/* 27.255 */    case Some(v) => this.stateVarDecl_step_ = ObservedProperty < Int64 >("stateVarDecl_step_", v.get())
-/* 27.256 */    case _ =>()
-/* 27.257 */}
-/* 27.258 */match(pre_step) {
-/* 27.259 */    case Some(v) => this.stateVarDecl_pre_step_ = ObservedProperty < Int64 >("stateVarDecl_pre_step_", v.get())
-/* 27.260 */    case _ =>()
-/* 27.261 */}
-/* 27.262 */match(timer) {
-/* 27.263 */    case Some(v) => this.timer = v.get()
-/* 27.264 */    case _ =>()
-/* 27.265 */}
-/* 27.266 */match(Welopa) {
-/* 27.267 */    case Some(v) => this.stateVarDecl_Welopa_ = ObservedProperty < Float64 >("stateVarDecl_Welopa_", v.get())
-/* 27.268 */    case _ =>()
-/* 27.269 */}
-/* 27.270 */match(WelAniOpa) {
-/* 27.271 */    case Some(v) => this.stateVarDecl_WelAniOpa_ = ObservedProperty < Float64 >("stateVarDecl_WelAniOpa_", v.get())
-/* 27.272 */    case _ =>()
-/* 27.273 */}
-/* 27.274 */match(WelFlag) {
-/* 27.275 */    case Some(v) => this.WelFlag = v.get()
-/* 27.276 */    case _ =>()
-/* 27.277 */}
-/* 27.278 */match(MenuAniOpa) {
-/* 27.279 */    case Some(v) => this.stateVarDecl_MenuAniOpa_ = ObservedProperty < Float64 >("stateVarDecl_MenuAniOpa_", v.get())
-/* 27.280 */    case _ =>()
-/* 27.281 */}
-/* 27.282 */match(PVP_Button_x) {
-/* 27.283 */    case Some(v) => this.stateVarDecl_PVP_Button_x_ = ObservedProperty < Int64 >("stateVarDecl_PVP_Button_x_", v.get())
-/* 27.284 */    case _ =>()
-/* 27.285 */}
-/* 27.286 */match(PVP_Button_y) {
-/* 27.287 */    case Some(v) => this.stateVarDecl_PVP_Button_y_ = ObservedProperty < Int64 >("stateVarDecl_PVP_Button_y_", v.get())
-/* 27.288 */    case _ =>()
-/* 27.289 */}
-/* 27.290 */match(Learn_Button_x) {
-/* 27.291 */    case Some(v) => this.stateVarDecl_Learn_Button_x_ = ObservedProperty < Int64 >("stateVarDecl_Learn_Button_x_", v.get())
-/* 27.292 */    case _ =>()
-/* 27.293 */}
-/* 27.294 */match(Learn_Button_y) {
-/* 27.295 */    case Some(v) => this.stateVarDecl_Learn_Button_y_ = ObservedProperty < Int64 >("stateVarDecl_Learn_Button_y_", v.get())
-/* 27.296 */    case _ =>()
-/* 27.297 */}
-/* 27.298 */match(ascendSize) {
-/* 27.299 */    case Some(v) => this.stateVarDecl_ascendSize_ = ObservedProperty < Float64 >("stateVarDecl_ascendSize_", v.get())
-/* 27.300 */    case _ =>()
-/* 27.301 */}
-/* 27.302 */match(ascendFlag) {
-/* 27.303 */    case Some(v) => this.ascendFlag = v.get()
-/* 27.304 */    case _ =>()
-/* 27.305 */}
-/* 27.306 */this.stateVarDecl_data_.subscribeEx(this)
-/* 27.307 */this.stateVarDecl_game_state_.subscribeEx(this)
-/* 27.308 */this.stateVarDecl_player_.subscribeEx(this)
-/* 27.309 */this.stateVarDecl_step_.subscribeEx(this)
-/* 27.310 */this.stateVarDecl_pre_step_.subscribeEx(this)
-/* 27.311 */this.stateVarDecl_Welopa_.subscribeEx(this)
-/* 27.312 */this.stateVarDecl_WelAniOpa_.subscribeEx(this)
-/* 27.313 */this.stateVarDecl_MenuAniOpa_.subscribeEx(this)
-/* 27.314 */this.stateVarDecl_PVP_Button_x_.subscribeEx(this)
-/* 27.315 */this.stateVarDecl_PVP_Button_y_.subscribeEx(this)
-/* 27.316 */this.stateVarDecl_Learn_Button_x_.subscribeEx(this)
-/* 27.317 */this.stateVarDecl_Learn_Button_y_.subscribeEx(this)
-/* 27.318 */this.stateVarDecl_ascendSize_.subscribeEx(this)
-/* 27.319 */SubscriberManager.getInstance().add(this)
-/* 27.320 */registerSelf()
-/* 27.321 */parent?.addChildById(id(), this)
-/* 27.322 */}
-/* 27.323 */public override func aboutToBeDeleted() {
-/* 27.324 */this.stateVarDecl_data_.unsubscribeEx(this)
-/* 27.325 */this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 27.326 */this.stateVarDecl_player_.unsubscribeEx(this)
-/* 27.327 */this.stateVarDecl_step_.unsubscribeEx(this)
-/* 27.328 */this.stateVarDecl_pre_step_.unsubscribeEx(this)
-/* 27.329 */this.stateVarDecl_Welopa_.unsubscribeEx(this)
-/* 27.330 */this.stateVarDecl_WelAniOpa_.unsubscribeEx(this)
-/* 27.331 */this.stateVarDecl_MenuAniOpa_.unsubscribeEx(this)
-/* 27.332 */this.stateVarDecl_PVP_Button_x_.unsubscribeEx(this)
-/* 27.333 */this.stateVarDecl_PVP_Button_y_.unsubscribeEx(this)
-/* 27.334 */this.stateVarDecl_Learn_Button_x_.unsubscribeEx(this)
-/* 27.335 */this.stateVarDecl_Learn_Button_y_.unsubscribeEx(this)
-/* 27.336 */this.stateVarDecl_ascendSize_.unsubscribeEx(this)
-/* 27.337 */SubscriberManager.getInstance().delete(this)
-/* 27.338 */this.aboutToBeDeletedInternal()
-/* 27.339 */}
-/* 27.340 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, pre_step!: Option < Int64 >= Option < Int64 >.None, timer!: Option <?Timer >= Option <?Timer >.None, Welopa!: Option < Float64 >= Option < Float64 >.None, WelAniOpa!: Option < Float64 >= Option < Float64 >.None, WelFlag!: Option < Bool >= Option < Bool >.None, MenuAniOpa!: Option < Float64 >= Option < Float64 >.None, PVP_Button_x!: Option < Int64 >= Option < Int64 >.None, PVP_Button_y!: Option < Int64 >= Option < Int64 >.None, Learn_Button_x!: Option < Int64 >= Option < Int64 >.None, Learn_Button_y!: Option < Int64 >= Option < Int64 >.None, ascendSize!: Option < Float64 >= Option < Float64 >.None, ascendFlag!: Option < Bool >= Option < Bool >.None): Unit {
-/* 27.341 */match(data) {
-/* 27.342 */    case Some(v) => this.data = v
-/* 27.343 */    case _ =>()
-/* 27.344 */}
-/* 27.345 */match(game_state) {
-/* 27.346 */    case Some(v) => this.game_state = v
-/* 27.347 */    case _ =>()
-/* 27.348 */}
-/* 27.349 */match(player) {
-/* 27.350 */    case Some(v) => this.player = v
-/* 27.351 */    case _ =>()
-/* 27.352 */}
-/* 27.353 */match(step) {
-/* 27.354 */    case Some(v) => this.step = v
-/* 27.355 */    case _ =>()
-/* 27.356 */}
-/* 27.357 */match(pre_step) {
-/* 27.358 */    case Some(v) => this.pre_step = v
-/* 27.359 */    case _ =>()
-/* 27.360 */}
-/* 27.361 */match(Welopa) {
-/* 27.362 */    case Some(v) => this.Welopa = v
-/* 27.363 */    case _ =>()
-/* 27.364 */}
-/* 27.365 */match(WelAniOpa) {
-/* 27.366 */    case Some(v) => this.WelAniOpa = v
-/* 27.367 */    case _ =>()
-/* 27.368 */}
-/* 27.369 */match(MenuAniOpa) {
-/* 27.370 */    case Some(v) => this.MenuAniOpa = v
-/* 27.371 */    case _ =>()
-/* 27.372 */}
-/* 27.373 */match(PVP_Button_x) {
-/* 27.374 */    case Some(v) => this.PVP_Button_x = v
-/* 27.375 */    case _ =>()
-/* 27.376 */}
-/* 27.377 */match(PVP_Button_y) {
-/* 27.378 */    case Some(v) => this.PVP_Button_y = v
-/* 27.379 */    case _ =>()
-/* 27.380 */}
-/* 27.381 */match(Learn_Button_x) {
-/* 27.382 */    case Some(v) => this.Learn_Button_x = v
-/* 27.383 */    case _ =>()
-/* 27.384 */}
-/* 27.385 */match(Learn_Button_y) {
-/* 27.386 */    case Some(v) => this.Learn_Button_y = v
-/* 27.387 */    case _ =>()
-/* 27.388 */}
-/* 27.389 */match(ascendSize) {
-/* 27.390 */    case Some(v) => this.ascendSize = v
-/* 27.391 */    case _ =>()
-/* 27.392 */}
-/* 27.393 */}
-/* 27.394 */public func rerender() {
-/* 27.395 */this.updateDirtyElements()
-/* 27.396 */}
-/* 27.397 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 27.398 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.399 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.400 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.401 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.402 */this.stateVarDecl_pre_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.403 */this.stateVarDecl_Welopa_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.404 */this.stateVarDecl_WelAniOpa_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.405 */this.stateVarDecl_MenuAniOpa_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.406 */this.stateVarDecl_PVP_Button_x_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.407 */this.stateVarDecl_PVP_Button_y_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.408 */this.stateVarDecl_Learn_Button_x_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.409 */this.stateVarDecl_Learn_Button_y_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.410 */this.stateVarDecl_ascendSize_.purgeDependencyOnElmtId(rmElmtId)
-/* 27.411 */}
-/* 27.412 */public func forceRerender(deep!: Bool = false) {
-/* 27.413 */this.forceCompleteRerender(deep)
-/* 27.414 */}
-/* 27.415 */}
-/* 27.416 */
-/* 27.417 */public func appEntry_0(): Bool {
-/* 27.418 */let view = EntryView(Option < CustomView >.None)
-/* 27.419 */loadNativeView(view)
-/* 27.420 */}
-/* 27.421 */
-/* 27.422 */let a_p_1 = CJEntry.getInstance().registerEntry("EntryView", appEntry_0)
-/* 27.423 */
+/* ===== Emitted by MacroCall @Entry in index.cj:30:1 ===== */
+/* 30.1 */class EntryView <: CustomView {
+/* 30.2 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >= ObservedProperty < ObservedMatrix >("stateVarDecl_data_", ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 })))
+/* 30.3 */    private mut prop data: ObservedMatrix {
+/* 30.4 */        get() {
+/* 30.5 */            return this.stateVarDecl_data_.get()
+/* 30.6 */        }
+/* 30.7 */        set(v) {
+/* 30.8 */            this.stateVarDecl_data_.set(v)
+/* 30.9 */        }
+/* 30.10 */    }
+/* 30.11 */    private var stateVarDecl_opacityArray_: ObservedProperty < OpacityMatrix >= ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", ObservedArray < Float64 >(Array < Float64 >(81, { _ => 0.8 })))
+/* 30.12 */    private mut prop opacityArray: OpacityMatrix {
+/* 30.13 */        get() {
+/* 30.14 */            return this.stateVarDecl_opacityArray_.get()
+/* 30.15 */        }
+/* 30.16 */        set(v) {
+/* 30.17 */            this.stateVarDecl_opacityArray_.set(v)
+/* 30.18 */        }
+/* 30.19 */    }
+/* 30.20 */    private var stateVarDecl_game_state_: ObservedProperty < Board >= ObservedProperty < Board >("stateVarDecl_game_state_", game.getInitBoard())
+/* 30.21 */    private mut prop game_state: Board {
+/* 30.22 */        get() {
+/* 30.23 */            return this.stateVarDecl_game_state_.get()
+/* 30.24 */        }
+/* 30.25 */        set(v) {
+/* 30.26 */            this.stateVarDecl_game_state_.set(v)
+/* 30.27 */        }
+/* 30.28 */    }
+/* 30.29 */    private var stateVarDecl_player_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_player_", 1)
+/* 30.30 */    private mut prop player: Int64 {
+/* 30.31 */        get() {
+/* 30.32 */            return this.stateVarDecl_player_.get()
+/* 30.33 */        }
+/* 30.34 */        set(v) {
+/* 30.35 */            this.stateVarDecl_player_.set(v)
+/* 30.36 */        }
+/* 30.37 */    }
+/* 30.38 */    private var stateVarDecl_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_", 0)
+/* 30.39 */    private mut prop step: Int64 {
+/* 30.40 */        get() {
+/* 30.41 */            return this.stateVarDecl_step_.get()
+/* 30.42 */        }
+/* 30.43 */        set(v) {
+/* 30.44 */            this.stateVarDecl_step_.set(v)
+/* 30.45 */        }
+/* 30.46 */    }
+/* 30.47 */    private var stateVarDecl_WelFontOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", 0.8)
+/* 30.48 */    private mut prop WelFontOpacity: Float64 {
+/* 30.49 */        get() {
+/* 30.50 */            return this.stateVarDecl_WelFontOpacity_.get()
+/* 30.51 */        }
+/* 30.52 */        set(v) {
+/* 30.53 */            this.stateVarDecl_WelFontOpacity_.set(v)
+/* 30.54 */        }
+/* 30.55 */    }
+/* 30.56 */    private var stateVarDecl_WelOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", 1.0)
+/* 30.57 */    private mut prop WelOpacity: Float64 {
+/* 30.58 */        get() {
+/* 30.59 */            return this.stateVarDecl_WelOpacity_.get()
+/* 30.60 */        }
+/* 30.61 */        set(v) {
+/* 30.62 */            this.stateVarDecl_WelOpacity_.set(v)
+/* 30.63 */        }
+/* 30.64 */    }
+/* 30.65 */    private var stateVarDecl_P1_angle_: ObservedProperty < Float32 >= ObservedProperty < Float32 >("stateVarDecl_P1_angle_", 10.0)
+/* 30.66 */    private mut prop P1_angle: Float32 {
+/* 30.67 */        get() {
+/* 30.68 */            return this.stateVarDecl_P1_angle_.get()
+/* 30.69 */        }
+/* 30.70 */        set(v) {
+/* 30.71 */            this.stateVarDecl_P1_angle_.set(v)
+/* 30.72 */        }
+/* 30.73 */    }
+/* 30.74 */    private var stateVarDecl_P1_height_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P1_height_", 40)
+/* 30.75 */    private mut prop P1_height: Int64 {
+/* 30.76 */        get() {
+/* 30.77 */            return this.stateVarDecl_P1_height_.get()
+/* 30.78 */        }
+/* 30.79 */        set(v) {
+/* 30.80 */            this.stateVarDecl_P1_height_.set(v)
+/* 30.81 */        }
+/* 30.82 */    }
+/* 30.83 */    private var stateVarDecl_P1_width_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P1_width_", 80)
+/* 30.84 */    private mut prop P1_width: Int64 {
+/* 30.85 */        get() {
+/* 30.86 */            return this.stateVarDecl_P1_width_.get()
+/* 30.87 */        }
+/* 30.88 */        set(v) {
+/* 30.89 */            this.stateVarDecl_P1_width_.set(v)
+/* 30.90 */        }
+/* 30.91 */    }
+/* 30.92 */    private var stateVarDecl_P2_angle_: ObservedProperty < Float32 >= ObservedProperty < Float32 >("stateVarDecl_P2_angle_", - 10.0)
+/* 30.93 */    private mut prop P2_angle: Float32 {
+/* 30.94 */        get() {
+/* 30.95 */            return this.stateVarDecl_P2_angle_.get()
+/* 30.96 */        }
+/* 30.97 */        set(v) {
+/* 30.98 */            this.stateVarDecl_P2_angle_.set(v)
+/* 30.99 */        }
+/* 30.100 */    }
+/* 30.101 */    private var stateVarDecl_P2_height_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P2_height_", 40)
+/* 30.102 */    private mut prop P2_height: Int64 {
+/* 30.103 */        get() {
+/* 30.104 */            return this.stateVarDecl_P2_height_.get()
+/* 30.105 */        }
+/* 30.106 */        set(v) {
+/* 30.107 */            this.stateVarDecl_P2_height_.set(v)
+/* 30.108 */        }
+/* 30.109 */    }
+/* 30.110 */    private var stateVarDecl_P2_width_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P2_width_", 80)
+/* 30.111 */    private mut prop P2_width: Int64 {
+/* 30.112 */        get() {
+/* 30.113 */            return this.stateVarDecl_P2_width_.get()
+/* 30.114 */        }
+/* 30.115 */        set(v) {
+/* 30.116 */            this.stateVarDecl_P2_width_.set(v)
+/* 30.117 */        }
+/* 30.118 */    }
+/* 30.119 */    protected override func aboutToAppear() {
+/* 30.120 */        Font.registerFont(familyName: __GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003), familySrc: CJResource(0, 30000, "ProggyTinySZ.ttf",["ProggyTinySZ.ttf"], moduleName: "", bundleName: "", moduleType: ""))
+/* 30.121 */    }
+/* 30.122 */    public func build() {
+/* 30.123 */        this.observeComponentCreation({ elmtId, isInitialRender => Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 30.124 */        this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 0) {
+/* 30.125 */            this.ifElseBranchUpdateFunction(0, { => match(WelcomePage(this, step: stateVarDecl_step_, WelFontOpacity: stateVarDecl_WelFontOpacity_, WelOpacity: stateVarDecl_WelOpacity_)) {
+/* 30.126 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.127 */                CustomView.create(cv)
+/* 30.128 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.129 */                case vb: ViewBuilder => vb.build()
+/* 30.130 */                case _ => LegalCallCheck.check(WelcomePage(this, step: stateVarDecl_step_, WelFontOpacity: stateVarDecl_WelFontOpacity_, WelOpacity: stateVarDecl_WelOpacity_))
+/* 30.131 */            } })
+/* 30.132 */        }
+/* 30.133 */        else if(step == 1) {
+/* 30.134 */            this.ifElseBranchUpdateFunction(1, { => match(MenuPage(this, step: stateVarDecl_step_)) {
+/* 30.135 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.136 */                CustomView.create(cv)
+/* 30.137 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.138 */                case vb: ViewBuilder => vb.build()
+/* 30.139 */                case _ => LegalCallCheck.check(MenuPage(this, step: stateVarDecl_step_))
+/* 30.140 */            } })
+/* 30.141 */        }
+/* 30.142 */        else if(step == 2) {
+/* 30.143 */            this.ifElseBranchUpdateFunction(2, { => match(chessGrid(this)) {
+/* 30.144 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.145 */                CustomView.create(cv)
+/* 30.146 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.147 */                case vb: ViewBuilder => vb.build()
+/* 30.148 */                case _ => LegalCallCheck.check(chessGrid(this))
+/* 30.149 */            }
+/* 30.150 */            match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, mode: ObservedProperty("", 1), AI: ObservedProperty("", ai))) {
+/* 30.151 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.152 */                CustomView.create(cv)
+/* 30.153 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.154 */                case vb: ViewBuilder => vb.build()
+/* 30.155 */                case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, mode: ObservedProperty("", 1), AI: ObservedProperty("", ai)))
+/* 30.156 */            }
+/* 30.157 */            match(playerstate(this, game_state: stateVarDecl_game_state_)) {
+/* 30.158 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.159 */                CustomView.create(cv)
+/* 30.160 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.161 */                case vb: ViewBuilder => vb.build()
+/* 30.162 */                case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_))
+/* 30.163 */            } })
+/* 30.164 */        }
+/* 30.165 */        else if(step == 3) {
+/* 30.166 */            this.ifElseBranchUpdateFunction(3, { => match(chessGrid(this)) {
+/* 30.167 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.168 */                CustomView.create(cv)
+/* 30.169 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.170 */                case vb: ViewBuilder => vb.build()
+/* 30.171 */                case _ => LegalCallCheck.check(chessGrid(this))
+/* 30.172 */            }
+/* 30.173 */            match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, mode: ObservedProperty("", 2), AI: ObservedProperty("", ai), opacityArray: stateVarDecl_opacityArray_)) {
+/* 30.174 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.175 */                CustomView.create(cv)
+/* 30.176 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.177 */                case vb: ViewBuilder => vb.build()
+/* 30.178 */                case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, mode: ObservedProperty("", 2), AI: ObservedProperty("", ai), opacityArray: stateVarDecl_opacityArray_))
+/* 30.179 */            }
+/* 30.180 */            match(playerstate(this, game_state: stateVarDecl_game_state_)) {
+/* 30.181 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.182 */                CustomView.create(cv)
+/* 30.183 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.184 */                case vb: ViewBuilder => vb.build()
+/* 30.185 */                case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_))
+/* 30.186 */            } })
+/* 30.187 */        }
+/* 30.188 */        else if(step == 4) {
+/* 30.189 */            this.ifElseBranchUpdateFunction(4, { => match(GameEndPage(this, game: ObservedProperty("", game), step: stateVarDecl_step_, P1_angle: stateVarDecl_P1_angle_, P1_height: stateVarDecl_P1_height_, P1_width: stateVarDecl_P1_width_, P2_angle: stateVarDecl_P2_angle_, P2_height: stateVarDecl_P2_height_, P2_width: stateVarDecl_P2_width_)) {
+/* 30.190 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 30.191 */                CustomView.create(cv)
+/* 30.192 */                ViewStackProcessor.StopGetAccessRecording()
+/* 30.193 */                case vb: ViewBuilder => vb.build()
+/* 30.194 */                case _ => LegalCallCheck.check(GameEndPage(this, game: ObservedProperty("", game), step: stateVarDecl_step_, P1_angle: stateVarDecl_P1_angle_, P1_height: stateVarDecl_P1_height_, P1_width: stateVarDecl_P1_width_, P2_angle: stateVarDecl_P2_angle_, P2_height: stateVarDecl_P2_height_, P2_width: stateVarDecl_P2_width_))
+/* 30.195 */            } })
+/* 30.196 */        }
+/* 30.197 */        else if(step == 5) {
+/* 30.198 */            this.ifElseBranchUpdateFunction(5, { => })
+/* 30.199 */        }
+/* 30.200 */        else {
+/* 30.201 */            If.branchId(6)
+/* 30.202 */        }
+/* 30.203 */    } }) }.width(100.percent).height(100.percent) })
+/* 30.204 */    ()
+/* 30.205 */}
+/* 30.206 */public init(parent: Option < CustomView >, data!: Option < ObservedProperty < ObservedMatrix >>= None, opacityArray!: Option < ObservedProperty < OpacityMatrix >>= None, game_state!: Option < ObservedProperty < Board >>= None, player!: Option < ObservedProperty < Int64 >>= None, step!: Option < ObservedProperty < Int64 >>= None, WelFontOpacity!: Option < ObservedProperty < Float64 >>= None, WelOpacity!: Option < ObservedProperty < Float64 >>= None, P1_angle!: Option < ObservedProperty < Float32 >>= None, P1_height!: Option < ObservedProperty < Int64 >>= None, P1_width!: Option < ObservedProperty < Int64 >>= None, P2_angle!: Option < ObservedProperty < Float32 >>= None, P2_height!: Option < ObservedProperty < Int64 >>= None, P2_width!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 30.207 */    super(parent, localStorage)
+/* 30.208 */    match(data) {
+/* 30.209 */        case Some(v) => this.stateVarDecl_data_ = ObservedProperty < ObservedMatrix >("stateVarDecl_data_", v.get())
+/* 30.210 */        case _ =>()
+/* 30.211 */    }
+/* 30.212 */    match(opacityArray) {
+/* 30.213 */        case Some(v) => this.stateVarDecl_opacityArray_ = ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", v.get())
+/* 30.214 */        case _ =>()
+/* 30.215 */    }
+/* 30.216 */    match(game_state) {
+/* 30.217 */        case Some(v) => this.stateVarDecl_game_state_ = ObservedProperty < Board >("stateVarDecl_game_state_", v.get())
+/* 30.218 */        case _ =>()
+/* 30.219 */    }
+/* 30.220 */    match(player) {
+/* 30.221 */        case Some(v) => this.stateVarDecl_player_ = ObservedProperty < Int64 >("stateVarDecl_player_", v.get())
+/* 30.222 */        case _ =>()
+/* 30.223 */    }
+/* 30.224 */    match(step) {
+/* 30.225 */        case Some(v) => this.stateVarDecl_step_ = ObservedProperty < Int64 >("stateVarDecl_step_", v.get())
+/* 30.226 */        case _ =>()
+/* 30.227 */    }
+/* 30.228 */    match(WelFontOpacity) {
+/* 30.229 */        case Some(v) => this.stateVarDecl_WelFontOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", v.get())
+/* 30.230 */        case _ =>()
+/* 30.231 */    }
+/* 30.232 */    match(WelOpacity) {
+/* 30.233 */        case Some(v) => this.stateVarDecl_WelOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", v.get())
+/* 30.234 */        case _ =>()
+/* 30.235 */    }
+/* 30.236 */    match(P1_angle) {
+/* 30.237 */        case Some(v) => this.stateVarDecl_P1_angle_ = ObservedProperty < Float32 >("stateVarDecl_P1_angle_", v.get())
+/* 30.238 */        case _ =>()
+/* 30.239 */    }
+/* 30.240 */    match(P1_height) {
+/* 30.241 */        case Some(v) => this.stateVarDecl_P1_height_ = ObservedProperty < Int64 >("stateVarDecl_P1_height_", v.get())
+/* 30.242 */        case _ =>()
+/* 30.243 */    }
+/* 30.244 */    match(P1_width) {
+/* 30.245 */        case Some(v) => this.stateVarDecl_P1_width_ = ObservedProperty < Int64 >("stateVarDecl_P1_width_", v.get())
+/* 30.246 */        case _ =>()
+/* 30.247 */    }
+/* 30.248 */    match(P2_angle) {
+/* 30.249 */        case Some(v) => this.stateVarDecl_P2_angle_ = ObservedProperty < Float32 >("stateVarDecl_P2_angle_", v.get())
+/* 30.250 */        case _ =>()
+/* 30.251 */    }
+/* 30.252 */    match(P2_height) {
+/* 30.253 */        case Some(v) => this.stateVarDecl_P2_height_ = ObservedProperty < Int64 >("stateVarDecl_P2_height_", v.get())
+/* 30.254 */        case _ =>()
+/* 30.255 */    }
+/* 30.256 */    match(P2_width) {
+/* 30.257 */        case Some(v) => this.stateVarDecl_P2_width_ = ObservedProperty < Int64 >("stateVarDecl_P2_width_", v.get())
+/* 30.258 */        case _ =>()
+/* 30.259 */    }
+/* 30.260 */    this.stateVarDecl_data_.subscribeEx(this)
+/* 30.261 */    this.stateVarDecl_opacityArray_.subscribeEx(this)
+/* 30.262 */    this.stateVarDecl_game_state_.subscribeEx(this)
+/* 30.263 */    this.stateVarDecl_player_.subscribeEx(this)
+/* 30.264 */    this.stateVarDecl_step_.subscribeEx(this)
+/* 30.265 */    this.stateVarDecl_WelFontOpacity_.subscribeEx(this)
+/* 30.266 */    this.stateVarDecl_WelOpacity_.subscribeEx(this)
+/* 30.267 */    this.stateVarDecl_P1_angle_.subscribeEx(this)
+/* 30.268 */    this.stateVarDecl_P1_height_.subscribeEx(this)
+/* 30.269 */    this.stateVarDecl_P1_width_.subscribeEx(this)
+/* 30.270 */    this.stateVarDecl_P2_angle_.subscribeEx(this)
+/* 30.271 */    this.stateVarDecl_P2_height_.subscribeEx(this)
+/* 30.272 */    this.stateVarDecl_P2_width_.subscribeEx(this)
+/* 30.273 */    SubscriberManager.getInstance().add(this)
+/* 30.274 */    registerSelf()
+/* 30.275 */    parent?.addChildById(id(), this)
+/* 30.276 */}
+/* 30.277 */public override func aboutToBeDeleted() {
+/* 30.278 */    this.stateVarDecl_data_.unsubscribeEx(this)
+/* 30.279 */    this.stateVarDecl_opacityArray_.unsubscribeEx(this)
+/* 30.280 */    this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 30.281 */    this.stateVarDecl_player_.unsubscribeEx(this)
+/* 30.282 */    this.stateVarDecl_step_.unsubscribeEx(this)
+/* 30.283 */    this.stateVarDecl_WelFontOpacity_.unsubscribeEx(this)
+/* 30.284 */    this.stateVarDecl_WelOpacity_.unsubscribeEx(this)
+/* 30.285 */    this.stateVarDecl_P1_angle_.unsubscribeEx(this)
+/* 30.286 */    this.stateVarDecl_P1_height_.unsubscribeEx(this)
+/* 30.287 */    this.stateVarDecl_P1_width_.unsubscribeEx(this)
+/* 30.288 */    this.stateVarDecl_P2_angle_.unsubscribeEx(this)
+/* 30.289 */    this.stateVarDecl_P2_height_.unsubscribeEx(this)
+/* 30.290 */    this.stateVarDecl_P2_width_.unsubscribeEx(this)
+/* 30.291 */    SubscriberManager.getInstance().delete(this)
+/* 30.292 */    this.aboutToBeDeletedInternal()
+/* 30.293 */}
+/* 30.294 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, opacityArray!: Option < OpacityMatrix >= Option < OpacityMatrix >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, WelFontOpacity!: Option < Float64 >= Option < Float64 >.None, WelOpacity!: Option < Float64 >= Option < Float64 >.None, P1_angle!: Option < Float32 >= Option < Float32 >.None, P1_height!: Option < Int64 >= Option < Int64 >.None, P1_width!: Option < Int64 >= Option < Int64 >.None, P2_angle!: Option < Float32 >= Option < Float32 >.None, P2_height!: Option < Int64 >= Option < Int64 >.None, P2_width!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 30.295 */    match(data) {
+/* 30.296 */        case Some(v) => this.data = v
+/* 30.297 */        case _ =>()
+/* 30.298 */    }
+/* 30.299 */    match(opacityArray) {
+/* 30.300 */        case Some(v) => this.opacityArray = v
+/* 30.301 */        case _ =>()
+/* 30.302 */    }
+/* 30.303 */    match(game_state) {
+/* 30.304 */        case Some(v) => this.game_state = v
+/* 30.305 */        case _ =>()
+/* 30.306 */    }
+/* 30.307 */    match(player) {
+/* 30.308 */        case Some(v) => this.player = v
+/* 30.309 */        case _ =>()
+/* 30.310 */    }
+/* 30.311 */    match(step) {
+/* 30.312 */        case Some(v) => this.step = v
+/* 30.313 */        case _ =>()
+/* 30.314 */    }
+/* 30.315 */    match(WelFontOpacity) {
+/* 30.316 */        case Some(v) => this.WelFontOpacity = v
+/* 30.317 */        case _ =>()
+/* 30.318 */    }
+/* 30.319 */    match(WelOpacity) {
+/* 30.320 */        case Some(v) => this.WelOpacity = v
+/* 30.321 */        case _ =>()
+/* 30.322 */    }
+/* 30.323 */    match(P1_angle) {
+/* 30.324 */        case Some(v) => this.P1_angle = v
+/* 30.325 */        case _ =>()
+/* 30.326 */    }
+/* 30.327 */    match(P1_height) {
+/* 30.328 */        case Some(v) => this.P1_height = v
+/* 30.329 */        case _ =>()
+/* 30.330 */    }
+/* 30.331 */    match(P1_width) {
+/* 30.332 */        case Some(v) => this.P1_width = v
+/* 30.333 */        case _ =>()
+/* 30.334 */    }
+/* 30.335 */    match(P2_angle) {
+/* 30.336 */        case Some(v) => this.P2_angle = v
+/* 30.337 */        case _ =>()
+/* 30.338 */    }
+/* 30.339 */    match(P2_height) {
+/* 30.340 */        case Some(v) => this.P2_height = v
+/* 30.341 */        case _ =>()
+/* 30.342 */    }
+/* 30.343 */    match(P2_width) {
+/* 30.344 */        case Some(v) => this.P2_width = v
+/* 30.345 */        case _ =>()
+/* 30.346 */    }
+/* 30.347 */}
+/* 30.348 */public func rerender() {
+/* 30.349 */    this.updateDirtyElements()
+/* 30.350 */}
+/* 30.351 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 30.352 */    this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.353 */    this.stateVarDecl_opacityArray_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.354 */    this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.355 */    this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.356 */    this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.357 */    this.stateVarDecl_WelFontOpacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.358 */    this.stateVarDecl_WelOpacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.359 */    this.stateVarDecl_P1_angle_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.360 */    this.stateVarDecl_P1_height_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.361 */    this.stateVarDecl_P1_width_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.362 */    this.stateVarDecl_P2_angle_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.363 */    this.stateVarDecl_P2_height_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.364 */    this.stateVarDecl_P2_width_.purgeDependencyOnElmtId(rmElmtId)
+/* 30.365 */}
+/* 30.366 */public func forceRerender(deep!: Bool = false) {
+/* 30.367 */    this.forceCompleteRerender(deep)
+/* 30.368 */}
+/* 30.369 */}
+/* 30.370 */
+/* 30.371 */public func appEntry_0(): Bool {
+/* 30.372 */let view = EntryView(Option < CustomView >.None)
+/* 30.373 */loadNativeView(view)
+/* 30.374 */}
+/* 30.375 */
+/* 30.376 */let a_p_1 = CJEntry.getInstance().registerEntry("EntryView", appEntry_0)
+/* 30.377 */
 /* ===== End of the Emit ===== */

@@ -43,10 +43,24 @@ class EntryView {
     @State//step:游戏显示状态指示器
     var step :Int64 = 0
 
-    @State
+    @State//WelFontOpacity:欢迎界面动画参数
     var WelFontOpacity :Float64 = 0.8
     @State
     var WelOpacity :Float64 = 1.0
+
+    @State//P1_angle P2_angle:结束界面动画参数
+    var P1_angle:Float32 = 10.0
+    @State
+    var P1_height: Int64 = 40
+    @State
+    var P1_width: Int64 = 80
+
+    @State
+    var P2_angle:Float32 = -10.0
+    @State
+    var P2_height: Int64 = 40
+    @State
+    var P2_width: Int64 = 80
 
 
     protected override func aboutToAppear() {
@@ -107,7 +121,15 @@ class EntryView {
                 playerstate(game_state :this.game_state)
             }
             else if(step == 4) {//结束界面
-                GameEndPage(game :game, step :this.step)
+                GameEndPage(
+                    game :game,
+                    step :this.step,
+                    P1_angle :this.P1_angle,
+                    P1_height :this.P1_height,
+                    P1_width :this.P1_width,
+                    P2_angle :this.P2_angle,
+                    P2_height :this.P2_height,
+                    P2_width :this.P2_width)
             }
             else if(step == 5) {//教学界面
 

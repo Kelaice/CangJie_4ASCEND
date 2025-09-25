@@ -83,8 +83,41 @@ public class testboard {
                 ForEach(data, itemGeneratorFunc :{entity :Int64, index :Int64 =>
                             GridItem {
 
+                                //显示魔法白子
+                                if(data[index] == 1 && this.game_state[1][index/9][index%9] == 1) {
+                                    Image(@r(app.media.White_Chess_Plant))
+                                    .height(30.0)
+                                    .width(30.0)
+                                }
+                                else if(data[index] == 0 && this.game_state[1][index/9][index%9] == 1 && this.game_state[2][index/9][index%9] == 1) {
+                                    Image(@r(app.media.White_Chess_Plant))
+                                    .animationStart(animateOpt)
+                                    .height(30.0)
+                                    .width(30.0)
+                                    .opacity(opacityArray[index])
+                                    .onAppear({
+                                        =>
+                                        changeOpacity(this.game_state[2])})
+                                    .animationEnd()
+                                }//显示魔法黑子
+                                else if(data[index] == -1 && this.game_state[1][index/9][index%9] == 1) {
+                                    Image(@r(app.media.Black_Chess_Plant))
+                                    .height(30.0)
+                                    .width(30.0)
+                                }
+                                else if(data[index] == 0 && this.game_state[1][index/9][index%9] == 1 && this.game_state[2][index/9][index%9] == -1) {
+                                    Image(@r(app.media.Black_Chess_Plant))
+                                    .animationStart(animateOpt)
+                                    .height(30.0)
+                                    .width(30.0)
+                                    .opacity(opacityArray[index])
+                                    .onAppear({
+                                        =>
+                                        changeOpacity(this.game_state[2])})
+                                    .animationEnd()
+                                }
                                 //显示白子
-                                if(data[index] == 1) {
+                                else if(data[index] == 1) {
                                     Image(@r(app.media.white_Chess))
                                     .height(30.0)
                                     .width(30.0)
@@ -119,7 +152,7 @@ public class testboard {
                                 }
 
                                 //显示魔法植物
-                                if(game_state[1][index/9][index%9] == 1) {
+                                if(game_state[1][index/9][index%9] == 1 && data[index] == 0 && game_state[2][index/9][index%9] == 0) {
                                     Rect(width: 10, height: 10)
                                     .foregroundColor(0xf7e200)
                                 }
@@ -343,6 +376,38 @@ public class GameEndPage
     @Link var game :FourAscendGame
     @Link var step :Int64
 
+    var P1_PosX: Int64 = 230
+    var P1_PosY: Int64 = 150
+
+    var P2_PosX: Int64 = 580
+    var P2_PosY: Int64 = 150
+
+    @Link var P1_angle:Float32
+    @Link var P1_height: Int64
+    @Link var P1_width: Int64
+
+
+    @Link var P2_angle:Float32
+    @Link var P2_height: Int64
+    @Link var P2_width: Int64
+
+
+    let animateOpt = AnimateParam(
+        duration: 800,
+        curve: Curve.Smooth,
+        delay: 0,
+        iterations: -1, // 设置-1表示动画无限循环
+        playMode: PlayMode.Alternate,
+        onFinish: {
+            => AppLog.info("onfinish")
+                },
+        expectedFrameRateRange: ExpectedFrameRateRange(
+            min: 20,
+            max: 120,
+            expected: 90
+            )
+        )
+
     func build()
     {
         Stack{
@@ -366,6 +431,37 @@ public class GameEndPage
                     .fontSize(80)
                     .fontFamily(@r(app.string.ProggyTinySZ))
                 }
+
+                Image(@r(app.media.player))
+                .animationStart(animateOpt)
+                .position(x: P1_PosX, y: P1_PosY)
+                .height(P1_height)
+                .width(P1_width)
+                .objectFit(ImageFit.Fill)
+                .rotate(P1_angle)
+                .onAppear({
+                    =>
+                    this.P1_angle = -10.0
+                    this.P1_width = 62
+                    this.P1_height = 63
+                })
+                .animationEnd()
+
+                Image(@r(app.media.enemy))
+                .animationStart(animateOpt)
+                .position(x: P2_PosX, y: P2_PosY)
+                .height(this.P2_height)
+                .width(this.P2_width)
+                .objectFit(ImageFit.Fill)
+                .rotate(P2_angle)
+                .onAppear({
+                    =>
+                    this.P2_angle = 10.0
+                    this.P2_height = 62//62
+                    this.P2_width = 63//63
+                    })
+                .animationEnd()
+
                 Text("Restart")
                 .position(x: 350, y: 300)
                 .fontSize(50)
