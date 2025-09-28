@@ -27,6 +27,7 @@ public class AppMedia {
 	public var Menu_border = 16777237
 	public var WelFont = 16777247
 	public var White_Chess_Plant = 16777238
+	public var backarrow = 16777249
 	public var background = 16777217
 	public var background4 = 16777239
 	public var black_Chess = 16777240

@@ -8,994 +8,2584 @@ import cj_res_entry.*
 import std.sync.*
 import ohos.font.*
 import std.time.*
-import ohos.crypto.Random
+import std.collection.ArrayList
+import std.random.Random
 
 type ObservedMatrix = ObservedArray<Int64>
+
 type OpacityMatrix = ObservedArray<Float64>
 
 //棋盘绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:17:1 ===== */
-/* 17.1 */public class chessGrid <: CustomView {
-/* 17.2 */    
-/* 17.3 */    
-/* 17.4 */    
-/* 17.5 */    public func build() {
-/* 17.6 */        
-/* 17.7 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 17.8 */            Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.chessGridItem, "app.media.chessGridItem",[], 20000)) }) } }) }
-/* 17.9 */            
-/* 17.10 */            this.forEachUpdateFunction(elmtId, Array < Int64 >(81, { _ => 0 }), itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 249, y: 10)
-/* 17.11 */        })
-/* 17.12 */        
-/* 17.13 */        ()
-/* 17.14 */        
-/* 17.15 */    }
-/* 17.16 */    
-/* 17.17 */    
-/* 17.18 */    public init(parent: Option < CustomView >, localStorage!: Option < LocalStorage >= None) {
-/* 17.19 */        super(parent, localStorage)
-/* 17.20 */        
-/* 17.21 */        
-/* 17.22 */        
-/* 17.23 */        SubscriberManager.getInstance().add(this)
-/* 17.24 */        
-/* 17.25 */        
-/* 17.26 */        registerSelf()
-/* 17.27 */        parent?.addChildById(id(), this)
-/* 17.28 */    }
-/* 17.29 */    
-/* 17.30 */    
-/* 17.31 */    public override func aboutToBeDeleted() {
-/* 17.32 */        
-/* 17.33 */        SubscriberManager.getInstance().delete(this)
-/* 17.34 */        this.aboutToBeDeletedInternal()
-/* 17.35 */    }
-/* 17.36 */    
-/* 17.37 */    
-/* 17.38 */    func updateWithValueParams(): Unit {
-/* 17.39 */        
-/* 17.40 */    }
-/* 17.41 */    
-/* 17.42 */    
-/* 17.43 */    public func rerender() {
-/* 17.44 */        this.updateDirtyElements()
-/* 17.45 */    }
-/* 17.46 */    
-/* 17.47 */    
-/* 17.48 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 17.49 */        
-/* 17.50 */    }
-/* 17.51 */    
-/* 17.52 */    
-/* 17.53 */    public func forceRerender(deep!: Bool = false) {
-/* 17.54 */        this.forceCompleteRerender(deep)
-/* 17.55 */    }
-/* 17.56 */    
-/* 17.57 */    
-/* 17.58 */}
-/* 17.59 */
+/* ===== Emitted by MacroCall @Component in draw.cj:19:1 ===== */
+/* 19.1 */public class chessGrid <: CustomView {
+/* 19.2 */    
+/* 19.3 */    
+/* 19.4 */    private var stateVarDecl_opc_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_opc_", 0.0)
+/* 19.5 */    
+/* 19.6 */    
+/* 19.7 */    private mut prop opc: Float64 {
+/* 19.8 */        get() {
+/* 19.9 */            return this.stateVarDecl_opc_.get()
+/* 19.10 */        }
+/* 19.11 */        set(v) {
+/* 19.12 */            this.stateVarDecl_opc_.set(v)
+/* 19.13 */        }
+/* 19.14 */    }
+/* 19.15 */    
+/* 19.16 */    
+/* 19.17 */    
+/* 19.18 */    public func build() {
+/* 19.19 */        
+/* 19.20 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 19.21 */            Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.chessGridItem, "app.media.chessGridItem",[], 20000)) }) } }) }
+/* 19.22 */            
+/* 19.23 */            this.forEachUpdateFunction(elmtId, Array < Int64 >(81, { _ => 0 }), itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 249, y: 10).opacity(opc).onAppear({ => animateTo(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => opc = 1.0 }) })
+/* 19.24 */        })
+/* 19.25 */        
+/* 19.26 */        ()
+/* 19.27 */        
+/* 19.28 */    }
+/* 19.29 */    
+/* 19.30 */    
+/* 19.31 */    public init(parent: Option < CustomView >, opc!: Option < ObservedProperty < Float64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 19.32 */        super(parent, localStorage)
+/* 19.33 */        
+/* 19.34 */        
+/* 19.35 */        match(opc) {
+/* 19.36 */            case Some(v) => this.stateVarDecl_opc_ = ObservedProperty < Float64 >("stateVarDecl_opc_", v.get())
+/* 19.37 */            case _ =>()
+/* 19.38 */        }
+/* 19.39 */        
+/* 19.40 */        
+/* 19.41 */        this.stateVarDecl_opc_.subscribeEx(this)
+/* 19.42 */        
+/* 19.43 */        SubscriberManager.getInstance().add(this)
+/* 19.44 */        
+/* 19.45 */        
+/* 19.46 */        registerSelf()
+/* 19.47 */        parent?.addChildById(id(), this)
+/* 19.48 */    }
+/* 19.49 */    
+/* 19.50 */    
+/* 19.51 */    public override func aboutToBeDeleted() {
+/* 19.52 */        
+/* 19.53 */        this.stateVarDecl_opc_.unsubscribeEx(this)
+/* 19.54 */        
+/* 19.55 */        SubscriberManager.getInstance().delete(this)
+/* 19.56 */        this.aboutToBeDeletedInternal()
+/* 19.57 */    }
+/* 19.58 */    
+/* 19.59 */    
+/* 19.60 */    func updateWithValueParams(opc!: Option < Float64 >= Option < Float64 >.None): Unit {
+/* 19.61 */        
+/* 19.62 */        match(opc) {
+/* 19.63 */            case Some(v) => this.opc = v
+/* 19.64 */            case _ =>()
+/* 19.65 */        }
+/* 19.66 */        
+/* 19.67 */    }
+/* 19.68 */    
+/* 19.69 */    
+/* 19.70 */    public func rerender() {
+/* 19.71 */        this.updateDirtyElements()
+/* 19.72 */    }
+/* 19.73 */    
+/* 19.74 */    
+/* 19.75 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 19.76 */        
+/* 19.77 */        this.stateVarDecl_opc_.purgeDependencyOnElmtId(rmElmtId)
+/* 19.78 */        
+/* 19.79 */    }
+/* 19.80 */    
+/* 19.81 */    
+/* 19.82 */    public func forceRerender(deep!: Bool = false) {
+/* 19.83 */        this.forceCompleteRerender(deep)
+/* 19.84 */    }
+/* 19.85 */    
+/* 19.86 */    
+/* 19.87 */}
+/* 19.88 */
 /* ===== End of the Emit ===== */
 
-/* ===== Emitted by MacroCall @Component in draw.cj:36:1 ===== */
-/* 36.1 */public class testboard <: CustomView {
-/* 36.2 */    
-/* 36.3 */    
-/* 36.4 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >
-/* 36.5 */    
-/* 36.6 */    
-/* 36.7 */    private mut prop data: ObservedMatrix {
-/* 36.8 */        get() {
-/* 36.9 */            return this.stateVarDecl_data_.get()
-/* 36.10 */        }
-/* 36.11 */        set(v) {
-/* 36.12 */            this.stateVarDecl_data_.set(v)
-/* 36.13 */        }
-/* 36.14 */    }
-/* 36.15 */    
-/* 36.16 */    
-/* 36.17 */    private var stateVarDecl_game_: ObservedProperty < FourAscendGame >
-/* 36.18 */    
-/* 36.19 */    
-/* 36.20 */    private mut prop game: FourAscendGame {
-/* 36.21 */        get() {
-/* 36.22 */            return this.stateVarDecl_game_.get()
-/* 36.23 */        }
-/* 36.24 */        set(v) {
-/* 36.25 */            this.stateVarDecl_game_.set(v)
-/* 36.26 */        }
-/* 36.27 */    }
-/* 36.28 */    
-/* 36.29 */    
-/* 36.30 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
-/* 36.31 */    
-/* 36.32 */    
-/* 36.33 */    private mut prop game_state: Board {
-/* 36.34 */        get() {
-/* 36.35 */            return this.stateVarDecl_game_state_.get()
-/* 36.36 */        }
-/* 36.37 */        set(v) {
-/* 36.38 */            this.stateVarDecl_game_state_.set(v)
-/* 36.39 */        }
-/* 36.40 */    }
-/* 36.41 */    
-/* 36.42 */    
-/* 36.43 */    private var stateVarDecl_player_: ObservedProperty < Int64 >
-/* 36.44 */    
-/* 36.45 */    
-/* 36.46 */    private mut prop player: Int64 {
-/* 36.47 */        get() {
-/* 36.48 */            return this.stateVarDecl_player_.get()
-/* 36.49 */        }
-/* 36.50 */        set(v) {
-/* 36.51 */            this.stateVarDecl_player_.set(v)
-/* 36.52 */        }
-/* 36.53 */    }
-/* 36.54 */    
-/* 36.55 */    
-/* 36.56 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
-/* 36.57 */    
-/* 36.58 */    
-/* 36.59 */    private mut prop step: Int64 {
-/* 36.60 */        get() {
-/* 36.61 */            return this.stateVarDecl_step_.get()
-/* 36.62 */        }
-/* 36.63 */        set(v) {
-/* 36.64 */            this.stateVarDecl_step_.set(v)
-/* 36.65 */        }
-/* 36.66 */    }
-/* 36.67 */    
-/* 36.68 */    
-/* 36.69 */    private var stateVarDecl_AI_: ObservedProperty < StupidFourAscendPlayer >
-/* 36.70 */    
-/* 36.71 */    
-/* 36.72 */    private mut prop AI: StupidFourAscendPlayer {
-/* 36.73 */        get() {
-/* 36.74 */            return this.stateVarDecl_AI_.get()
-/* 36.75 */        }
-/* 36.76 */        set(v) {
-/* 36.77 */            this.stateVarDecl_AI_.set(v)
-/* 36.78 */        }
-/* 36.79 */    }
-/* 36.80 */    
-/* 36.81 */    
-/* 36.82 */    private var stateVarDecl_opacityArray_: ObservedProperty < OpacityMatrix >
-/* 36.83 */    
-/* 36.84 */    
-/* 36.85 */    private mut prop opacityArray: OpacityMatrix {
-/* 36.86 */        get() {
-/* 36.87 */            return this.stateVarDecl_opacityArray_.get()
-/* 36.88 */        }
-/* 36.89 */        set(v) {
-/* 36.90 */            this.stateVarDecl_opacityArray_.set(v)
-/* 36.91 */        }
-/* 36.92 */    }
-/* 36.93 */    
-/* 36.94 */    
-/* 36.95 */    private var stateVarDecl_mode_: ObservedProperty < Int64 >
-/* 36.96 */    
-/* 36.97 */    
-/* 36.98 */    private mut prop mode: Int64 {
-/* 36.99 */        get() {
-/* 36.100 */            return this.stateVarDecl_mode_.get()
-/* 36.101 */        }
-/* 36.102 */        set(v) {
-/* 36.103 */            this.stateVarDecl_mode_.set(v)
-/* 36.104 */        }
-/* 36.105 */    }
-/* 36.106 */    
-/* 36.107 */    
-/* 36.108 */    let animateOpt = AnimateParam(duration: 600, curve: Curve.Smooth, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
-/* 36.109 */    
-/* 36.110 */    
-/* 36.111 */    func changeOpacity(ascend_state: Array < Array < Int64 >>) {
-/* 36.112 */        for(i in 0 .. 9) {
-/* 36.113 */            for(j in 0 .. 9) {
-/* 36.114 */                if(ascend_state[i][j] == 1) {
-/* 36.115 */                    this.opacityArray[i * 9 + j] = 0.8 - 0.5 * Float64(ascend_state[i][j])
-/* 36.116 */                }
-/* 36.117 */                else {
-/* 36.118 */                    this.opacityArray[i * 9 + j] = 0.8 + 0.5 * Float64(ascend_state[i][j])
-/* 36.119 */                }
-/* 36.120 */            }
-/* 36.121 */        }
-/* 36.122 */    }
-/* 36.123 */    
-/* 36.124 */    
-/* 36.125 */    
-/* 36.126 */    public func build() {
-/* 36.127 */        
-/* 36.128 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 36.129 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => If { if(data[index] == 1 && this.game_state[1][index / 9][index % 9] == 1) {
-/* 36.130 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.White_Chess_Plant, "app.media.White_Chess_Plant",[], 20000)).height(30.0).width(30.0) }) })
-/* 36.131 */            }
-/* 36.132 */            else if(data[index] == 0 && this.game_state[1][index / 9][index % 9] == 1 && this.game_state[2][index / 9][index % 9] == 1) {
-/* 36.133 */                this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.White_Chess_Plant, "app.media.White_Chess_Plant",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
-/* 36.134 */            }
-/* 36.135 */            else if(data[index] == - 1 && this.game_state[1][index / 9][index % 9] == 1) {
-/* 36.136 */                this.ifElseBranchUpdateFunction(2, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Black_Chess_Plant, "app.media.Black_Chess_Plant",[], 20000)).height(30.0).width(30.0) }) })
-/* 36.137 */            }
-/* 36.138 */            else if(data[index] == 0 && this.game_state[1][index / 9][index % 9] == 1 && this.game_state[2][index / 9][index % 9] == - 1) {
-/* 36.139 */                this.ifElseBranchUpdateFunction(3, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Black_Chess_Plant, "app.media.Black_Chess_Plant",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
-/* 36.140 */            }
-/* 36.141 */            else if(data[index] == 1) {
-/* 36.142 */                this.ifElseBranchUpdateFunction(4, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).height(30.0).width(30.0) }) })
-/* 36.143 */            }
-/* 36.144 */            else if(data[index] == 0 && this.game_state[2][index / 9][index % 9] == 1) {
-/* 36.145 */                this.ifElseBranchUpdateFunction(5, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
-/* 36.146 */            }
-/* 36.147 */            else if(data[index] == - 1) {
-/* 36.148 */                this.ifElseBranchUpdateFunction(6, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).height(30.0).width(30.0) }) })
-/* 36.149 */            }
-/* 36.150 */            else if(data[index] == 0 && this.game_state[2][index / 9][index % 9] == - 1) {
-/* 36.151 */                this.ifElseBranchUpdateFunction(7, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
-/* 36.152 */            }
-/* 36.153 */            else {
-/* 36.154 */                If.branchId(8)
-/* 36.155 */            }
-/* 36.156 */        } })
-/* 36.157 */        this.observeComponentCreation({ elmtId, isInitialRender => If { if(game_state[1][index / 9][index % 9] == 1 && data[index] == 0 && game_state[2][index / 9][index % 9] == 0) {
-/* 36.158 */            this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Rect(width: 10, height: 10).foregroundColor(0xf7e200) }) })
-/* 36.159 */        }
-/* 36.160 */        else {
-/* 36.161 */            If.branchId(1)
-/* 36.162 */        }
-/* 36.163 */    } }) }.height(40).width(40).onClick({ evt => if(data[index] == 0) {
-/* 36.164 */        var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, index, this.player, this.step)
-/* 36.165 */        this.step = back[0]
-/* 36.166 */        this.player = back[1]
-/* 36.167 */        this.game_state = back[2]
-/* 36.168 */    }
-/* 36.169 */    
-/* 36.170 */    if(mode == 2 && this.player == - 1) {
-/* 36.171 */        var ai_move = ai_move(this.AI, this.game_state)
-/* 36.172 */        var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, ai_move, this.player, this.step)
-/* 36.173 */        this.step = back[0]
-/* 36.174 */        this.player = back[1]
-/* 36.175 */        this.game_state = back[2]
-/* 36.176 */    }
-/* 36.177 */}) }) }
-/* 36.178 */
-/* 36.179 */this.forEachUpdateFunction(elmtId, data, itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 10, y: 10) }) }
-/* 36.180 */})
-/* 36.181 */
-/* 36.182 */()
-/* 36.183 */
-/* 36.184 */}
-/* 36.185 */
-/* 36.186 */
-/* 36.187 */public init(parent: Option < CustomView >, data!: ObservedProperty < ObservedMatrix >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, player!: ObservedProperty < Int64 >, step!: ObservedProperty < Int64 >, AI!: ObservedProperty < StupidFourAscendPlayer >, opacityArray!: ObservedProperty < OpacityMatrix >, mode!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
-/* 36.188 */super(parent, localStorage)
-/* 36.189 */
-/* 36.190 */
-/* 36.191 */this.stateVarDecl_data_ = data
-/* 36.192 */
-/* 36.193 */this.stateVarDecl_game_ = game
-/* 36.194 */
-/* 36.195 */this.stateVarDecl_game_state_ = game_state
-/* 36.196 */
-/* 36.197 */this.stateVarDecl_player_ = player
-/* 36.198 */
-/* 36.199 */this.stateVarDecl_step_ = step
-/* 36.200 */
-/* 36.201 */this.stateVarDecl_AI_ = AI
-/* 36.202 */
-/* 36.203 */this.stateVarDecl_opacityArray_ = opacityArray
-/* 36.204 */
-/* 36.205 */this.stateVarDecl_mode_ = mode.createProp("stateVarDecl_mode_")
-/* 36.206 */
-/* 36.207 */
-/* 36.208 */this.stateVarDecl_data_.subscribeEx(this)
-/* 36.209 */
-/* 36.210 */this.stateVarDecl_game_.subscribeEx(this)
-/* 36.211 */
-/* 36.212 */this.stateVarDecl_game_state_.subscribeEx(this)
-/* 36.213 */
-/* 36.214 */this.stateVarDecl_player_.subscribeEx(this)
-/* 36.215 */
-/* 36.216 */this.stateVarDecl_step_.subscribeEx(this)
-/* 36.217 */
-/* 36.218 */this.stateVarDecl_AI_.subscribeEx(this)
-/* 36.219 */
-/* 36.220 */this.stateVarDecl_opacityArray_.subscribeEx(this)
-/* 36.221 */
-/* 36.222 */this.stateVarDecl_mode_.subscribeEx(this)
-/* 36.223 */
-/* 36.224 */SubscriberManager.getInstance().add(this)
-/* 36.225 */
-/* 36.226 */
-/* 36.227 */registerSelf()
-/* 36.228 */parent?.addChildById(id(), this)
-/* 36.229 */}
-/* 36.230 */
-/* 36.231 */
-/* 36.232 */public override func aboutToBeDeleted() {
-/* 36.233 */
-/* 36.234 */this.stateVarDecl_data_.unsubscribeEx(this)
-/* 36.235 */
-/* 36.236 */this.stateVarDecl_game_.unsubscribeEx(this)
-/* 36.237 */
-/* 36.238 */this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 36.239 */
-/* 36.240 */this.stateVarDecl_player_.unsubscribeEx(this)
-/* 36.241 */
-/* 36.242 */this.stateVarDecl_step_.unsubscribeEx(this)
-/* 36.243 */
-/* 36.244 */this.stateVarDecl_AI_.unsubscribeEx(this)
-/* 36.245 */
-/* 36.246 */this.stateVarDecl_opacityArray_.unsubscribeEx(this)
-/* 36.247 */
-/* 36.248 */this.stateVarDecl_mode_.unsubscribeEx(this)
-/* 36.249 */
-/* 36.250 */SubscriberManager.getInstance().delete(this)
-/* 36.251 */this.aboutToBeDeletedInternal()
-/* 36.252 */}
-/* 36.253 */
-/* 36.254 */
-/* 36.255 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, AI!: Option < StupidFourAscendPlayer >= Option < StupidFourAscendPlayer >.None, opacityArray!: Option < OpacityMatrix >= Option < OpacityMatrix >.None, mode!: Option < Int64 >= Option < Int64 >.None): Unit {
-/* 36.256 */
-/* 36.257 */match(mode) {
-/* 36.258 */case Some(v) => this.mode = v
-/* 36.259 */case _ =>()
-/* 36.260 */}
-/* 36.261 */
-/* 36.262 */}
-/* 36.263 */
-/* 36.264 */
-/* 36.265 */public func rerender() {
-/* 36.266 */this.updateDirtyElements()
-/* 36.267 */}
-/* 36.268 */
-/* 36.269 */
-/* 36.270 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 36.271 */
-/* 36.272 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.273 */
-/* 36.274 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.275 */
-/* 36.276 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.277 */
-/* 36.278 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.279 */
-/* 36.280 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.281 */
-/* 36.282 */this.stateVarDecl_AI_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.283 */
-/* 36.284 */this.stateVarDecl_opacityArray_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.285 */
-/* 36.286 */this.stateVarDecl_mode_.purgeDependencyOnElmtId(rmElmtId)
-/* 36.287 */
-/* 36.288 */}
-/* 36.289 */
-/* 36.290 */
-/* 36.291 */public func forceRerender(deep!: Bool = false) {
-/* 36.292 */this.forceCompleteRerender(deep)
-/* 36.293 */}
-/* 36.294 */
-/* 36.295 */
-/* 36.296 */}
-/* 36.297 */
+/* ===== Emitted by MacroCall @Component in draw.cj:67:1 ===== */
+/* 67.1 */public class testboard <: CustomView {
+/* 67.2 */    
+/* 67.3 */    
+/* 67.4 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >
+/* 67.5 */    
+/* 67.6 */    
+/* 67.7 */    private mut prop data: ObservedMatrix {
+/* 67.8 */        get() {
+/* 67.9 */            return this.stateVarDecl_data_.get()
+/* 67.10 */        }
+/* 67.11 */        set(v) {
+/* 67.12 */            this.stateVarDecl_data_.set(v)
+/* 67.13 */        }
+/* 67.14 */    }
+/* 67.15 */    
+/* 67.16 */    
+/* 67.17 */    private var stateVarDecl_game_: ObservedProperty < FourAscendGame >
+/* 67.18 */    
+/* 67.19 */    
+/* 67.20 */    private mut prop game: FourAscendGame {
+/* 67.21 */        get() {
+/* 67.22 */            return this.stateVarDecl_game_.get()
+/* 67.23 */        }
+/* 67.24 */        set(v) {
+/* 67.25 */            this.stateVarDecl_game_.set(v)
+/* 67.26 */        }
+/* 67.27 */    }
+/* 67.28 */    
+/* 67.29 */    
+/* 67.30 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
+/* 67.31 */    
+/* 67.32 */    
+/* 67.33 */    private mut prop game_state: Board {
+/* 67.34 */        get() {
+/* 67.35 */            return this.stateVarDecl_game_state_.get()
+/* 67.36 */        }
+/* 67.37 */        set(v) {
+/* 67.38 */            this.stateVarDecl_game_state_.set(v)
+/* 67.39 */        }
+/* 67.40 */    }
+/* 67.41 */    
+/* 67.42 */    
+/* 67.43 */    private var stateVarDecl_player_: ObservedProperty < Int64 >
+/* 67.44 */    
+/* 67.45 */    
+/* 67.46 */    private mut prop player: Int64 {
+/* 67.47 */        get() {
+/* 67.48 */            return this.stateVarDecl_player_.get()
+/* 67.49 */        }
+/* 67.50 */        set(v) {
+/* 67.51 */            this.stateVarDecl_player_.set(v)
+/* 67.52 */        }
+/* 67.53 */    }
+/* 67.54 */    
+/* 67.55 */    
+/* 67.56 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 67.57 */    
+/* 67.58 */    
+/* 67.59 */    private mut prop step: Int64 {
+/* 67.60 */        get() {
+/* 67.61 */            return this.stateVarDecl_step_.get()
+/* 67.62 */        }
+/* 67.63 */        set(v) {
+/* 67.64 */            this.stateVarDecl_step_.set(v)
+/* 67.65 */        }
+/* 67.66 */    }
+/* 67.67 */    
+/* 67.68 */    
+/* 67.69 */    private var stateVarDecl_AI_: ObservedProperty < StupidFourAscendPlayer >
+/* 67.70 */    
+/* 67.71 */    
+/* 67.72 */    private mut prop AI: StupidFourAscendPlayer {
+/* 67.73 */        get() {
+/* 67.74 */            return this.stateVarDecl_AI_.get()
+/* 67.75 */        }
+/* 67.76 */        set(v) {
+/* 67.77 */            this.stateVarDecl_AI_.set(v)
+/* 67.78 */        }
+/* 67.79 */    }
+/* 67.80 */    
+/* 67.81 */    
+/* 67.82 */    private var stateVarDecl_opacityArray_: ObservedProperty < OpacityMatrix >
+/* 67.83 */    
+/* 67.84 */    
+/* 67.85 */    private mut prop opacityArray: OpacityMatrix {
+/* 67.86 */        get() {
+/* 67.87 */            return this.stateVarDecl_opacityArray_.get()
+/* 67.88 */        }
+/* 67.89 */        set(v) {
+/* 67.90 */            this.stateVarDecl_opacityArray_.set(v)
+/* 67.91 */        }
+/* 67.92 */    }
+/* 67.93 */    
+/* 67.94 */    
+/* 67.95 */    private var stateVarDecl_wp_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 67.96 */    
+/* 67.97 */    
+/* 67.98 */    private mut prop wp: ObservedArrayList < Array < Int64 >> {
+/* 67.99 */        get() {
+/* 67.100 */            return this.stateVarDecl_wp_.get()
+/* 67.101 */        }
+/* 67.102 */        set(v) {
+/* 67.103 */            this.stateVarDecl_wp_.set(v)
+/* 67.104 */        }
+/* 67.105 */    }
+/* 67.106 */    
+/* 67.107 */    
+/* 67.108 */    private var stateVarDecl_bp_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 67.109 */    
+/* 67.110 */    
+/* 67.111 */    private mut prop bp: ObservedArrayList < Array < Int64 >> {
+/* 67.112 */        get() {
+/* 67.113 */            return this.stateVarDecl_bp_.get()
+/* 67.114 */        }
+/* 67.115 */        set(v) {
+/* 67.116 */            this.stateVarDecl_bp_.set(v)
+/* 67.117 */        }
+/* 67.118 */    }
+/* 67.119 */    
+/* 67.120 */    
+/* 67.121 */    private var stateVarDecl_animateFlag_: ObservedProperty < Bool >
+/* 67.122 */    
+/* 67.123 */    
+/* 67.124 */    private mut prop animateFlag: Bool {
+/* 67.125 */        get() {
+/* 67.126 */            return this.stateVarDecl_animateFlag_.get()
+/* 67.127 */        }
+/* 67.128 */        set(v) {
+/* 67.129 */            this.stateVarDecl_animateFlag_.set(v)
+/* 67.130 */        }
+/* 67.131 */    }
+/* 67.132 */    
+/* 67.133 */    
+/* 67.134 */    private var stateVarDecl_unopposed_: ObservedProperty < Bool >
+/* 67.135 */    
+/* 67.136 */    
+/* 67.137 */    private mut prop unopposed: Bool {
+/* 67.138 */        get() {
+/* 67.139 */            return this.stateVarDecl_unopposed_.get()
+/* 67.140 */        }
+/* 67.141 */        set(v) {
+/* 67.142 */            this.stateVarDecl_unopposed_.set(v)
+/* 67.143 */        }
+/* 67.144 */    }
+/* 67.145 */    
+/* 67.146 */    
+/* 67.147 */    let animateOpt = AnimateParam(duration: 600, curve: Curve.Smooth, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
+/* 67.148 */    
+/* 67.149 */    
+/* 67.150 */    private func changeOpacity(ascend_state: Array < Array < Int64 >>) {
+/* 67.151 */        for(i in 0 .. 9) {
+/* 67.152 */            for(j in 0 .. 9) {
+/* 67.153 */                if(data[i * 9 + j] == 0 && this.game_state[2][i][j] == 1) {
+/* 67.154 */                    this.opacityArray[i * 9 + j] = 0.8 - 0.5 * Float64(ascend_state[i][j])
+/* 67.155 */                }
+/* 67.156 */                else if(data[i * 9 + j] == 0 && this.game_state[2][i][j] == - 1) {
+/* 67.157 */                    this.opacityArray[i * 9 + j] = 0.8 + 0.5 * Float64(ascend_state[i][j])
+/* 67.158 */                }
+/* 67.159 */            }
+/* 67.160 */        }
+/* 67.161 */    }
+/* 67.162 */    
+/* 67.163 */    
+/* 67.164 */    private func JudgeAscendState() {
+/* 67.165 */        for(i in 0 .. 9) {
+/* 67.166 */            for(j in 0 .. 9) {
+/* 67.167 */                if(data[i * 9 + j] == 0 && this.game_state[2][i][j] == 1) {
+/* 67.168 */                    return false
+/* 67.169 */                }
+/* 67.170 */                else if(data[i * 9 + j] == 0 && this.game_state[2][i][j] == - 1) {
+/* 67.171 */                    return false
+/* 67.172 */                }
+/* 67.173 */            }
+/* 67.174 */        }
+/* 67.175 */        return true
+/* 67.176 */    }
+/* 67.177 */    
+/* 67.178 */    
+/* 67.179 */    private func InitOpacitArray() {
+/* 67.180 */        for(i in 0 .. 81) {
+/* 67.181 */            this.opacityArray[i] = 0.8
+/* 67.182 */        }
+/* 67.183 */    }
+/* 67.184 */    
+/* 67.185 */    
+/* 67.186 */    public func AddAscendChess() {
+/* 67.187 */    }
+/* 67.188 */    
+/* 67.189 */    
+/* 67.190 */    
+/* 67.191 */    public func build() {
+/* 67.192 */        
+/* 67.193 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 67.194 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Grid { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Int64, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => GridItem { this.observeComponentCreation({ elmtId, isInitialRender => If { if(data[index] == 1 && this.game_state[1][index / 9][index % 9] == 1) {
+/* 67.195 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.White_Chess_Plant, "app.media.White_Chess_Plant",[], 20000)).height(30.0).width(30.0) }) })
+/* 67.196 */            }
+/* 67.197 */            else if(data[index] == 0 && this.game_state[1][index / 9][index % 9] == 1 && this.game_state[2][index / 9][index % 9] == 1) {
+/* 67.198 */                this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.White_Chess_Plant, "app.media.White_Chess_Plant",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
+/* 67.199 */            }
+/* 67.200 */            else if(data[index] == - 1 && this.game_state[1][index / 9][index % 9] == 1) {
+/* 67.201 */                this.ifElseBranchUpdateFunction(2, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Black_Chess_Plant, "app.media.Black_Chess_Plant",[], 20000)).height(30.0).width(30.0) }) })
+/* 67.202 */            }
+/* 67.203 */            else if(data[index] == 0 && this.game_state[1][index / 9][index % 9] == 1 && this.game_state[2][index / 9][index % 9] == - 1) {
+/* 67.204 */                this.ifElseBranchUpdateFunction(3, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Black_Chess_Plant, "app.media.Black_Chess_Plant",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
+/* 67.205 */            }
+/* 67.206 */            else if(data[index] == 1) {
+/* 67.207 */                this.ifElseBranchUpdateFunction(4, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).height(30.0).width(30.0) }) })
+/* 67.208 */            }
+/* 67.209 */            else if(data[index] == 0 && this.game_state[2][index / 9][index % 9] == 1) {
+/* 67.210 */                this.ifElseBranchUpdateFunction(5, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
+/* 67.211 */            }
+/* 67.212 */            else if(data[index] == - 1) {
+/* 67.213 */                this.ifElseBranchUpdateFunction(6, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).height(30.0).width(30.0) }) })
+/* 67.214 */            }
+/* 67.215 */            else if(data[index] == 0 && this.game_state[2][index / 9][index % 9] == - 1) {
+/* 67.216 */                this.ifElseBranchUpdateFunction(7, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).animationStart(animateOpt).height(30.0).width(30.0).opacity(opacityArray[index]).onAppear({ => changeOpacity(this.game_state[2]) }).animationEnd() }) })
+/* 67.217 */            }
+/* 67.218 */            else {
+/* 67.219 */                If.branchId(8)
+/* 67.220 */            }
+/* 67.221 */        } })
+/* 67.222 */        this.observeComponentCreation({ elmtId, isInitialRender => If { if(game_state[1][index / 9][index % 9] == 1 && data[index] == 0 && game_state[2][index / 9][index % 9] == 0) {
+/* 67.223 */            this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Rect(width: 10, height: 10).foregroundColor(0xf7e200) }) })
+/* 67.224 */        }
+/* 67.225 */        else {
+/* 67.226 */            If.branchId(1)
+/* 67.227 */        }
+/* 67.228 */    } }) }.height(40).width(40).onClick({ evt => if(data[index] == 0) {
+/* 67.229 */        var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, index, this.player, this.step)
+/* 67.230 */        this.step = back[0]
+/* 67.231 */        this.player = back[1]
+/* 67.232 */        this.game_state = back[2]
+/* 67.233 */        this.game.hp1 = game_state[3]
+/* 67.234 */        this.game.hp2 = game_state[4]
+/* 67.235 */        this.animateFlag = this.game.animateFlag
+/* 67.236 */        this.unopposed = this.game.unopposed
+/* 67.237 */        if(this.animateFlag) {
+/* 67.238 */            this.wp = this.game.wp
+/* 67.239 */            this.bp = this.game.bp
+/* 67.240 */            this.game.wp = ObservedArrayList(ArrayList())
+/* 67.241 */            this.game.bp = ObservedArrayList(ArrayList())
+/* 67.242 */        }
+/* 67.243 */        this.game.animateFlag = false
+/* 67.244 */        this.game.unopposed = false
+/* 67.245 */    }
+/* 67.246 */    
+/* 67.247 */    if(step == 3 && this.player == - 1) {
+/* 67.248 */        var ai_move = ai_move(this.AI, this.game_state)
+/* 67.249 */        var back:(Int64, Int64, Board) = run(this.data, this.game, this.game_state, ai_move, this.player, this.step)
+/* 67.250 */        this.step = back[0]
+/* 67.251 */        this.player = back[1]
+/* 67.252 */        this.game_state = back[2]
+/* 67.253 */        this.game.hp1 = game_state[3]
+/* 67.254 */        this.game.hp2 = game_state[4]
+/* 67.255 */        this.animateFlag = this.game.animateFlag
+/* 67.256 */        this.unopposed = this.game.unopposed
+/* 67.257 */        if(this.animateFlag) {
+/* 67.258 */            this.wp = this.game.wp
+/* 67.259 */            this.bp = this.game.bp
+/* 67.260 */            this.game.wp = ObservedArrayList(ArrayList())
+/* 67.261 */            this.game.bp = ObservedArrayList(ArrayList())
+/* 67.262 */        }
+/* 67.263 */        this.game.animateFlag = false
+/* 67.264 */        this.game.unopposed = false
+/* 67.265 */    }
+/* 67.266 */    
+/* 67.267 */    if(JudgeAscendState()) {
+/* 67.268 */        InitOpacitArray()
+/* 67.269 */    }
+/* 67.270 */}) }) }
+/* 67.271 */
+/* 67.272 */this.forEachUpdateFunction(elmtId, data, itemGenFunc: forEachItemGenFunction) } }) }.rowsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").columnsTemplate("1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ").height(360).width(360).position(x: 10, y: 10) }) }
+/* 67.273 */})
+/* 67.274 */
+/* 67.275 */()
+/* 67.276 */
+/* 67.277 */}
+/* 67.278 */
+/* 67.279 */
+/* 67.280 */public init(parent: Option < CustomView >, data!: ObservedProperty < ObservedMatrix >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, player!: ObservedProperty < Int64 >, step!: ObservedProperty < Int64 >, AI!: ObservedProperty < StupidFourAscendPlayer >, opacityArray!: ObservedProperty < OpacityMatrix >, wp!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, bp!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, animateFlag!: ObservedProperty < Bool >, unopposed!: ObservedProperty < Bool >, localStorage!: Option < LocalStorage >= None) {
+/* 67.281 */super(parent, localStorage)
+/* 67.282 */
+/* 67.283 */
+/* 67.284 */this.stateVarDecl_data_ = data
+/* 67.285 */
+/* 67.286 */this.stateVarDecl_game_ = game
+/* 67.287 */
+/* 67.288 */this.stateVarDecl_game_state_ = game_state
+/* 67.289 */
+/* 67.290 */this.stateVarDecl_player_ = player
+/* 67.291 */
+/* 67.292 */this.stateVarDecl_step_ = step
+/* 67.293 */
+/* 67.294 */this.stateVarDecl_AI_ = AI
+/* 67.295 */
+/* 67.296 */this.stateVarDecl_opacityArray_ = opacityArray
+/* 67.297 */
+/* 67.298 */this.stateVarDecl_wp_ = wp
+/* 67.299 */
+/* 67.300 */this.stateVarDecl_bp_ = bp
+/* 67.301 */
+/* 67.302 */this.stateVarDecl_animateFlag_ = animateFlag
+/* 67.303 */
+/* 67.304 */this.stateVarDecl_unopposed_ = unopposed
+/* 67.305 */
+/* 67.306 */
+/* 67.307 */this.stateVarDecl_data_.subscribeEx(this)
+/* 67.308 */
+/* 67.309 */this.stateVarDecl_game_.subscribeEx(this)
+/* 67.310 */
+/* 67.311 */this.stateVarDecl_game_state_.subscribeEx(this)
+/* 67.312 */
+/* 67.313 */this.stateVarDecl_player_.subscribeEx(this)
+/* 67.314 */
+/* 67.315 */this.stateVarDecl_step_.subscribeEx(this)
+/* 67.316 */
+/* 67.317 */this.stateVarDecl_AI_.subscribeEx(this)
+/* 67.318 */
+/* 67.319 */this.stateVarDecl_opacityArray_.subscribeEx(this)
+/* 67.320 */
+/* 67.321 */this.stateVarDecl_wp_.subscribeEx(this)
+/* 67.322 */
+/* 67.323 */this.stateVarDecl_bp_.subscribeEx(this)
+/* 67.324 */
+/* 67.325 */this.stateVarDecl_animateFlag_.subscribeEx(this)
+/* 67.326 */
+/* 67.327 */this.stateVarDecl_unopposed_.subscribeEx(this)
+/* 67.328 */
+/* 67.329 */SubscriberManager.getInstance().add(this)
+/* 67.330 */
+/* 67.331 */
+/* 67.332 */registerSelf()
+/* 67.333 */parent?.addChildById(id(), this)
+/* 67.334 */}
+/* 67.335 */
+/* 67.336 */
+/* 67.337 */public override func aboutToBeDeleted() {
+/* 67.338 */
+/* 67.339 */this.stateVarDecl_data_.unsubscribeEx(this)
+/* 67.340 */
+/* 67.341 */this.stateVarDecl_game_.unsubscribeEx(this)
+/* 67.342 */
+/* 67.343 */this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 67.344 */
+/* 67.345 */this.stateVarDecl_player_.unsubscribeEx(this)
+/* 67.346 */
+/* 67.347 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 67.348 */
+/* 67.349 */this.stateVarDecl_AI_.unsubscribeEx(this)
+/* 67.350 */
+/* 67.351 */this.stateVarDecl_opacityArray_.unsubscribeEx(this)
+/* 67.352 */
+/* 67.353 */this.stateVarDecl_wp_.unsubscribeEx(this)
+/* 67.354 */
+/* 67.355 */this.stateVarDecl_bp_.unsubscribeEx(this)
+/* 67.356 */
+/* 67.357 */this.stateVarDecl_animateFlag_.unsubscribeEx(this)
+/* 67.358 */
+/* 67.359 */this.stateVarDecl_unopposed_.unsubscribeEx(this)
+/* 67.360 */
+/* 67.361 */SubscriberManager.getInstance().delete(this)
+/* 67.362 */this.aboutToBeDeletedInternal()
+/* 67.363 */}
+/* 67.364 */
+/* 67.365 */
+/* 67.366 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, AI!: Option < StupidFourAscendPlayer >= Option < StupidFourAscendPlayer >.None, opacityArray!: Option < OpacityMatrix >= Option < OpacityMatrix >.None, wp!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, bp!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, animateFlag!: Option < Bool >= Option < Bool >.None, unopposed!: Option < Bool >= Option < Bool >.None): Unit {
+/* 67.367 */
+/* 67.368 */}
+/* 67.369 */
+/* 67.370 */
+/* 67.371 */public func rerender() {
+/* 67.372 */this.updateDirtyElements()
+/* 67.373 */}
+/* 67.374 */
+/* 67.375 */
+/* 67.376 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 67.377 */
+/* 67.378 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.379 */
+/* 67.380 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.381 */
+/* 67.382 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.383 */
+/* 67.384 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.385 */
+/* 67.386 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.387 */
+/* 67.388 */this.stateVarDecl_AI_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.389 */
+/* 67.390 */this.stateVarDecl_opacityArray_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.391 */
+/* 67.392 */this.stateVarDecl_wp_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.393 */
+/* 67.394 */this.stateVarDecl_bp_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.395 */
+/* 67.396 */this.stateVarDecl_animateFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.397 */
+/* 67.398 */this.stateVarDecl_unopposed_.purgeDependencyOnElmtId(rmElmtId)
+/* 67.399 */
+/* 67.400 */}
+/* 67.401 */
+/* 67.402 */
+/* 67.403 */public func forceRerender(deep!: Bool = false) {
+/* 67.404 */this.forceCompleteRerender(deep)
+/* 67.405 */}
+/* 67.406 */
+/* 67.407 */
+/* 67.408 */}
+/* 67.409 */
 /* ===== End of the Emit ===== */
 
 //玩家状态绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:195:1 ===== */
-/* 195.1 */public class playerstate <: CustomView {
-/* 195.2 */    
-/* 195.3 */    
-/* 195.4 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
-/* 195.5 */    
-/* 195.6 */    
-/* 195.7 */    private mut prop game_state: Board {
-/* 195.8 */        get() {
-/* 195.9 */            return this.stateVarDecl_game_state_.get()
-/* 195.10 */        }
-/* 195.11 */        set(v) {
-/* 195.12 */            this.stateVarDecl_game_state_.set(v)
-/* 195.13 */        }
-/* 195.14 */    }
-/* 195.15 */    
-/* 195.16 */    
-/* 195.17 */    var y_pos = 180
-/* 195.18 */    
-/* 195.19 */    
-/* 195.20 */    var x_pos = 100
-/* 195.21 */    
-/* 195.22 */    
-/* 195.23 */    
-/* 195.24 */    public func build() {
-/* 195.25 */        
-/* 195.26 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 195.27 */            Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).position(x: x_pos - 10, y: y_pos - 80).height(62).width(63).objectFit(ImageFit.Contain) })
-/* 195.28 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos, y: y_pos).height(37).width(40) })
-/* 195.29 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[3]}").textAlign(TextAlign.Center).fontSize(60).fontColor(0xfc037f).position(x: x_pos + 10, y: y_pos + 50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) })
-/* 195.30 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).position(x: x_pos + 600 - 10, y: y_pos - 78).height(62).width(63).objectFit(ImageFit.Contain) })
-/* 195.31 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos + 600, y: y_pos).height(37).width(40) })
-/* 195.32 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${game_state[4]}").textAlign(TextAlign.Center).fontSize(60).fontColor(0xfc037f).position(x: x_pos + 600 + 10, y: y_pos + 50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) }
-/* 195.33 */        })
-/* 195.34 */        
-/* 195.35 */        ()
-/* 195.36 */        
-/* 195.37 */    }
-/* 195.38 */    
-/* 195.39 */    
-/* 195.40 */    public init(parent: Option < CustomView >, game_state!: ObservedProperty < Board >, y_pos!: Option < ObservedProperty < Int64 >>= None, x_pos!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
-/* 195.41 */        super(parent, localStorage)
-/* 195.42 */        
-/* 195.43 */        
-/* 195.44 */        this.stateVarDecl_game_state_ = game_state.createProp("stateVarDecl_game_state_")
-/* 195.45 */        
-/* 195.46 */        match(y_pos) {
-/* 195.47 */            case Some(v) => this.y_pos = v.get()
-/* 195.48 */            case _ =>()
-/* 195.49 */        }
-/* 195.50 */        
-/* 195.51 */        match(x_pos) {
-/* 195.52 */            case Some(v) => this.x_pos = v.get()
-/* 195.53 */            case _ =>()
-/* 195.54 */        }
-/* 195.55 */        
-/* 195.56 */        
-/* 195.57 */        this.stateVarDecl_game_state_.subscribeEx(this)
-/* 195.58 */        
-/* 195.59 */        SubscriberManager.getInstance().add(this)
-/* 195.60 */        
-/* 195.61 */        
-/* 195.62 */        registerSelf()
-/* 195.63 */        parent?.addChildById(id(), this)
-/* 195.64 */    }
-/* 195.65 */    
-/* 195.66 */    
-/* 195.67 */    public override func aboutToBeDeleted() {
-/* 195.68 */        
-/* 195.69 */        this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 195.70 */        
-/* 195.71 */        SubscriberManager.getInstance().delete(this)
-/* 195.72 */        this.aboutToBeDeletedInternal()
-/* 195.73 */    }
-/* 195.74 */    
-/* 195.75 */    
-/* 195.76 */    func updateWithValueParams(game_state!: Option < Board >= Option < Board >.None, y_pos!: Option < Int64 >= Option < Int64 >.None, x_pos!: Option < Int64 >= Option < Int64 >.None): Unit {
-/* 195.77 */        
-/* 195.78 */        match(game_state) {
-/* 195.79 */            case Some(v) => this.game_state = v
-/* 195.80 */            case _ =>()
-/* 195.81 */        }
-/* 195.82 */        
-/* 195.83 */    }
-/* 195.84 */    
-/* 195.85 */    
-/* 195.86 */    public func rerender() {
-/* 195.87 */        this.updateDirtyElements()
-/* 195.88 */    }
-/* 195.89 */    
-/* 195.90 */    
-/* 195.91 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 195.92 */        
-/* 195.93 */        this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 195.94 */        
-/* 195.95 */    }
-/* 195.96 */    
-/* 195.97 */    
-/* 195.98 */    public func forceRerender(deep!: Bool = false) {
-/* 195.99 */        this.forceCompleteRerender(deep)
-/* 195.100 */    }
-/* 195.101 */    
-/* 195.102 */    
-/* 195.103 */}
-/* 195.104 */
+/* ===== Emitted by MacroCall @Component in draw.cj:280:1 ===== */
+/* 280.1 */public class playerstate <: CustomView {
+/* 280.2 */    
+/* 280.3 */    
+/* 280.4 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
+/* 280.5 */    
+/* 280.6 */    
+/* 280.7 */    private mut prop game_state: Board {
+/* 280.8 */        get() {
+/* 280.9 */            return this.stateVarDecl_game_state_.get()
+/* 280.10 */        }
+/* 280.11 */        set(v) {
+/* 280.12 */            this.stateVarDecl_game_state_.set(v)
+/* 280.13 */        }
+/* 280.14 */    }
+/* 280.15 */    
+/* 280.16 */    
+/* 280.17 */    var y_pos = 180
+/* 280.18 */    
+/* 280.19 */    
+/* 280.20 */    var x_pos = 100
+/* 280.21 */    
+/* 280.22 */    
+/* 280.23 */    private var stateVarDecl_opc_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_opc_", 0.0)
+/* 280.24 */    
+/* 280.25 */    
+/* 280.26 */    private mut prop opc: Float64 {
+/* 280.27 */        get() {
+/* 280.28 */            return this.stateVarDecl_opc_.get()
+/* 280.29 */        }
+/* 280.30 */        set(v) {
+/* 280.31 */            this.stateVarDecl_opc_.set(v)
+/* 280.32 */        }
+/* 280.33 */    }
+/* 280.34 */    
+/* 280.35 */    
+/* 280.36 */    private var stateVarDecl_hp1_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_hp1_", 6)
+/* 280.37 */    
+/* 280.38 */    
+/* 280.39 */    private mut prop hp1: Int64 {
+/* 280.40 */        get() {
+/* 280.41 */            return this.stateVarDecl_hp1_.get()
+/* 280.42 */        }
+/* 280.43 */        set(v) {
+/* 280.44 */            this.stateVarDecl_hp1_.set(v)
+/* 280.45 */        }
+/* 280.46 */    }
+/* 280.47 */    
+/* 280.48 */    
+/* 280.49 */    private var stateVarDecl_hp2_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_hp2_", 6)
+/* 280.50 */    
+/* 280.51 */    
+/* 280.52 */    private mut prop hp2: Int64 {
+/* 280.53 */        get() {
+/* 280.54 */            return this.stateVarDecl_hp2_.get()
+/* 280.55 */        }
+/* 280.56 */        set(v) {
+/* 280.57 */            this.stateVarDecl_hp2_.set(v)
+/* 280.58 */        }
+/* 280.59 */    }
+/* 280.60 */    
+/* 280.61 */    
+/* 280.62 */    private var stateVarDecl_onHit_: ObservedProperty < Bool >
+/* 280.63 */    
+/* 280.64 */    
+/* 280.65 */    private mut prop onHit: Bool {
+/* 280.66 */        get() {
+/* 280.67 */            return this.stateVarDecl_onHit_.get()
+/* 280.68 */        }
+/* 280.69 */        set(v) {
+/* 280.70 */            this.stateVarDecl_onHit_.set(v)
+/* 280.71 */        }
+/* 280.72 */    }
+/* 280.73 */    
+/* 280.74 */    
+/* 280.75 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 280.76 */    
+/* 280.77 */    
+/* 280.78 */    private mut prop step: Int64 {
+/* 280.79 */        get() {
+/* 280.80 */            return this.stateVarDecl_step_.get()
+/* 280.81 */        }
+/* 280.82 */        set(v) {
+/* 280.83 */            this.stateVarDecl_step_.set(v)
+/* 280.84 */        }
+/* 280.85 */    }
+/* 280.86 */    
+/* 280.87 */    
+/* 280.88 */    private func HP1_HitJudge() {
+/* 280.89 */        if(onHit && game_state[3] != hp1) {
+/* 280.90 */            hp1 = game_state[3]
+/* 280.91 */            this.onHit = false
+/* 280.92 */        }
+/* 280.93 */        return hp1
+/* 280.94 */    }
+/* 280.95 */    
+/* 280.96 */    
+/* 280.97 */    private func HP2_HitJudge() {
+/* 280.98 */        if(onHit && game_state[4] != hp2) {
+/* 280.99 */            hp2 = game_state[4]
+/* 280.100 */        }
+/* 280.101 */        this.onHit = false
+/* 280.102 */        return hp2
+/* 280.103 */    }
+/* 280.104 */    
+/* 280.105 */    
+/* 280.106 */    
+/* 280.107 */    public func build() {
+/* 280.108 */        
+/* 280.109 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 280.110 */            Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).position(x: x_pos - 10, y: y_pos - 80).height(62).width(63).objectFit(ImageFit.Contain) })
+/* 280.111 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos, y: y_pos).height(37).width(40) })
+/* 280.112 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("${HP1_HitJudge()}").animationStart(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => if(hp1 <= 0 || hp2 <= 0) {
+/* 280.113 */                this.step = 4
+/* 280.114 */            }
+/* 280.115 */        }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))).textAlign(TextAlign.Center).fontSize(60).fontColor(0xfc037f).position(x: x_pos + 10, y: y_pos + 50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)).animationEnd() })
+/* 280.116 */        this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).position(x: x_pos + 600 - 10, y: y_pos - 78).height(62).width(63).objectFit(ImageFit.Contain) })
+/* 280.117 */        this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.HP_Image, "app.media.HP_Image",[], 20000)).position(x: x_pos + 600, y: y_pos).height(37).width(40) })
+/* 280.118 */        this.observeComponentCreation({ elmtId, isInitialRender => Text("${HP2_HitJudge()}").animationStart(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => if(hp1 <= 0 || hp2 <= 0) {
+/* 280.119 */            this.step = 4
+/* 280.120 */        }
+/* 280.121 */    }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))).textAlign(TextAlign.Center).fontSize(60).fontColor(0xfc037f).position(x: x_pos + 600 + 10, y: y_pos + 50).height(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)).animationEnd() }) }.opacity(opc).onAppear({ => animateTo(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => opc = 1.0 }) })
+/* 280.122 */})
+/* 280.123 */
+/* 280.124 */()
+/* 280.125 */
+/* 280.126 */}
+/* 280.127 */
+/* 280.128 */
+/* 280.129 */public init(parent: Option < CustomView >, game_state!: ObservedProperty < Board >, y_pos!: Option < ObservedProperty < Int64 >>= None, x_pos!: Option < ObservedProperty < Int64 >>= None, opc!: Option < ObservedProperty < Float64 >>= None, hp1!: Option < ObservedProperty < Int64 >>= None, hp2!: Option < ObservedProperty < Int64 >>= None, onHit!: ObservedProperty < Bool >, step!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
+/* 280.130 */super(parent, localStorage)
+/* 280.131 */
+/* 280.132 */
+/* 280.133 */this.stateVarDecl_game_state_ = game_state.createProp("stateVarDecl_game_state_")
+/* 280.134 */
+/* 280.135 */match(y_pos) {
+/* 280.136 */    case Some(v) => this.y_pos = v.get()
+/* 280.137 */    case _ =>()
+/* 280.138 */}
+/* 280.139 */
+/* 280.140 */match(x_pos) {
+/* 280.141 */    case Some(v) => this.x_pos = v.get()
+/* 280.142 */    case _ =>()
+/* 280.143 */}
+/* 280.144 */
+/* 280.145 */match(opc) {
+/* 280.146 */    case Some(v) => this.stateVarDecl_opc_ = ObservedProperty < Float64 >("stateVarDecl_opc_", v.get())
+/* 280.147 */    case _ =>()
+/* 280.148 */}
+/* 280.149 */
+/* 280.150 */match(hp1) {
+/* 280.151 */    case Some(v) => this.stateVarDecl_hp1_ = ObservedProperty < Int64 >("stateVarDecl_hp1_", v.get())
+/* 280.152 */    case _ =>()
+/* 280.153 */}
+/* 280.154 */
+/* 280.155 */match(hp2) {
+/* 280.156 */    case Some(v) => this.stateVarDecl_hp2_ = ObservedProperty < Int64 >("stateVarDecl_hp2_", v.get())
+/* 280.157 */    case _ =>()
+/* 280.158 */}
+/* 280.159 */
+/* 280.160 */this.stateVarDecl_onHit_ = onHit
+/* 280.161 */
+/* 280.162 */this.stateVarDecl_step_ = step
+/* 280.163 */
+/* 280.164 */
+/* 280.165 */this.stateVarDecl_game_state_.subscribeEx(this)
+/* 280.166 */
+/* 280.167 */this.stateVarDecl_opc_.subscribeEx(this)
+/* 280.168 */
+/* 280.169 */this.stateVarDecl_hp1_.subscribeEx(this)
+/* 280.170 */
+/* 280.171 */this.stateVarDecl_hp2_.subscribeEx(this)
+/* 280.172 */
+/* 280.173 */this.stateVarDecl_onHit_.subscribeEx(this)
+/* 280.174 */
+/* 280.175 */this.stateVarDecl_step_.subscribeEx(this)
+/* 280.176 */
+/* 280.177 */SubscriberManager.getInstance().add(this)
+/* 280.178 */
+/* 280.179 */
+/* 280.180 */registerSelf()
+/* 280.181 */parent?.addChildById(id(), this)
+/* 280.182 */}
+/* 280.183 */
+/* 280.184 */
+/* 280.185 */public override func aboutToBeDeleted() {
+/* 280.186 */
+/* 280.187 */this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 280.188 */
+/* 280.189 */this.stateVarDecl_opc_.unsubscribeEx(this)
+/* 280.190 */
+/* 280.191 */this.stateVarDecl_hp1_.unsubscribeEx(this)
+/* 280.192 */
+/* 280.193 */this.stateVarDecl_hp2_.unsubscribeEx(this)
+/* 280.194 */
+/* 280.195 */this.stateVarDecl_onHit_.unsubscribeEx(this)
+/* 280.196 */
+/* 280.197 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 280.198 */
+/* 280.199 */SubscriberManager.getInstance().delete(this)
+/* 280.200 */this.aboutToBeDeletedInternal()
+/* 280.201 */}
+/* 280.202 */
+/* 280.203 */
+/* 280.204 */func updateWithValueParams(game_state!: Option < Board >= Option < Board >.None, y_pos!: Option < Int64 >= Option < Int64 >.None, x_pos!: Option < Int64 >= Option < Int64 >.None, opc!: Option < Float64 >= Option < Float64 >.None, hp1!: Option < Int64 >= Option < Int64 >.None, hp2!: Option < Int64 >= Option < Int64 >.None, onHit!: Option < Bool >= Option < Bool >.None, step!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 280.205 */
+/* 280.206 */match(game_state) {
+/* 280.207 */    case Some(v) => this.game_state = v
+/* 280.208 */    case _ =>()
+/* 280.209 */}
+/* 280.210 */
+/* 280.211 */match(opc) {
+/* 280.212 */    case Some(v) => this.opc = v
+/* 280.213 */    case _ =>()
+/* 280.214 */}
+/* 280.215 */
+/* 280.216 */match(hp1) {
+/* 280.217 */    case Some(v) => this.hp1 = v
+/* 280.218 */    case _ =>()
+/* 280.219 */}
+/* 280.220 */
+/* 280.221 */match(hp2) {
+/* 280.222 */    case Some(v) => this.hp2 = v
+/* 280.223 */    case _ =>()
+/* 280.224 */}
+/* 280.225 */
+/* 280.226 */}
+/* 280.227 */
+/* 280.228 */
+/* 280.229 */public func rerender() {
+/* 280.230 */this.updateDirtyElements()
+/* 280.231 */}
+/* 280.232 */
+/* 280.233 */
+/* 280.234 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 280.235 */
+/* 280.236 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.237 */
+/* 280.238 */this.stateVarDecl_opc_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.239 */
+/* 280.240 */this.stateVarDecl_hp1_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.241 */
+/* 280.242 */this.stateVarDecl_hp2_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.243 */
+/* 280.244 */this.stateVarDecl_onHit_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.245 */
+/* 280.246 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 280.247 */
+/* 280.248 */}
+/* 280.249 */
+/* 280.250 */
+/* 280.251 */public func forceRerender(deep!: Bool = false) {
+/* 280.252 */this.forceCompleteRerender(deep)
+/* 280.253 */}
+/* 280.254 */
+/* 280.255 */
+/* 280.256 */}
+/* 280.257 */
 /* ===== End of the Emit ===== */
 
 //标题页绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:242:1 ===== */
-/* 242.1 */public class WelcomePage <: CustomView {
-/* 242.2 */    
-/* 242.3 */    
-/* 242.4 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
-/* 242.5 */    
-/* 242.6 */    
-/* 242.7 */    private mut prop step: Int64 {
-/* 242.8 */        get() {
-/* 242.9 */            return this.stateVarDecl_step_.get()
-/* 242.10 */        }
-/* 242.11 */        set(v) {
-/* 242.12 */            this.stateVarDecl_step_.set(v)
-/* 242.13 */        }
-/* 242.14 */    }
-/* 242.15 */    
-/* 242.16 */    
-/* 242.17 */    private var stateVarDecl_WelFontOpacity_: ObservedProperty < Float64 >
-/* 242.18 */    
-/* 242.19 */    
-/* 242.20 */    private mut prop WelFontOpacity: Float64 {
-/* 242.21 */        get() {
-/* 242.22 */            return this.stateVarDecl_WelFontOpacity_.get()
-/* 242.23 */        }
-/* 242.24 */        set(v) {
-/* 242.25 */            this.stateVarDecl_WelFontOpacity_.set(v)
-/* 242.26 */        }
-/* 242.27 */    }
-/* 242.28 */    
-/* 242.29 */    
-/* 242.30 */    private var stateVarDecl_WelOpacity_: ObservedProperty < Float64 >
-/* 242.31 */    
-/* 242.32 */    
-/* 242.33 */    private mut prop WelOpacity: Float64 {
-/* 242.34 */        get() {
-/* 242.35 */            return this.stateVarDecl_WelOpacity_.get()
-/* 242.36 */        }
-/* 242.37 */        set(v) {
-/* 242.38 */            this.stateVarDecl_WelOpacity_.set(v)
-/* 242.39 */        }
-/* 242.40 */    }
-/* 242.41 */    
-/* 242.42 */    
-/* 242.43 */    let animateOpt = AnimateParam(duration: 600, curve: Curve.Linear, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
-/* 242.44 */    
-/* 242.45 */    
-/* 242.46 */    let animateOpt1 = AnimateParam(duration: 600, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
-/* 242.47 */    
-/* 242.48 */    
-/* 242.49 */    
-/* 242.50 */    public func build() {
-/* 242.51 */        
-/* 242.52 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 242.53 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.titleBackground, "app.media.titleBackground",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
-/* 242.54 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("Touch Screen To Start.").animationStart(animateOpt).fontSize(50).position(x: 200, y: 300).height(35).width(450).opacity(this.WelFontOpacity).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)).onAppear({ => if(this.step == 0) {
-/* 242.55 */                this.WelFontOpacity = 0.3
-/* 242.56 */            }
-/* 242.57 */            else {
-/* 242.58 */                this.WelFontOpacity = 0.8
-/* 242.59 */            }
-/* 242.60 */        }).animationEnd() }) }.animationStart(animateOpt1).onClick({ evt => step = 1
-/* 242.61 */        this.WelOpacity = 0.0 }).opacity(WelOpacity).animationEnd()
-/* 242.62 */    })
-/* 242.63 */    
-/* 242.64 */    ()
-/* 242.65 */    
-/* 242.66 */}
-/* 242.67 */
-/* 242.68 */
-/* 242.69 */public init(parent: Option < CustomView >, step!: ObservedProperty < Int64 >, WelFontOpacity!: ObservedProperty < Float64 >, WelOpacity!: ObservedProperty < Float64 >, localStorage!: Option < LocalStorage >= None) {
-/* 242.70 */    super(parent, localStorage)
-/* 242.71 */    
-/* 242.72 */    
-/* 242.73 */    this.stateVarDecl_step_ = step
-/* 242.74 */    
-/* 242.75 */    this.stateVarDecl_WelFontOpacity_ = WelFontOpacity
-/* 242.76 */    
-/* 242.77 */    this.stateVarDecl_WelOpacity_ = WelOpacity
-/* 242.78 */    
-/* 242.79 */    
-/* 242.80 */    this.stateVarDecl_step_.subscribeEx(this)
-/* 242.81 */    
-/* 242.82 */    this.stateVarDecl_WelFontOpacity_.subscribeEx(this)
-/* 242.83 */    
-/* 242.84 */    this.stateVarDecl_WelOpacity_.subscribeEx(this)
-/* 242.85 */    
-/* 242.86 */    SubscriberManager.getInstance().add(this)
-/* 242.87 */    
-/* 242.88 */    
-/* 242.89 */    registerSelf()
-/* 242.90 */    parent?.addChildById(id(), this)
-/* 242.91 */}
-/* 242.92 */
-/* 242.93 */
-/* 242.94 */public override func aboutToBeDeleted() {
-/* 242.95 */    
-/* 242.96 */    this.stateVarDecl_step_.unsubscribeEx(this)
-/* 242.97 */    
-/* 242.98 */    this.stateVarDecl_WelFontOpacity_.unsubscribeEx(this)
-/* 242.99 */    
-/* 242.100 */    this.stateVarDecl_WelOpacity_.unsubscribeEx(this)
-/* 242.101 */    
-/* 242.102 */    SubscriberManager.getInstance().delete(this)
-/* 242.103 */    this.aboutToBeDeletedInternal()
-/* 242.104 */}
-/* 242.105 */
-/* 242.106 */
-/* 242.107 */func updateWithValueParams(step!: Option < Int64 >= Option < Int64 >.None, WelFontOpacity!: Option < Float64 >= Option < Float64 >.None, WelOpacity!: Option < Float64 >= Option < Float64 >.None): Unit {
-/* 242.108 */    
-/* 242.109 */}
-/* 242.110 */
-/* 242.111 */
-/* 242.112 */public func rerender() {
-/* 242.113 */    this.updateDirtyElements()
-/* 242.114 */}
-/* 242.115 */
-/* 242.116 */
-/* 242.117 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 242.118 */    
-/* 242.119 */    this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 242.120 */    
-/* 242.121 */    this.stateVarDecl_WelFontOpacity_.purgeDependencyOnElmtId(rmElmtId)
-/* 242.122 */    
-/* 242.123 */    this.stateVarDecl_WelOpacity_.purgeDependencyOnElmtId(rmElmtId)
-/* 242.124 */    
-/* 242.125 */}
-/* 242.126 */
-/* 242.127 */
-/* 242.128 */public func forceRerender(deep!: Bool = false) {
-/* 242.129 */    this.forceCompleteRerender(deep)
-/* 242.130 */}
-/* 242.131 */
-/* 242.132 */
-/* 242.133 */}
-/* 242.134 */
+/* ===== Emitted by MacroCall @Component in draw.cj:418:1 ===== */
+/* 418.1 */public class WelcomePage <: CustomView {
+/* 418.2 */    
+/* 418.3 */    
+/* 418.4 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 418.5 */    
+/* 418.6 */    
+/* 418.7 */    private mut prop step: Int64 {
+/* 418.8 */        get() {
+/* 418.9 */            return this.stateVarDecl_step_.get()
+/* 418.10 */        }
+/* 418.11 */        set(v) {
+/* 418.12 */            this.stateVarDecl_step_.set(v)
+/* 418.13 */        }
+/* 418.14 */    }
+/* 418.15 */    
+/* 418.16 */    
+/* 418.17 */    private var stateVarDecl_WelFontOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", 0.8)
+/* 418.18 */    
+/* 418.19 */    
+/* 418.20 */    private mut prop WelFontOpacity: Float64 {
+/* 418.21 */        get() {
+/* 418.22 */            return this.stateVarDecl_WelFontOpacity_.get()
+/* 418.23 */        }
+/* 418.24 */        set(v) {
+/* 418.25 */            this.stateVarDecl_WelFontOpacity_.set(v)
+/* 418.26 */        }
+/* 418.27 */    }
+/* 418.28 */    
+/* 418.29 */    
+/* 418.30 */    private var stateVarDecl_WelOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", 1.0)
+/* 418.31 */    
+/* 418.32 */    
+/* 418.33 */    private mut prop WelOpacity: Float64 {
+/* 418.34 */        get() {
+/* 418.35 */            return this.stateVarDecl_WelOpacity_.get()
+/* 418.36 */        }
+/* 418.37 */        set(v) {
+/* 418.38 */            this.stateVarDecl_WelOpacity_.set(v)
+/* 418.39 */        }
+/* 418.40 */    }
+/* 418.41 */    
+/* 418.42 */    
+/* 418.43 */    let animateOpt = AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
+/* 418.44 */    
+/* 418.45 */    
+/* 418.46 */    
+/* 418.47 */    public func build() {
+/* 418.48 */        
+/* 418.49 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 418.50 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.titleBackground, "app.media.titleBackground",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 418.51 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("Touch Screen To Start.").fontSize(50).position(x: 200, y: 300).height(35).width(450).opacity(this.WelFontOpacity).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)).onAppear({ => animateTo(AnimateParam(duration: 600, curve: Curve.Linear, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.WelFontOpacity = 0.3 }) }) }) }.onClick({ evt => animateTo(AnimateParam(duration: 600, curve: Curve.Linear, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => step = 1 }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.WelOpacity = 0.0 }) }).opacity(WelOpacity)
+/* 418.52 */        })
+/* 418.53 */        
+/* 418.54 */        ()
+/* 418.55 */        
+/* 418.56 */    }
+/* 418.57 */    
+/* 418.58 */    
+/* 418.59 */    public init(parent: Option < CustomView >, step!: ObservedProperty < Int64 >, WelFontOpacity!: Option < ObservedProperty < Float64 >>= None, WelOpacity!: Option < ObservedProperty < Float64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 418.60 */        super(parent, localStorage)
+/* 418.61 */        
+/* 418.62 */        
+/* 418.63 */        this.stateVarDecl_step_ = step
+/* 418.64 */        
+/* 418.65 */        match(WelFontOpacity) {
+/* 418.66 */            case Some(v) => this.stateVarDecl_WelFontOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", v.get())
+/* 418.67 */            case _ =>()
+/* 418.68 */        }
+/* 418.69 */        
+/* 418.70 */        match(WelOpacity) {
+/* 418.71 */            case Some(v) => this.stateVarDecl_WelOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", v.get())
+/* 418.72 */            case _ =>()
+/* 418.73 */        }
+/* 418.74 */        
+/* 418.75 */        
+/* 418.76 */        this.stateVarDecl_step_.subscribeEx(this)
+/* 418.77 */        
+/* 418.78 */        this.stateVarDecl_WelFontOpacity_.subscribeEx(this)
+/* 418.79 */        
+/* 418.80 */        this.stateVarDecl_WelOpacity_.subscribeEx(this)
+/* 418.81 */        
+/* 418.82 */        SubscriberManager.getInstance().add(this)
+/* 418.83 */        
+/* 418.84 */        
+/* 418.85 */        registerSelf()
+/* 418.86 */        parent?.addChildById(id(), this)
+/* 418.87 */    }
+/* 418.88 */    
+/* 418.89 */    
+/* 418.90 */    public override func aboutToBeDeleted() {
+/* 418.91 */        
+/* 418.92 */        this.stateVarDecl_step_.unsubscribeEx(this)
+/* 418.93 */        
+/* 418.94 */        this.stateVarDecl_WelFontOpacity_.unsubscribeEx(this)
+/* 418.95 */        
+/* 418.96 */        this.stateVarDecl_WelOpacity_.unsubscribeEx(this)
+/* 418.97 */        
+/* 418.98 */        SubscriberManager.getInstance().delete(this)
+/* 418.99 */        this.aboutToBeDeletedInternal()
+/* 418.100 */    }
+/* 418.101 */    
+/* 418.102 */    
+/* 418.103 */    func updateWithValueParams(step!: Option < Int64 >= Option < Int64 >.None, WelFontOpacity!: Option < Float64 >= Option < Float64 >.None, WelOpacity!: Option < Float64 >= Option < Float64 >.None): Unit {
+/* 418.104 */        
+/* 418.105 */        match(WelFontOpacity) {
+/* 418.106 */            case Some(v) => this.WelFontOpacity = v
+/* 418.107 */            case _ =>()
+/* 418.108 */        }
+/* 418.109 */        
+/* 418.110 */        match(WelOpacity) {
+/* 418.111 */            case Some(v) => this.WelOpacity = v
+/* 418.112 */            case _ =>()
+/* 418.113 */        }
+/* 418.114 */        
+/* 418.115 */    }
+/* 418.116 */    
+/* 418.117 */    
+/* 418.118 */    public func rerender() {
+/* 418.119 */        this.updateDirtyElements()
+/* 418.120 */    }
+/* 418.121 */    
+/* 418.122 */    
+/* 418.123 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 418.124 */        
+/* 418.125 */        this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 418.126 */        
+/* 418.127 */        this.stateVarDecl_WelFontOpacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 418.128 */        
+/* 418.129 */        this.stateVarDecl_WelOpacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 418.130 */        
+/* 418.131 */    }
+/* 418.132 */    
+/* 418.133 */    
+/* 418.134 */    public func forceRerender(deep!: Bool = false) {
+/* 418.135 */        this.forceCompleteRerender(deep)
+/* 418.136 */    }
+/* 418.137 */    
+/* 418.138 */    
+/* 418.139 */}
+/* 418.140 */
 /* ===== End of the Emit ===== */
 
 //菜单页绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:319:1 ===== */
-/* 319.1 */public class MenuPage <: CustomView {
-/* 319.2 */    
-/* 319.3 */    
-/* 319.4 */    var MenuFlag: Bool = true
-/* 319.5 */    
-/* 319.6 */    
-/* 319.7 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
-/* 319.8 */    
-/* 319.9 */    
-/* 319.10 */    private mut prop step: Int64 {
-/* 319.11 */        get() {
-/* 319.12 */            return this.stateVarDecl_step_.get()
-/* 319.13 */        }
-/* 319.14 */        set(v) {
-/* 319.15 */            this.stateVarDecl_step_.set(v)
-/* 319.16 */        }
-/* 319.17 */    }
-/* 319.18 */    
-/* 319.19 */    
-/* 319.20 */    
-/* 319.21 */    public func build() {
-/* 319.22 */        
-/* 319.23 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 319.24 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: - 5) })
-/* 319.25 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_border, "app.media.Menu_border",[], 20000)).height(400).width(860).position(x: 0, y: - 5) })
-/* 319.26 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_PVP, "app.media.Menu_Button_PVP",[], 20000)).height(86).width(203).position(x: 150, y: 50).objectFit(ImageFit.Contain).onClick({ evt => this.step = 2 }) })
-/* 319.27 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_Learn, "app.media.Menu_Button_Learn",[], 20000)).height(86).width(203).position(x: 500, y: 250).objectFit(ImageFit.Contain).onClick({ evt => this.step = 2 }) })
-/* 319.28 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_PVE, "app.media.Menu_Button_PVE",[], 20000)).height(86).width(203).position(x: 325, y: 150).objectFit(ImageFit.Contain).onClick({ evt => this.step = 3 }) }) }
-/* 319.29 */        })
-/* 319.30 */        
-/* 319.31 */        ()
-/* 319.32 */        
-/* 319.33 */    }
-/* 319.34 */    
-/* 319.35 */    
-/* 319.36 */    public init(parent: Option < CustomView >, MenuFlag!: Option < ObservedProperty < Bool >>= None, step!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
-/* 319.37 */        super(parent, localStorage)
-/* 319.38 */        
-/* 319.39 */        
-/* 319.40 */        match(MenuFlag) {
-/* 319.41 */            case Some(v) => this.MenuFlag = v.get()
-/* 319.42 */            case _ =>()
-/* 319.43 */        }
-/* 319.44 */        
-/* 319.45 */        this.stateVarDecl_step_ = step
-/* 319.46 */        
-/* 319.47 */        
-/* 319.48 */        this.stateVarDecl_step_.subscribeEx(this)
-/* 319.49 */        
-/* 319.50 */        SubscriberManager.getInstance().add(this)
-/* 319.51 */        
-/* 319.52 */        
-/* 319.53 */        registerSelf()
-/* 319.54 */        parent?.addChildById(id(), this)
-/* 319.55 */    }
-/* 319.56 */    
-/* 319.57 */    
-/* 319.58 */    public override func aboutToBeDeleted() {
-/* 319.59 */        
-/* 319.60 */        this.stateVarDecl_step_.unsubscribeEx(this)
-/* 319.61 */        
-/* 319.62 */        SubscriberManager.getInstance().delete(this)
-/* 319.63 */        this.aboutToBeDeletedInternal()
-/* 319.64 */    }
-/* 319.65 */    
-/* 319.66 */    
-/* 319.67 */    func updateWithValueParams(MenuFlag!: Option < Bool >= Option < Bool >.None, step!: Option < Int64 >= Option < Int64 >.None): Unit {
-/* 319.68 */        
-/* 319.69 */    }
-/* 319.70 */    
-/* 319.71 */    
-/* 319.72 */    public func rerender() {
-/* 319.73 */        this.updateDirtyElements()
-/* 319.74 */    }
-/* 319.75 */    
-/* 319.76 */    
-/* 319.77 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 319.78 */        
-/* 319.79 */        this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 319.80 */        
-/* 319.81 */    }
-/* 319.82 */    
-/* 319.83 */    
-/* 319.84 */    public func forceRerender(deep!: Bool = false) {
-/* 319.85 */        this.forceCompleteRerender(deep)
-/* 319.86 */    }
-/* 319.87 */    
-/* 319.88 */    
-/* 319.89 */}
-/* 319.90 */
+/* ===== Emitted by MacroCall @Component in draw.cj:507:1 ===== */
+/* 507.1 */public class MenuPage <: CustomView {
+/* 507.2 */    
+/* 507.3 */    
+/* 507.4 */    var MenuFlag: Bool = true
+/* 507.5 */    
+/* 507.6 */    
+/* 507.7 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 507.8 */    
+/* 507.9 */    
+/* 507.10 */    private mut prop step: Int64 {
+/* 507.11 */        get() {
+/* 507.12 */            return this.stateVarDecl_step_.get()
+/* 507.13 */        }
+/* 507.14 */        set(v) {
+/* 507.15 */            this.stateVarDecl_step_.set(v)
+/* 507.16 */        }
+/* 507.17 */    }
+/* 507.18 */    
+/* 507.19 */    
+/* 507.20 */    private var stateVarDecl_pre_step_: ObservedProperty < Int64 >
+/* 507.21 */    
+/* 507.22 */    
+/* 507.23 */    private mut prop pre_step: Int64 {
+/* 507.24 */        get() {
+/* 507.25 */            return this.stateVarDecl_pre_step_.get()
+/* 507.26 */        }
+/* 507.27 */        set(v) {
+/* 507.28 */            this.stateVarDecl_pre_step_.set(v)
+/* 507.29 */        }
+/* 507.30 */    }
+/* 507.31 */    
+/* 507.32 */    
+/* 507.33 */    private var stateVarDecl_MenuOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_MenuOpacity_", 0.0)
+/* 507.34 */    
+/* 507.35 */    
+/* 507.36 */    private mut prop MenuOpacity: Float64 {
+/* 507.37 */        get() {
+/* 507.38 */            return this.stateVarDecl_MenuOpacity_.get()
+/* 507.39 */        }
+/* 507.40 */        set(v) {
+/* 507.41 */            this.stateVarDecl_MenuOpacity_.set(v)
+/* 507.42 */        }
+/* 507.43 */    }
+/* 507.44 */    
+/* 507.45 */    
+/* 507.46 */    private var stateVarDecl_PVP_Opacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_PVP_Opacity_", 0.0)
+/* 507.47 */    
+/* 507.48 */    
+/* 507.49 */    private mut prop PVP_Opacity: Float64 {
+/* 507.50 */        get() {
+/* 507.51 */            return this.stateVarDecl_PVP_Opacity_.get()
+/* 507.52 */        }
+/* 507.53 */        set(v) {
+/* 507.54 */            this.stateVarDecl_PVP_Opacity_.set(v)
+/* 507.55 */        }
+/* 507.56 */    }
+/* 507.57 */    
+/* 507.58 */    
+/* 507.59 */    private var stateVarDecl_PVE_Opacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_PVE_Opacity_", 1.0)
+/* 507.60 */    
+/* 507.61 */    
+/* 507.62 */    private mut prop PVE_Opacity: Float64 {
+/* 507.63 */        get() {
+/* 507.64 */            return this.stateVarDecl_PVE_Opacity_.get()
+/* 507.65 */        }
+/* 507.66 */        set(v) {
+/* 507.67 */            this.stateVarDecl_PVE_Opacity_.set(v)
+/* 507.68 */        }
+/* 507.69 */    }
+/* 507.70 */    
+/* 507.71 */    
+/* 507.72 */    private var stateVarDecl_Learn_Opacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_Learn_Opacity_", 0.0)
+/* 507.73 */    
+/* 507.74 */    
+/* 507.75 */    private mut prop Learn_Opacity: Float64 {
+/* 507.76 */        get() {
+/* 507.77 */            return this.stateVarDecl_Learn_Opacity_.get()
+/* 507.78 */        }
+/* 507.79 */        set(v) {
+/* 507.80 */            this.stateVarDecl_Learn_Opacity_.set(v)
+/* 507.81 */        }
+/* 507.82 */    }
+/* 507.83 */    
+/* 507.84 */    
+/* 507.85 */    private var stateVarDecl_PVP_Button_X_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_PVP_Button_X_", 325)
+/* 507.86 */    
+/* 507.87 */    
+/* 507.88 */    private mut prop PVP_Button_X: Int64 {
+/* 507.89 */        get() {
+/* 507.90 */            return this.stateVarDecl_PVP_Button_X_.get()
+/* 507.91 */        }
+/* 507.92 */        set(v) {
+/* 507.93 */            this.stateVarDecl_PVP_Button_X_.set(v)
+/* 507.94 */        }
+/* 507.95 */    }
+/* 507.96 */    
+/* 507.97 */    
+/* 507.98 */    private var stateVarDecl_PVP_Button_Y_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_PVP_Button_Y_", 150)
+/* 507.99 */    
+/* 507.100 */    
+/* 507.101 */    private mut prop PVP_Button_Y: Int64 {
+/* 507.102 */        get() {
+/* 507.103 */            return this.stateVarDecl_PVP_Button_Y_.get()
+/* 507.104 */        }
+/* 507.105 */        set(v) {
+/* 507.106 */            this.stateVarDecl_PVP_Button_Y_.set(v)
+/* 507.107 */        }
+/* 507.108 */    }
+/* 507.109 */    
+/* 507.110 */    
+/* 507.111 */    private var stateVarDecl_Learn_Button_X_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_Learn_Button_X_", 325)
+/* 507.112 */    
+/* 507.113 */    
+/* 507.114 */    private mut prop Learn_Button_X: Int64 {
+/* 507.115 */        get() {
+/* 507.116 */            return this.stateVarDecl_Learn_Button_X_.get()
+/* 507.117 */        }
+/* 507.118 */        set(v) {
+/* 507.119 */            this.stateVarDecl_Learn_Button_X_.set(v)
+/* 507.120 */        }
+/* 507.121 */    }
+/* 507.122 */    
+/* 507.123 */    
+/* 507.124 */    private var stateVarDecl_Learn_Button_Y_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_Learn_Button_Y_", 150)
+/* 507.125 */    
+/* 507.126 */    
+/* 507.127 */    private mut prop Learn_Button_Y: Int64 {
+/* 507.128 */        get() {
+/* 507.129 */            return this.stateVarDecl_Learn_Button_Y_.get()
+/* 507.130 */        }
+/* 507.131 */        set(v) {
+/* 507.132 */            this.stateVarDecl_Learn_Button_Y_.set(v)
+/* 507.133 */        }
+/* 507.134 */    }
+/* 507.135 */    
+/* 507.136 */    
+/* 507.137 */    
+/* 507.138 */    public func build() {
+/* 507.139 */        
+/* 507.140 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 507.141 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: - 5) })
+/* 507.142 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_border, "app.media.Menu_border",[], 20000)).height(400).width(860).position(x: 0, y: - 5) })
+/* 507.143 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_PVP, "app.media.Menu_Button_PVP",[], 20000)).height(86).width(203).position(x: PVP_Button_X, y: PVP_Button_Y).objectFit(ImageFit.Contain).opacity(this.PVP_Opacity).onClick({ evt => animateTo(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 3, playMode: PlayMode.Alternate, onFinish: { => this.pre_step = 2
+/* 507.144 */                this.step = 2
+/* 507.145 */                PVP_Button_X = 325
+/* 507.146 */                PVP_Button_Y = 150
+/* 507.147 */                Learn_Button_X = 325
+/* 507.148 */            Learn_Button_Y = 150 }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => PVP_Opacity = 0.3 }) }) })
+/* 507.149 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_Learn, "app.media.Menu_Button_Learn",[], 20000)).height(86).width(203).position(x: Learn_Button_X, y: Learn_Button_Y).objectFit(ImageFit.Contain).opacity(this.Learn_Opacity).onClick({ evt => animateTo(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 3, playMode: PlayMode.Alternate, onFinish: { => this.step = 2
+/* 507.150 */                PVP_Button_X = 325
+/* 507.151 */                PVP_Button_Y = 150
+/* 507.152 */                Learn_Button_X = 325
+/* 507.153 */            Learn_Button_Y = 150 }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.Learn_Opacity = 0.3 }) }) })
+/* 507.154 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Menu_Button_PVE, "app.media.Menu_Button_PVE",[], 20000)).height(86).width(203).position(x: 325, y: 150).objectFit(ImageFit.Contain).opacity(this.PVE_Opacity).onClick({ evt => animateTo(AnimateParam(duration: 300, curve: Curve.Linear, delay: 0, iterations: 3, playMode: PlayMode.Alternate, onFinish: { => this.pre_step = 3
+/* 507.155 */                this.step = 3
+/* 507.156 */                PVP_Button_X = 325
+/* 507.157 */                PVP_Button_Y = 150
+/* 507.158 */                Learn_Button_X = 325
+/* 507.159 */            Learn_Button_Y = 150 }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.PVE_Opacity = 0.3 }) }) }) }.opacity(this.MenuOpacity).onAppear({ => animateTo(AnimateParam(duration: 300, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 300, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => PVP_Opacity = 1.0
+/* 507.160 */                Learn_Opacity = 1.0
+/* 507.161 */                PVP_Button_X = 150
+/* 507.162 */                PVP_Button_Y = 50
+/* 507.163 */                Learn_Button_X = 500
+/* 507.164 */            Learn_Button_Y = 250 }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.MenuOpacity = 1.0 }) })
+/* 507.165 */        })
+/* 507.166 */        
+/* 507.167 */        ()
+/* 507.168 */        
+/* 507.169 */    }
+/* 507.170 */    
+/* 507.171 */    
+/* 507.172 */    public init(parent: Option < CustomView >, MenuFlag!: Option < ObservedProperty < Bool >>= None, step!: ObservedProperty < Int64 >, pre_step!: ObservedProperty < Int64 >, MenuOpacity!: Option < ObservedProperty < Float64 >>= None, PVP_Opacity!: Option < ObservedProperty < Float64 >>= None, PVE_Opacity!: Option < ObservedProperty < Float64 >>= None, Learn_Opacity!: Option < ObservedProperty < Float64 >>= None, PVP_Button_X!: Option < ObservedProperty < Int64 >>= None, PVP_Button_Y!: Option < ObservedProperty < Int64 >>= None, Learn_Button_X!: Option < ObservedProperty < Int64 >>= None, Learn_Button_Y!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 507.173 */        super(parent, localStorage)
+/* 507.174 */        
+/* 507.175 */        
+/* 507.176 */        match(MenuFlag) {
+/* 507.177 */            case Some(v) => this.MenuFlag = v.get()
+/* 507.178 */            case _ =>()
+/* 507.179 */        }
+/* 507.180 */        
+/* 507.181 */        this.stateVarDecl_step_ = step
+/* 507.182 */        
+/* 507.183 */        this.stateVarDecl_pre_step_ = pre_step
+/* 507.184 */        
+/* 507.185 */        match(MenuOpacity) {
+/* 507.186 */            case Some(v) => this.stateVarDecl_MenuOpacity_ = ObservedProperty < Float64 >("stateVarDecl_MenuOpacity_", v.get())
+/* 507.187 */            case _ =>()
+/* 507.188 */        }
+/* 507.189 */        
+/* 507.190 */        match(PVP_Opacity) {
+/* 507.191 */            case Some(v) => this.stateVarDecl_PVP_Opacity_ = ObservedProperty < Float64 >("stateVarDecl_PVP_Opacity_", v.get())
+/* 507.192 */            case _ =>()
+/* 507.193 */        }
+/* 507.194 */        
+/* 507.195 */        match(PVE_Opacity) {
+/* 507.196 */            case Some(v) => this.stateVarDecl_PVE_Opacity_ = ObservedProperty < Float64 >("stateVarDecl_PVE_Opacity_", v.get())
+/* 507.197 */            case _ =>()
+/* 507.198 */        }
+/* 507.199 */        
+/* 507.200 */        match(Learn_Opacity) {
+/* 507.201 */            case Some(v) => this.stateVarDecl_Learn_Opacity_ = ObservedProperty < Float64 >("stateVarDecl_Learn_Opacity_", v.get())
+/* 507.202 */            case _ =>()
+/* 507.203 */        }
+/* 507.204 */        
+/* 507.205 */        match(PVP_Button_X) {
+/* 507.206 */            case Some(v) => this.stateVarDecl_PVP_Button_X_ = ObservedProperty < Int64 >("stateVarDecl_PVP_Button_X_", v.get())
+/* 507.207 */            case _ =>()
+/* 507.208 */        }
+/* 507.209 */        
+/* 507.210 */        match(PVP_Button_Y) {
+/* 507.211 */            case Some(v) => this.stateVarDecl_PVP_Button_Y_ = ObservedProperty < Int64 >("stateVarDecl_PVP_Button_Y_", v.get())
+/* 507.212 */            case _ =>()
+/* 507.213 */        }
+/* 507.214 */        
+/* 507.215 */        match(Learn_Button_X) {
+/* 507.216 */            case Some(v) => this.stateVarDecl_Learn_Button_X_ = ObservedProperty < Int64 >("stateVarDecl_Learn_Button_X_", v.get())
+/* 507.217 */            case _ =>()
+/* 507.218 */        }
+/* 507.219 */        
+/* 507.220 */        match(Learn_Button_Y) {
+/* 507.221 */            case Some(v) => this.stateVarDecl_Learn_Button_Y_ = ObservedProperty < Int64 >("stateVarDecl_Learn_Button_Y_", v.get())
+/* 507.222 */            case _ =>()
+/* 507.223 */        }
+/* 507.224 */        
+/* 507.225 */        
+/* 507.226 */        this.stateVarDecl_step_.subscribeEx(this)
+/* 507.227 */        
+/* 507.228 */        this.stateVarDecl_pre_step_.subscribeEx(this)
+/* 507.229 */        
+/* 507.230 */        this.stateVarDecl_MenuOpacity_.subscribeEx(this)
+/* 507.231 */        
+/* 507.232 */        this.stateVarDecl_PVP_Opacity_.subscribeEx(this)
+/* 507.233 */        
+/* 507.234 */        this.stateVarDecl_PVE_Opacity_.subscribeEx(this)
+/* 507.235 */        
+/* 507.236 */        this.stateVarDecl_Learn_Opacity_.subscribeEx(this)
+/* 507.237 */        
+/* 507.238 */        this.stateVarDecl_PVP_Button_X_.subscribeEx(this)
+/* 507.239 */        
+/* 507.240 */        this.stateVarDecl_PVP_Button_Y_.subscribeEx(this)
+/* 507.241 */        
+/* 507.242 */        this.stateVarDecl_Learn_Button_X_.subscribeEx(this)
+/* 507.243 */        
+/* 507.244 */        this.stateVarDecl_Learn_Button_Y_.subscribeEx(this)
+/* 507.245 */        
+/* 507.246 */        SubscriberManager.getInstance().add(this)
+/* 507.247 */        
+/* 507.248 */        
+/* 507.249 */        registerSelf()
+/* 507.250 */        parent?.addChildById(id(), this)
+/* 507.251 */    }
+/* 507.252 */    
+/* 507.253 */    
+/* 507.254 */    public override func aboutToBeDeleted() {
+/* 507.255 */        
+/* 507.256 */        this.stateVarDecl_step_.unsubscribeEx(this)
+/* 507.257 */        
+/* 507.258 */        this.stateVarDecl_pre_step_.unsubscribeEx(this)
+/* 507.259 */        
+/* 507.260 */        this.stateVarDecl_MenuOpacity_.unsubscribeEx(this)
+/* 507.261 */        
+/* 507.262 */        this.stateVarDecl_PVP_Opacity_.unsubscribeEx(this)
+/* 507.263 */        
+/* 507.264 */        this.stateVarDecl_PVE_Opacity_.unsubscribeEx(this)
+/* 507.265 */        
+/* 507.266 */        this.stateVarDecl_Learn_Opacity_.unsubscribeEx(this)
+/* 507.267 */        
+/* 507.268 */        this.stateVarDecl_PVP_Button_X_.unsubscribeEx(this)
+/* 507.269 */        
+/* 507.270 */        this.stateVarDecl_PVP_Button_Y_.unsubscribeEx(this)
+/* 507.271 */        
+/* 507.272 */        this.stateVarDecl_Learn_Button_X_.unsubscribeEx(this)
+/* 507.273 */        
+/* 507.274 */        this.stateVarDecl_Learn_Button_Y_.unsubscribeEx(this)
+/* 507.275 */        
+/* 507.276 */        SubscriberManager.getInstance().delete(this)
+/* 507.277 */        this.aboutToBeDeletedInternal()
+/* 507.278 */    }
+/* 507.279 */    
+/* 507.280 */    
+/* 507.281 */    func updateWithValueParams(MenuFlag!: Option < Bool >= Option < Bool >.None, step!: Option < Int64 >= Option < Int64 >.None, pre_step!: Option < Int64 >= Option < Int64 >.None, MenuOpacity!: Option < Float64 >= Option < Float64 >.None, PVP_Opacity!: Option < Float64 >= Option < Float64 >.None, PVE_Opacity!: Option < Float64 >= Option < Float64 >.None, Learn_Opacity!: Option < Float64 >= Option < Float64 >.None, PVP_Button_X!: Option < Int64 >= Option < Int64 >.None, PVP_Button_Y!: Option < Int64 >= Option < Int64 >.None, Learn_Button_X!: Option < Int64 >= Option < Int64 >.None, Learn_Button_Y!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 507.282 */        
+/* 507.283 */        match(MenuOpacity) {
+/* 507.284 */            case Some(v) => this.MenuOpacity = v
+/* 507.285 */            case _ =>()
+/* 507.286 */        }
+/* 507.287 */        
+/* 507.288 */        match(PVP_Opacity) {
+/* 507.289 */            case Some(v) => this.PVP_Opacity = v
+/* 507.290 */            case _ =>()
+/* 507.291 */        }
+/* 507.292 */        
+/* 507.293 */        match(PVE_Opacity) {
+/* 507.294 */            case Some(v) => this.PVE_Opacity = v
+/* 507.295 */            case _ =>()
+/* 507.296 */        }
+/* 507.297 */        
+/* 507.298 */        match(Learn_Opacity) {
+/* 507.299 */            case Some(v) => this.Learn_Opacity = v
+/* 507.300 */            case _ =>()
+/* 507.301 */        }
+/* 507.302 */        
+/* 507.303 */        match(PVP_Button_X) {
+/* 507.304 */            case Some(v) => this.PVP_Button_X = v
+/* 507.305 */            case _ =>()
+/* 507.306 */        }
+/* 507.307 */        
+/* 507.308 */        match(PVP_Button_Y) {
+/* 507.309 */            case Some(v) => this.PVP_Button_Y = v
+/* 507.310 */            case _ =>()
+/* 507.311 */        }
+/* 507.312 */        
+/* 507.313 */        match(Learn_Button_X) {
+/* 507.314 */            case Some(v) => this.Learn_Button_X = v
+/* 507.315 */            case _ =>()
+/* 507.316 */        }
+/* 507.317 */        
+/* 507.318 */        match(Learn_Button_Y) {
+/* 507.319 */            case Some(v) => this.Learn_Button_Y = v
+/* 507.320 */            case _ =>()
+/* 507.321 */        }
+/* 507.322 */        
+/* 507.323 */    }
+/* 507.324 */    
+/* 507.325 */    
+/* 507.326 */    public func rerender() {
+/* 507.327 */        this.updateDirtyElements()
+/* 507.328 */    }
+/* 507.329 */    
+/* 507.330 */    
+/* 507.331 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 507.332 */        
+/* 507.333 */        this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.334 */        
+/* 507.335 */        this.stateVarDecl_pre_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.336 */        
+/* 507.337 */        this.stateVarDecl_MenuOpacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.338 */        
+/* 507.339 */        this.stateVarDecl_PVP_Opacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.340 */        
+/* 507.341 */        this.stateVarDecl_PVE_Opacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.342 */        
+/* 507.343 */        this.stateVarDecl_Learn_Opacity_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.344 */        
+/* 507.345 */        this.stateVarDecl_PVP_Button_X_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.346 */        
+/* 507.347 */        this.stateVarDecl_PVP_Button_Y_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.348 */        
+/* 507.349 */        this.stateVarDecl_Learn_Button_X_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.350 */        
+/* 507.351 */        this.stateVarDecl_Learn_Button_Y_.purgeDependencyOnElmtId(rmElmtId)
+/* 507.352 */        
+/* 507.353 */    }
+/* 507.354 */    
+/* 507.355 */    
+/* 507.356 */    public func forceRerender(deep!: Bool = false) {
+/* 507.357 */        this.forceCompleteRerender(deep)
+/* 507.358 */    }
+/* 507.359 */    
+/* 507.360 */    
+/* 507.361 */}
+/* 507.362 */
 /* ===== End of the Emit ===== */
 
 //结束页绘制组件
-/* ===== Emitted by MacroCall @Component in draw.cj:373:1 ===== */
-/* 373.1 */public class GameEndPage <: CustomView {
-/* 373.2 */    
-/* 373.3 */    
-/* 373.4 */    private var stateVarDecl_game_: ObservedProperty < FourAscendGame >
-/* 373.5 */    
-/* 373.6 */    
-/* 373.7 */    private mut prop game: FourAscendGame {
-/* 373.8 */        get() {
-/* 373.9 */            return this.stateVarDecl_game_.get()
-/* 373.10 */        }
-/* 373.11 */        set(v) {
-/* 373.12 */            this.stateVarDecl_game_.set(v)
-/* 373.13 */        }
-/* 373.14 */    }
-/* 373.15 */    
-/* 373.16 */    
-/* 373.17 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
-/* 373.18 */    
-/* 373.19 */    
-/* 373.20 */    private mut prop step: Int64 {
-/* 373.21 */        get() {
-/* 373.22 */            return this.stateVarDecl_step_.get()
-/* 373.23 */        }
-/* 373.24 */        set(v) {
-/* 373.25 */            this.stateVarDecl_step_.set(v)
-/* 373.26 */        }
-/* 373.27 */    }
-/* 373.28 */    
-/* 373.29 */    
-/* 373.30 */    var P1_PosX: Int64 = 230
-/* 373.31 */    
-/* 373.32 */    
-/* 373.33 */    var P1_PosY: Int64 = 150
-/* 373.34 */    
-/* 373.35 */    
-/* 373.36 */    var P2_PosX: Int64 = 580
-/* 373.37 */    
-/* 373.38 */    
-/* 373.39 */    var P2_PosY: Int64 = 150
-/* 373.40 */    
-/* 373.41 */    
-/* 373.42 */    private var stateVarDecl_P1_angle_: ObservedProperty < Float32 >
-/* 373.43 */    
-/* 373.44 */    
-/* 373.45 */    private mut prop P1_angle: Float32 {
-/* 373.46 */        get() {
-/* 373.47 */            return this.stateVarDecl_P1_angle_.get()
-/* 373.48 */        }
-/* 373.49 */        set(v) {
-/* 373.50 */            this.stateVarDecl_P1_angle_.set(v)
-/* 373.51 */        }
-/* 373.52 */    }
-/* 373.53 */    
-/* 373.54 */    
-/* 373.55 */    private var stateVarDecl_P1_height_: ObservedProperty < Int64 >
-/* 373.56 */    
-/* 373.57 */    
-/* 373.58 */    private mut prop P1_height: Int64 {
-/* 373.59 */        get() {
-/* 373.60 */            return this.stateVarDecl_P1_height_.get()
-/* 373.61 */        }
-/* 373.62 */        set(v) {
-/* 373.63 */            this.stateVarDecl_P1_height_.set(v)
-/* 373.64 */        }
-/* 373.65 */    }
-/* 373.66 */    
-/* 373.67 */    
-/* 373.68 */    private var stateVarDecl_P1_width_: ObservedProperty < Int64 >
-/* 373.69 */    
-/* 373.70 */    
-/* 373.71 */    private mut prop P1_width: Int64 {
-/* 373.72 */        get() {
-/* 373.73 */            return this.stateVarDecl_P1_width_.get()
-/* 373.74 */        }
-/* 373.75 */        set(v) {
-/* 373.76 */            this.stateVarDecl_P1_width_.set(v)
-/* 373.77 */        }
-/* 373.78 */    }
-/* 373.79 */    
-/* 373.80 */    
-/* 373.81 */    private var stateVarDecl_P2_angle_: ObservedProperty < Float32 >
-/* 373.82 */    
-/* 373.83 */    
-/* 373.84 */    private mut prop P2_angle: Float32 {
-/* 373.85 */        get() {
-/* 373.86 */            return this.stateVarDecl_P2_angle_.get()
-/* 373.87 */        }
-/* 373.88 */        set(v) {
-/* 373.89 */            this.stateVarDecl_P2_angle_.set(v)
-/* 373.90 */        }
-/* 373.91 */    }
-/* 373.92 */    
-/* 373.93 */    
-/* 373.94 */    private var stateVarDecl_P2_height_: ObservedProperty < Int64 >
-/* 373.95 */    
-/* 373.96 */    
-/* 373.97 */    private mut prop P2_height: Int64 {
-/* 373.98 */        get() {
-/* 373.99 */            return this.stateVarDecl_P2_height_.get()
-/* 373.100 */        }
-/* 373.101 */        set(v) {
-/* 373.102 */            this.stateVarDecl_P2_height_.set(v)
-/* 373.103 */        }
-/* 373.104 */    }
-/* 373.105 */    
-/* 373.106 */    
-/* 373.107 */    private var stateVarDecl_P2_width_: ObservedProperty < Int64 >
-/* 373.108 */    
-/* 373.109 */    
-/* 373.110 */    private mut prop P2_width: Int64 {
-/* 373.111 */        get() {
-/* 373.112 */            return this.stateVarDecl_P2_width_.get()
-/* 373.113 */        }
-/* 373.114 */        set(v) {
-/* 373.115 */            this.stateVarDecl_P2_width_.set(v)
-/* 373.116 */        }
-/* 373.117 */    }
-/* 373.118 */    
-/* 373.119 */    
-/* 373.120 */    let animateOpt = AnimateParam(duration: 800, curve: Curve.Smooth, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
-/* 373.121 */    
-/* 373.122 */    
-/* 373.123 */    
-/* 373.124 */    public func build() {
-/* 373.125 */        
-/* 373.126 */        this.observeComponentCreation({ elmtId, isInitialRender =>
-/* 373.127 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 4) {
-/* 373.128 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Game_End_Image, "app.media.Game_End_Image",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
-/* 373.129 */                this.observeComponentCreation({ elmtId, isInitialRender => If { if(game.hp1 > 0) {
-/* 373.130 */                    this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P1 Wins !").position(x: 300, y: 50).fontSize(80).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) })
-/* 373.131 */                }
-/* 373.132 */                else {
-/* 373.133 */                    this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P2 Wins !").position(x: 300, y: 50).fontSize(80).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) })
-/* 373.134 */                }
-/* 373.135 */            } })
-/* 373.136 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).animationStart(animateOpt).position(x: P1_PosX, y: P1_PosY).height(P1_height).width(P1_width).objectFit(ImageFit.Fill).rotate(P1_angle).onAppear({ => this.P1_angle = - 10.0
-/* 373.137 */                this.P1_width = 62
-/* 373.138 */            this.P1_height = 63 }).animationEnd() })
-/* 373.139 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).animationStart(animateOpt).position(x: P2_PosX, y: P2_PosY).height(this.P2_height).width(this.P2_width).objectFit(ImageFit.Fill).rotate(P2_angle).onAppear({ => this.P2_angle = 10.0
-/* 373.140 */                this.P2_height = 62
-/* 373.141 */            this.P2_width = 63 }).animationEnd() })
-/* 373.142 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("Restart").position(x: 350, y: 300).fontSize(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) })
-/* 373.143 */        }
-/* 373.144 */        else {
-/* 373.145 */            If.branchId(1)
-/* 373.146 */        }
-/* 373.147 */    } }) }
-/* 373.148 */})
-/* 373.149 */
-/* 373.150 */()
-/* 373.151 */
-/* 373.152 */}
-/* 373.153 */
-/* 373.154 */
-/* 373.155 */public init(parent: Option < CustomView >, game!: ObservedProperty < FourAscendGame >, step!: ObservedProperty < Int64 >, P1_PosX!: Option < ObservedProperty < Int64 >>= None, P1_PosY!: Option < ObservedProperty < Int64 >>= None, P2_PosX!: Option < ObservedProperty < Int64 >>= None, P2_PosY!: Option < ObservedProperty < Int64 >>= None, P1_angle!: ObservedProperty < Float32 >, P1_height!: ObservedProperty < Int64 >, P1_width!: ObservedProperty < Int64 >, P2_angle!: ObservedProperty < Float32 >, P2_height!: ObservedProperty < Int64 >, P2_width!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
-/* 373.156 */super(parent, localStorage)
-/* 373.157 */
-/* 373.158 */
-/* 373.159 */this.stateVarDecl_game_ = game
-/* 373.160 */
-/* 373.161 */this.stateVarDecl_step_ = step
-/* 373.162 */
-/* 373.163 */match(P1_PosX) {
-/* 373.164 */    case Some(v) => this.P1_PosX = v.get()
-/* 373.165 */    case _ =>()
-/* 373.166 */}
-/* 373.167 */
-/* 373.168 */match(P1_PosY) {
-/* 373.169 */    case Some(v) => this.P1_PosY = v.get()
-/* 373.170 */    case _ =>()
-/* 373.171 */}
-/* 373.172 */
-/* 373.173 */match(P2_PosX) {
-/* 373.174 */    case Some(v) => this.P2_PosX = v.get()
-/* 373.175 */    case _ =>()
-/* 373.176 */}
-/* 373.177 */
-/* 373.178 */match(P2_PosY) {
-/* 373.179 */    case Some(v) => this.P2_PosY = v.get()
-/* 373.180 */    case _ =>()
-/* 373.181 */}
-/* 373.182 */
-/* 373.183 */this.stateVarDecl_P1_angle_ = P1_angle
-/* 373.184 */
-/* 373.185 */this.stateVarDecl_P1_height_ = P1_height
-/* 373.186 */
-/* 373.187 */this.stateVarDecl_P1_width_ = P1_width
-/* 373.188 */
-/* 373.189 */this.stateVarDecl_P2_angle_ = P2_angle
-/* 373.190 */
-/* 373.191 */this.stateVarDecl_P2_height_ = P2_height
-/* 373.192 */
-/* 373.193 */this.stateVarDecl_P2_width_ = P2_width
-/* 373.194 */
-/* 373.195 */
-/* 373.196 */this.stateVarDecl_game_.subscribeEx(this)
-/* 373.197 */
-/* 373.198 */this.stateVarDecl_step_.subscribeEx(this)
-/* 373.199 */
-/* 373.200 */this.stateVarDecl_P1_angle_.subscribeEx(this)
-/* 373.201 */
-/* 373.202 */this.stateVarDecl_P1_height_.subscribeEx(this)
-/* 373.203 */
-/* 373.204 */this.stateVarDecl_P1_width_.subscribeEx(this)
-/* 373.205 */
-/* 373.206 */this.stateVarDecl_P2_angle_.subscribeEx(this)
-/* 373.207 */
-/* 373.208 */this.stateVarDecl_P2_height_.subscribeEx(this)
-/* 373.209 */
-/* 373.210 */this.stateVarDecl_P2_width_.subscribeEx(this)
-/* 373.211 */
-/* 373.212 */SubscriberManager.getInstance().add(this)
-/* 373.213 */
-/* 373.214 */
-/* 373.215 */registerSelf()
-/* 373.216 */parent?.addChildById(id(), this)
-/* 373.217 */}
-/* 373.218 */
-/* 373.219 */
-/* 373.220 */public override func aboutToBeDeleted() {
-/* 373.221 */
-/* 373.222 */this.stateVarDecl_game_.unsubscribeEx(this)
-/* 373.223 */
-/* 373.224 */this.stateVarDecl_step_.unsubscribeEx(this)
-/* 373.225 */
-/* 373.226 */this.stateVarDecl_P1_angle_.unsubscribeEx(this)
-/* 373.227 */
-/* 373.228 */this.stateVarDecl_P1_height_.unsubscribeEx(this)
-/* 373.229 */
-/* 373.230 */this.stateVarDecl_P1_width_.unsubscribeEx(this)
-/* 373.231 */
-/* 373.232 */this.stateVarDecl_P2_angle_.unsubscribeEx(this)
-/* 373.233 */
-/* 373.234 */this.stateVarDecl_P2_height_.unsubscribeEx(this)
-/* 373.235 */
-/* 373.236 */this.stateVarDecl_P2_width_.unsubscribeEx(this)
-/* 373.237 */
-/* 373.238 */SubscriberManager.getInstance().delete(this)
-/* 373.239 */this.aboutToBeDeletedInternal()
-/* 373.240 */}
-/* 373.241 */
-/* 373.242 */
-/* 373.243 */func updateWithValueParams(game!: Option < FourAscendGame >= Option < FourAscendGame >.None, step!: Option < Int64 >= Option < Int64 >.None, P1_PosX!: Option < Int64 >= Option < Int64 >.None, P1_PosY!: Option < Int64 >= Option < Int64 >.None, P2_PosX!: Option < Int64 >= Option < Int64 >.None, P2_PosY!: Option < Int64 >= Option < Int64 >.None, P1_angle!: Option < Float32 >= Option < Float32 >.None, P1_height!: Option < Int64 >= Option < Int64 >.None, P1_width!: Option < Int64 >= Option < Int64 >.None, P2_angle!: Option < Float32 >= Option < Float32 >.None, P2_height!: Option < Int64 >= Option < Int64 >.None, P2_width!: Option < Int64 >= Option < Int64 >.None): Unit {
-/* 373.244 */
-/* 373.245 */}
-/* 373.246 */
-/* 373.247 */
-/* 373.248 */public func rerender() {
-/* 373.249 */this.updateDirtyElements()
-/* 373.250 */}
-/* 373.251 */
-/* 373.252 */
-/* 373.253 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 373.254 */
-/* 373.255 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.256 */
-/* 373.257 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.258 */
-/* 373.259 */this.stateVarDecl_P1_angle_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.260 */
-/* 373.261 */this.stateVarDecl_P1_height_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.262 */
-/* 373.263 */this.stateVarDecl_P1_width_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.264 */
-/* 373.265 */this.stateVarDecl_P2_angle_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.266 */
-/* 373.267 */this.stateVarDecl_P2_height_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.268 */
-/* 373.269 */this.stateVarDecl_P2_width_.purgeDependencyOnElmtId(rmElmtId)
-/* 373.270 */
-/* 373.271 */}
-/* 373.272 */
-/* 373.273 */
-/* 373.274 */public func forceRerender(deep!: Bool = false) {
-/* 373.275 */this.forceCompleteRerender(deep)
-/* 373.276 */}
-/* 373.277 */
-/* 373.278 */
-/* 373.279 */}
-/* 373.280 */
+/* ===== Emitted by MacroCall @Component in draw.cj:693:1 ===== */
+/* 693.1 */public class GameEndPage <: CustomView {
+/* 693.2 */    
+/* 693.3 */    
+/* 693.4 */    private var stateVarDecl_game_: ObservedProperty < FourAscendGame >
+/* 693.5 */    
+/* 693.6 */    
+/* 693.7 */    private mut prop game: FourAscendGame {
+/* 693.8 */        get() {
+/* 693.9 */            return this.stateVarDecl_game_.get()
+/* 693.10 */        }
+/* 693.11 */        set(v) {
+/* 693.12 */            this.stateVarDecl_game_.set(v)
+/* 693.13 */        }
+/* 693.14 */    }
+/* 693.15 */    
+/* 693.16 */    
+/* 693.17 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
+/* 693.18 */    
+/* 693.19 */    
+/* 693.20 */    private mut prop game_state: Board {
+/* 693.21 */        get() {
+/* 693.22 */            return this.stateVarDecl_game_state_.get()
+/* 693.23 */        }
+/* 693.24 */        set(v) {
+/* 693.25 */            this.stateVarDecl_game_state_.set(v)
+/* 693.26 */        }
+/* 693.27 */    }
+/* 693.28 */    
+/* 693.29 */    
+/* 693.30 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >
+/* 693.31 */    
+/* 693.32 */    
+/* 693.33 */    private mut prop data: ObservedMatrix {
+/* 693.34 */        get() {
+/* 693.35 */            return this.stateVarDecl_data_.get()
+/* 693.36 */        }
+/* 693.37 */        set(v) {
+/* 693.38 */            this.stateVarDecl_data_.set(v)
+/* 693.39 */        }
+/* 693.40 */    }
+/* 693.41 */    
+/* 693.42 */    
+/* 693.43 */    private var stateVarDecl_ai_: ObservedProperty < StupidFourAscendPlayer >
+/* 693.44 */    
+/* 693.45 */    
+/* 693.46 */    private mut prop ai: StupidFourAscendPlayer {
+/* 693.47 */        get() {
+/* 693.48 */            return this.stateVarDecl_ai_.get()
+/* 693.49 */        }
+/* 693.50 */        set(v) {
+/* 693.51 */            this.stateVarDecl_ai_.set(v)
+/* 693.52 */        }
+/* 693.53 */    }
+/* 693.54 */    
+/* 693.55 */    
+/* 693.56 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 693.57 */    
+/* 693.58 */    
+/* 693.59 */    private mut prop step: Int64 {
+/* 693.60 */        get() {
+/* 693.61 */            return this.stateVarDecl_step_.get()
+/* 693.62 */        }
+/* 693.63 */        set(v) {
+/* 693.64 */            this.stateVarDecl_step_.set(v)
+/* 693.65 */        }
+/* 693.66 */    }
+/* 693.67 */    
+/* 693.68 */    
+/* 693.69 */    private var stateVarDecl_WhiteAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 693.70 */    
+/* 693.71 */    
+/* 693.72 */    private mut prop WhiteAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 693.73 */        get() {
+/* 693.74 */            return this.stateVarDecl_WhiteAttackPos_.get()
+/* 693.75 */        }
+/* 693.76 */        set(v) {
+/* 693.77 */            this.stateVarDecl_WhiteAttackPos_.set(v)
+/* 693.78 */        }
+/* 693.79 */    }
+/* 693.80 */    
+/* 693.81 */    
+/* 693.82 */    private var stateVarDecl_BlackAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 693.83 */    
+/* 693.84 */    
+/* 693.85 */    private mut prop BlackAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 693.86 */        get() {
+/* 693.87 */            return this.stateVarDecl_BlackAttackPos_.get()
+/* 693.88 */        }
+/* 693.89 */        set(v) {
+/* 693.90 */            this.stateVarDecl_BlackAttackPos_.set(v)
+/* 693.91 */        }
+/* 693.92 */    }
+/* 693.93 */    
+/* 693.94 */    
+/* 693.95 */    private var stateVarDecl_animateFlag_: ObservedProperty < Bool >
+/* 693.96 */    
+/* 693.97 */    
+/* 693.98 */    private mut prop animateFlag: Bool {
+/* 693.99 */        get() {
+/* 693.100 */            return this.stateVarDecl_animateFlag_.get()
+/* 693.101 */        }
+/* 693.102 */        set(v) {
+/* 693.103 */            this.stateVarDecl_animateFlag_.set(v)
+/* 693.104 */        }
+/* 693.105 */    }
+/* 693.106 */    
+/* 693.107 */    
+/* 693.108 */    private var stateVarDecl_player_: ObservedProperty < Int64 >
+/* 693.109 */    
+/* 693.110 */    
+/* 693.111 */    private mut prop player: Int64 {
+/* 693.112 */        get() {
+/* 693.113 */            return this.stateVarDecl_player_.get()
+/* 693.114 */        }
+/* 693.115 */        set(v) {
+/* 693.116 */            this.stateVarDecl_player_.set(v)
+/* 693.117 */        }
+/* 693.118 */    }
+/* 693.119 */    
+/* 693.120 */    
+/* 693.121 */    private var stateVarDecl_backto_: ObservedProperty < Int64 >
+/* 693.122 */    
+/* 693.123 */    
+/* 693.124 */    private mut prop backto: Int64 {
+/* 693.125 */        get() {
+/* 693.126 */            return this.stateVarDecl_backto_.get()
+/* 693.127 */        }
+/* 693.128 */        set(v) {
+/* 693.129 */            this.stateVarDecl_backto_.set(v)
+/* 693.130 */        }
+/* 693.131 */    }
+/* 693.132 */    
+/* 693.133 */    
+/* 693.134 */    private var stateVarDecl_P1_angle_: ObservedProperty < Float32 >= ObservedProperty < Float32 >("stateVarDecl_P1_angle_", 10.0)
+/* 693.135 */    
+/* 693.136 */    
+/* 693.137 */    private mut prop P1_angle: Float32 {
+/* 693.138 */        get() {
+/* 693.139 */            return this.stateVarDecl_P1_angle_.get()
+/* 693.140 */        }
+/* 693.141 */        set(v) {
+/* 693.142 */            this.stateVarDecl_P1_angle_.set(v)
+/* 693.143 */        }
+/* 693.144 */    }
+/* 693.145 */    
+/* 693.146 */    
+/* 693.147 */    private var stateVarDecl_P1_height_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P1_height_", 40)
+/* 693.148 */    
+/* 693.149 */    
+/* 693.150 */    private mut prop P1_height: Int64 {
+/* 693.151 */        get() {
+/* 693.152 */            return this.stateVarDecl_P1_height_.get()
+/* 693.153 */        }
+/* 693.154 */        set(v) {
+/* 693.155 */            this.stateVarDecl_P1_height_.set(v)
+/* 693.156 */        }
+/* 693.157 */    }
+/* 693.158 */    
+/* 693.159 */    
+/* 693.160 */    private var stateVarDecl_P1_width_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P1_width_", 80)
+/* 693.161 */    
+/* 693.162 */    
+/* 693.163 */    private mut prop P1_width: Int64 {
+/* 693.164 */        get() {
+/* 693.165 */            return this.stateVarDecl_P1_width_.get()
+/* 693.166 */        }
+/* 693.167 */        set(v) {
+/* 693.168 */            this.stateVarDecl_P1_width_.set(v)
+/* 693.169 */        }
+/* 693.170 */    }
+/* 693.171 */    
+/* 693.172 */    
+/* 693.173 */    private var stateVarDecl_P2_angle_: ObservedProperty < Float32 >= ObservedProperty < Float32 >("stateVarDecl_P2_angle_", - 10.0)
+/* 693.174 */    
+/* 693.175 */    
+/* 693.176 */    private mut prop P2_angle: Float32 {
+/* 693.177 */        get() {
+/* 693.178 */            return this.stateVarDecl_P2_angle_.get()
+/* 693.179 */        }
+/* 693.180 */        set(v) {
+/* 693.181 */            this.stateVarDecl_P2_angle_.set(v)
+/* 693.182 */        }
+/* 693.183 */    }
+/* 693.184 */    
+/* 693.185 */    
+/* 693.186 */    private var stateVarDecl_P2_height_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P2_height_", 40)
+/* 693.187 */    
+/* 693.188 */    
+/* 693.189 */    private mut prop P2_height: Int64 {
+/* 693.190 */        get() {
+/* 693.191 */            return this.stateVarDecl_P2_height_.get()
+/* 693.192 */        }
+/* 693.193 */        set(v) {
+/* 693.194 */            this.stateVarDecl_P2_height_.set(v)
+/* 693.195 */        }
+/* 693.196 */    }
+/* 693.197 */    
+/* 693.198 */    
+/* 693.199 */    private var stateVarDecl_P2_width_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_P2_width_", 80)
+/* 693.200 */    
+/* 693.201 */    
+/* 693.202 */    private mut prop P2_width: Int64 {
+/* 693.203 */        get() {
+/* 693.204 */            return this.stateVarDecl_P2_width_.get()
+/* 693.205 */        }
+/* 693.206 */        set(v) {
+/* 693.207 */            this.stateVarDecl_P2_width_.set(v)
+/* 693.208 */        }
+/* 693.209 */    }
+/* 693.210 */    
+/* 693.211 */    
+/* 693.212 */    var P1_PosX: Int64 = 230
+/* 693.213 */    
+/* 693.214 */    
+/* 693.215 */    var P1_PosY: Int64 = 150
+/* 693.216 */    
+/* 693.217 */    
+/* 693.218 */    var P2_PosX: Int64 = 580
+/* 693.219 */    
+/* 693.220 */    
+/* 693.221 */    var P2_PosY: Int64 = 150
+/* 693.222 */    
+/* 693.223 */    
+/* 693.224 */    private var stateVarDecl_opa_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_opa_", 0.0)
+/* 693.225 */    
+/* 693.226 */    
+/* 693.227 */    private mut prop opa: Float64 {
+/* 693.228 */        get() {
+/* 693.229 */            return this.stateVarDecl_opa_.get()
+/* 693.230 */        }
+/* 693.231 */        set(v) {
+/* 693.232 */            this.stateVarDecl_opa_.set(v)
+/* 693.233 */        }
+/* 693.234 */    }
+/* 693.235 */    
+/* 693.236 */    
+/* 693.237 */    let animateOpt = AnimateParam(duration: 800, curve: Curve.Smooth, delay: 0, iterations: - 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
+/* 693.238 */    
+/* 693.239 */    
+/* 693.240 */    
+/* 693.241 */    public func build() {
+/* 693.242 */        
+/* 693.243 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 693.244 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 4) {
+/* 693.245 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.Game_End_Image, "app.media.Game_End_Image",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 693.246 */                this.observeComponentCreation({ elmtId, isInitialRender => If { if(game.hp1 > 0) {
+/* 693.247 */                    this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P1 Wins !").position(x: 300, y: 50).fontSize(80).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) })
+/* 693.248 */                }
+/* 693.249 */                else {
+/* 693.250 */                    this.ifElseBranchUpdateFunction(1, { => this.observeComponentCreation({ elmtId, isInitialRender => Text("P2 Wins !").position(x: 300, y: 50).fontSize(80).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)) }) })
+/* 693.251 */                }
+/* 693.252 */            } })
+/* 693.253 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.player, "app.media.player",[], 20000)).animationStart(animateOpt).position(x: P1_PosX, y: P1_PosY).height(P1_height).width(P1_width).objectFit(ImageFit.Fill).rotate(P1_angle).onAppear({ => this.P1_angle = - 10.0
+/* 693.254 */                this.P1_width = 62
+/* 693.255 */            this.P1_height = 63 }).animationEnd() })
+/* 693.256 */            this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.enemy, "app.media.enemy",[], 20000)).animationStart(animateOpt).position(x: P2_PosX, y: P2_PosY).height(this.P2_height).width(this.P2_width).objectFit(ImageFit.Fill).rotate(P2_angle).onAppear({ => this.P2_angle = 10.0
+/* 693.257 */                this.P2_height = 62
+/* 693.258 */            this.P2_width = 63 }).animationEnd() })
+/* 693.259 */            this.observeComponentCreation({ elmtId, isInitialRender => Text("Restart").position(x: 350, y: 300).fontSize(50).fontFamily(__GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003)).onClick({ evt => game = FourAscendGame(9, 6, 6)
+/* 693.260 */                ai = StupidFourAscendPlayer(game)
+/* 693.261 */                this.game_state = game.getInitBoard()
+/* 693.262 */                this.data = ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 }))
+/* 693.263 */                this.step = this.backto
+/* 693.264 */                this.WhiteAttackPos = ObservedArrayList(ArrayList())
+/* 693.265 */                this.BlackAttackPos = ObservedArrayList(ArrayList())
+/* 693.266 */                this.animateFlag = false
+/* 693.267 */            this.player = 1 }) }) })
+/* 693.268 */        }
+/* 693.269 */        else {
+/* 693.270 */            If.branchId(1)
+/* 693.271 */        }
+/* 693.272 */    } }) }.opacity(opa).onAppear { animateTo(AnimateParam(duration: 800, curve: Curve.Smooth, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.opa = 1.0 }) }
+/* 693.273 */})
+/* 693.274 */
+/* 693.275 */()
+/* 693.276 */
+/* 693.277 */}
+/* 693.278 */
+/* 693.279 */
+/* 693.280 */public init(parent: Option < CustomView >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, data!: ObservedProperty < ObservedMatrix >, ai!: ObservedProperty < StupidFourAscendPlayer >, step!: ObservedProperty < Int64 >, WhiteAttackPos!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, BlackAttackPos!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, animateFlag!: ObservedProperty < Bool >, player!: ObservedProperty < Int64 >, backto!: ObservedProperty < Int64 >, P1_angle!: Option < ObservedProperty < Float32 >>= None, P1_height!: Option < ObservedProperty < Int64 >>= None, P1_width!: Option < ObservedProperty < Int64 >>= None, P2_angle!: Option < ObservedProperty < Float32 >>= None, P2_height!: Option < ObservedProperty < Int64 >>= None, P2_width!: Option < ObservedProperty < Int64 >>= None, P1_PosX!: Option < ObservedProperty < Int64 >>= None, P1_PosY!: Option < ObservedProperty < Int64 >>= None, P2_PosX!: Option < ObservedProperty < Int64 >>= None, P2_PosY!: Option < ObservedProperty < Int64 >>= None, opa!: Option < ObservedProperty < Float64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 693.281 */super(parent, localStorage)
+/* 693.282 */
+/* 693.283 */
+/* 693.284 */this.stateVarDecl_game_ = game
+/* 693.285 */
+/* 693.286 */this.stateVarDecl_game_state_ = game_state
+/* 693.287 */
+/* 693.288 */this.stateVarDecl_data_ = data
+/* 693.289 */
+/* 693.290 */this.stateVarDecl_ai_ = ai
+/* 693.291 */
+/* 693.292 */this.stateVarDecl_step_ = step
+/* 693.293 */
+/* 693.294 */this.stateVarDecl_WhiteAttackPos_ = WhiteAttackPos
+/* 693.295 */
+/* 693.296 */this.stateVarDecl_BlackAttackPos_ = BlackAttackPos
+/* 693.297 */
+/* 693.298 */this.stateVarDecl_animateFlag_ = animateFlag
+/* 693.299 */
+/* 693.300 */this.stateVarDecl_player_ = player
+/* 693.301 */
+/* 693.302 */this.stateVarDecl_backto_ = backto
+/* 693.303 */
+/* 693.304 */match(P1_angle) {
+/* 693.305 */    case Some(v) => this.stateVarDecl_P1_angle_ = ObservedProperty < Float32 >("stateVarDecl_P1_angle_", v.get())
+/* 693.306 */    case _ =>()
+/* 693.307 */}
+/* 693.308 */
+/* 693.309 */match(P1_height) {
+/* 693.310 */    case Some(v) => this.stateVarDecl_P1_height_ = ObservedProperty < Int64 >("stateVarDecl_P1_height_", v.get())
+/* 693.311 */    case _ =>()
+/* 693.312 */}
+/* 693.313 */
+/* 693.314 */match(P1_width) {
+/* 693.315 */    case Some(v) => this.stateVarDecl_P1_width_ = ObservedProperty < Int64 >("stateVarDecl_P1_width_", v.get())
+/* 693.316 */    case _ =>()
+/* 693.317 */}
+/* 693.318 */
+/* 693.319 */match(P2_angle) {
+/* 693.320 */    case Some(v) => this.stateVarDecl_P2_angle_ = ObservedProperty < Float32 >("stateVarDecl_P2_angle_", v.get())
+/* 693.321 */    case _ =>()
+/* 693.322 */}
+/* 693.323 */
+/* 693.324 */match(P2_height) {
+/* 693.325 */    case Some(v) => this.stateVarDecl_P2_height_ = ObservedProperty < Int64 >("stateVarDecl_P2_height_", v.get())
+/* 693.326 */    case _ =>()
+/* 693.327 */}
+/* 693.328 */
+/* 693.329 */match(P2_width) {
+/* 693.330 */    case Some(v) => this.stateVarDecl_P2_width_ = ObservedProperty < Int64 >("stateVarDecl_P2_width_", v.get())
+/* 693.331 */    case _ =>()
+/* 693.332 */}
+/* 693.333 */
+/* 693.334 */match(P1_PosX) {
+/* 693.335 */    case Some(v) => this.P1_PosX = v.get()
+/* 693.336 */    case _ =>()
+/* 693.337 */}
+/* 693.338 */
+/* 693.339 */match(P1_PosY) {
+/* 693.340 */    case Some(v) => this.P1_PosY = v.get()
+/* 693.341 */    case _ =>()
+/* 693.342 */}
+/* 693.343 */
+/* 693.344 */match(P2_PosX) {
+/* 693.345 */    case Some(v) => this.P2_PosX = v.get()
+/* 693.346 */    case _ =>()
+/* 693.347 */}
+/* 693.348 */
+/* 693.349 */match(P2_PosY) {
+/* 693.350 */    case Some(v) => this.P2_PosY = v.get()
+/* 693.351 */    case _ =>()
+/* 693.352 */}
+/* 693.353 */
+/* 693.354 */match(opa) {
+/* 693.355 */    case Some(v) => this.stateVarDecl_opa_ = ObservedProperty < Float64 >("stateVarDecl_opa_", v.get())
+/* 693.356 */    case _ =>()
+/* 693.357 */}
+/* 693.358 */
+/* 693.359 */
+/* 693.360 */this.stateVarDecl_game_.subscribeEx(this)
+/* 693.361 */
+/* 693.362 */this.stateVarDecl_game_state_.subscribeEx(this)
+/* 693.363 */
+/* 693.364 */this.stateVarDecl_data_.subscribeEx(this)
+/* 693.365 */
+/* 693.366 */this.stateVarDecl_ai_.subscribeEx(this)
+/* 693.367 */
+/* 693.368 */this.stateVarDecl_step_.subscribeEx(this)
+/* 693.369 */
+/* 693.370 */this.stateVarDecl_WhiteAttackPos_.subscribeEx(this)
+/* 693.371 */
+/* 693.372 */this.stateVarDecl_BlackAttackPos_.subscribeEx(this)
+/* 693.373 */
+/* 693.374 */this.stateVarDecl_animateFlag_.subscribeEx(this)
+/* 693.375 */
+/* 693.376 */this.stateVarDecl_player_.subscribeEx(this)
+/* 693.377 */
+/* 693.378 */this.stateVarDecl_backto_.subscribeEx(this)
+/* 693.379 */
+/* 693.380 */this.stateVarDecl_P1_angle_.subscribeEx(this)
+/* 693.381 */
+/* 693.382 */this.stateVarDecl_P1_height_.subscribeEx(this)
+/* 693.383 */
+/* 693.384 */this.stateVarDecl_P1_width_.subscribeEx(this)
+/* 693.385 */
+/* 693.386 */this.stateVarDecl_P2_angle_.subscribeEx(this)
+/* 693.387 */
+/* 693.388 */this.stateVarDecl_P2_height_.subscribeEx(this)
+/* 693.389 */
+/* 693.390 */this.stateVarDecl_P2_width_.subscribeEx(this)
+/* 693.391 */
+/* 693.392 */this.stateVarDecl_opa_.subscribeEx(this)
+/* 693.393 */
+/* 693.394 */SubscriberManager.getInstance().add(this)
+/* 693.395 */
+/* 693.396 */
+/* 693.397 */registerSelf()
+/* 693.398 */parent?.addChildById(id(), this)
+/* 693.399 */}
+/* 693.400 */
+/* 693.401 */
+/* 693.402 */public override func aboutToBeDeleted() {
+/* 693.403 */
+/* 693.404 */this.stateVarDecl_game_.unsubscribeEx(this)
+/* 693.405 */
+/* 693.406 */this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 693.407 */
+/* 693.408 */this.stateVarDecl_data_.unsubscribeEx(this)
+/* 693.409 */
+/* 693.410 */this.stateVarDecl_ai_.unsubscribeEx(this)
+/* 693.411 */
+/* 693.412 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 693.413 */
+/* 693.414 */this.stateVarDecl_WhiteAttackPos_.unsubscribeEx(this)
+/* 693.415 */
+/* 693.416 */this.stateVarDecl_BlackAttackPos_.unsubscribeEx(this)
+/* 693.417 */
+/* 693.418 */this.stateVarDecl_animateFlag_.unsubscribeEx(this)
+/* 693.419 */
+/* 693.420 */this.stateVarDecl_player_.unsubscribeEx(this)
+/* 693.421 */
+/* 693.422 */this.stateVarDecl_backto_.unsubscribeEx(this)
+/* 693.423 */
+/* 693.424 */this.stateVarDecl_P1_angle_.unsubscribeEx(this)
+/* 693.425 */
+/* 693.426 */this.stateVarDecl_P1_height_.unsubscribeEx(this)
+/* 693.427 */
+/* 693.428 */this.stateVarDecl_P1_width_.unsubscribeEx(this)
+/* 693.429 */
+/* 693.430 */this.stateVarDecl_P2_angle_.unsubscribeEx(this)
+/* 693.431 */
+/* 693.432 */this.stateVarDecl_P2_height_.unsubscribeEx(this)
+/* 693.433 */
+/* 693.434 */this.stateVarDecl_P2_width_.unsubscribeEx(this)
+/* 693.435 */
+/* 693.436 */this.stateVarDecl_opa_.unsubscribeEx(this)
+/* 693.437 */
+/* 693.438 */SubscriberManager.getInstance().delete(this)
+/* 693.439 */this.aboutToBeDeletedInternal()
+/* 693.440 */}
+/* 693.441 */
+/* 693.442 */
+/* 693.443 */func updateWithValueParams(game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, ai!: Option < StupidFourAscendPlayer >= Option < StupidFourAscendPlayer >.None, step!: Option < Int64 >= Option < Int64 >.None, WhiteAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, BlackAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, animateFlag!: Option < Bool >= Option < Bool >.None, player!: Option < Int64 >= Option < Int64 >.None, backto!: Option < Int64 >= Option < Int64 >.None, P1_angle!: Option < Float32 >= Option < Float32 >.None, P1_height!: Option < Int64 >= Option < Int64 >.None, P1_width!: Option < Int64 >= Option < Int64 >.None, P2_angle!: Option < Float32 >= Option < Float32 >.None, P2_height!: Option < Int64 >= Option < Int64 >.None, P2_width!: Option < Int64 >= Option < Int64 >.None, P1_PosX!: Option < Int64 >= Option < Int64 >.None, P1_PosY!: Option < Int64 >= Option < Int64 >.None, P2_PosX!: Option < Int64 >= Option < Int64 >.None, P2_PosY!: Option < Int64 >= Option < Int64 >.None, opa!: Option < Float64 >= Option < Float64 >.None): Unit {
+/* 693.444 */
+/* 693.445 */match(P1_angle) {
+/* 693.446 */    case Some(v) => this.P1_angle = v
+/* 693.447 */    case _ =>()
+/* 693.448 */}
+/* 693.449 */
+/* 693.450 */match(P1_height) {
+/* 693.451 */    case Some(v) => this.P1_height = v
+/* 693.452 */    case _ =>()
+/* 693.453 */}
+/* 693.454 */
+/* 693.455 */match(P1_width) {
+/* 693.456 */    case Some(v) => this.P1_width = v
+/* 693.457 */    case _ =>()
+/* 693.458 */}
+/* 693.459 */
+/* 693.460 */match(P2_angle) {
+/* 693.461 */    case Some(v) => this.P2_angle = v
+/* 693.462 */    case _ =>()
+/* 693.463 */}
+/* 693.464 */
+/* 693.465 */match(P2_height) {
+/* 693.466 */    case Some(v) => this.P2_height = v
+/* 693.467 */    case _ =>()
+/* 693.468 */}
+/* 693.469 */
+/* 693.470 */match(P2_width) {
+/* 693.471 */    case Some(v) => this.P2_width = v
+/* 693.472 */    case _ =>()
+/* 693.473 */}
+/* 693.474 */
+/* 693.475 */match(opa) {
+/* 693.476 */    case Some(v) => this.opa = v
+/* 693.477 */    case _ =>()
+/* 693.478 */}
+/* 693.479 */
+/* 693.480 */}
+/* 693.481 */
+/* 693.482 */
+/* 693.483 */public func rerender() {
+/* 693.484 */this.updateDirtyElements()
+/* 693.485 */}
+/* 693.486 */
+/* 693.487 */
+/* 693.488 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 693.489 */
+/* 693.490 */this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.491 */
+/* 693.492 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.493 */
+/* 693.494 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.495 */
+/* 693.496 */this.stateVarDecl_ai_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.497 */
+/* 693.498 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.499 */
+/* 693.500 */this.stateVarDecl_WhiteAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.501 */
+/* 693.502 */this.stateVarDecl_BlackAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.503 */
+/* 693.504 */this.stateVarDecl_animateFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.505 */
+/* 693.506 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.507 */
+/* 693.508 */this.stateVarDecl_backto_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.509 */
+/* 693.510 */this.stateVarDecl_P1_angle_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.511 */
+/* 693.512 */this.stateVarDecl_P1_height_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.513 */
+/* 693.514 */this.stateVarDecl_P1_width_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.515 */
+/* 693.516 */this.stateVarDecl_P2_angle_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.517 */
+/* 693.518 */this.stateVarDecl_P2_height_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.519 */
+/* 693.520 */this.stateVarDecl_P2_width_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.521 */
+/* 693.522 */this.stateVarDecl_opa_.purgeDependencyOnElmtId(rmElmtId)
+/* 693.523 */
+/* 693.524 */}
+/* 693.525 */
+/* 693.526 */
+/* 693.527 */public func forceRerender(deep!: Bool = false) {
+/* 693.528 */this.forceCompleteRerender(deep)
+/* 693.529 */}
+/* 693.530 */
+/* 693.531 */
+/* 693.532 */}
+/* 693.533 */
+/* ===== End of the Emit ===== */
+
+//返回按钮绘制组件
+/* ===== Emitted by MacroCall @Component in draw.cj:846:1 ===== */
+/* 846.1 */public class backarrow <: CustomView {
+/* 846.2 */    
+/* 846.3 */    
+/* 846.4 */    private var stateVarDecl_game_: ObservedProperty < FourAscendGame >
+/* 846.5 */    
+/* 846.6 */    
+/* 846.7 */    private mut prop game: FourAscendGame {
+/* 846.8 */        get() {
+/* 846.9 */            return this.stateVarDecl_game_.get()
+/* 846.10 */        }
+/* 846.11 */        set(v) {
+/* 846.12 */            this.stateVarDecl_game_.set(v)
+/* 846.13 */        }
+/* 846.14 */    }
+/* 846.15 */    
+/* 846.16 */    
+/* 846.17 */    private var stateVarDecl_game_state_: ObservedProperty < Board >
+/* 846.18 */    
+/* 846.19 */    
+/* 846.20 */    private mut prop game_state: Board {
+/* 846.21 */        get() {
+/* 846.22 */            return this.stateVarDecl_game_state_.get()
+/* 846.23 */        }
+/* 846.24 */        set(v) {
+/* 846.25 */            this.stateVarDecl_game_state_.set(v)
+/* 846.26 */        }
+/* 846.27 */    }
+/* 846.28 */    
+/* 846.29 */    
+/* 846.30 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >
+/* 846.31 */    
+/* 846.32 */    
+/* 846.33 */    private mut prop data: ObservedMatrix {
+/* 846.34 */        get() {
+/* 846.35 */            return this.stateVarDecl_data_.get()
+/* 846.36 */        }
+/* 846.37 */        set(v) {
+/* 846.38 */            this.stateVarDecl_data_.set(v)
+/* 846.39 */        }
+/* 846.40 */    }
+/* 846.41 */    
+/* 846.42 */    
+/* 846.43 */    private var stateVarDecl_ai_: ObservedProperty < StupidFourAscendPlayer >
+/* 846.44 */    
+/* 846.45 */    
+/* 846.46 */    private mut prop ai: StupidFourAscendPlayer {
+/* 846.47 */        get() {
+/* 846.48 */            return this.stateVarDecl_ai_.get()
+/* 846.49 */        }
+/* 846.50 */        set(v) {
+/* 846.51 */            this.stateVarDecl_ai_.set(v)
+/* 846.52 */        }
+/* 846.53 */    }
+/* 846.54 */    
+/* 846.55 */    
+/* 846.56 */    private var stateVarDecl_step_: ObservedProperty < Int64 >
+/* 846.57 */    
+/* 846.58 */    
+/* 846.59 */    private mut prop step: Int64 {
+/* 846.60 */        get() {
+/* 846.61 */            return this.stateVarDecl_step_.get()
+/* 846.62 */        }
+/* 846.63 */        set(v) {
+/* 846.64 */            this.stateVarDecl_step_.set(v)
+/* 846.65 */        }
+/* 846.66 */    }
+/* 846.67 */    
+/* 846.68 */    
+/* 846.69 */    private var stateVarDecl_WhiteAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 846.70 */    
+/* 846.71 */    
+/* 846.72 */    private mut prop WhiteAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 846.73 */        get() {
+/* 846.74 */            return this.stateVarDecl_WhiteAttackPos_.get()
+/* 846.75 */        }
+/* 846.76 */        set(v) {
+/* 846.77 */            this.stateVarDecl_WhiteAttackPos_.set(v)
+/* 846.78 */        }
+/* 846.79 */    }
+/* 846.80 */    
+/* 846.81 */    
+/* 846.82 */    private var stateVarDecl_BlackAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 846.83 */    
+/* 846.84 */    
+/* 846.85 */    private mut prop BlackAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 846.86 */        get() {
+/* 846.87 */            return this.stateVarDecl_BlackAttackPos_.get()
+/* 846.88 */        }
+/* 846.89 */        set(v) {
+/* 846.90 */            this.stateVarDecl_BlackAttackPos_.set(v)
+/* 846.91 */        }
+/* 846.92 */    }
+/* 846.93 */    
+/* 846.94 */    
+/* 846.95 */    private var stateVarDecl_animateFlag_: ObservedProperty < Bool >
+/* 846.96 */    
+/* 846.97 */    
+/* 846.98 */    private mut prop animateFlag: Bool {
+/* 846.99 */        get() {
+/* 846.100 */            return this.stateVarDecl_animateFlag_.get()
+/* 846.101 */        }
+/* 846.102 */        set(v) {
+/* 846.103 */            this.stateVarDecl_animateFlag_.set(v)
+/* 846.104 */        }
+/* 846.105 */    }
+/* 846.106 */    
+/* 846.107 */    
+/* 846.108 */    private var stateVarDecl_player_: ObservedProperty < Int64 >
+/* 846.109 */    
+/* 846.110 */    
+/* 846.111 */    private mut prop player: Int64 {
+/* 846.112 */        get() {
+/* 846.113 */            return this.stateVarDecl_player_.get()
+/* 846.114 */        }
+/* 846.115 */        set(v) {
+/* 846.116 */            this.stateVarDecl_player_.set(v)
+/* 846.117 */        }
+/* 846.118 */    }
+/* 846.119 */    
+/* 846.120 */    
+/* 846.121 */    
+/* 846.122 */    public func build() {
+/* 846.123 */        
+/* 846.124 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 846.125 */            Image(__GenerateResource__("", "", "", app.media.backarrow, "app.media.backarrow",[], 20000)).height(45).width(50).position(x: - 100, y: 30).onClick({ evt => game = FourAscendGame(9, 6, 6)
+/* 846.126 */                ai = StupidFourAscendPlayer(game)
+/* 846.127 */                this.game_state = game.getInitBoard()
+/* 846.128 */                this.data = ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 }))
+/* 846.129 */                this.step = 1
+/* 846.130 */                this.WhiteAttackPos = ObservedArrayList(ArrayList())
+/* 846.131 */                this.BlackAttackPos = ObservedArrayList(ArrayList())
+/* 846.132 */                this.animateFlag = false
+/* 846.133 */            this.player = 1 })
+/* 846.134 */        })
+/* 846.135 */        
+/* 846.136 */        ()
+/* 846.137 */        
+/* 846.138 */    }
+/* 846.139 */    
+/* 846.140 */    
+/* 846.141 */    public init(parent: Option < CustomView >, game!: ObservedProperty < FourAscendGame >, game_state!: ObservedProperty < Board >, data!: ObservedProperty < ObservedMatrix >, ai!: ObservedProperty < StupidFourAscendPlayer >, step!: ObservedProperty < Int64 >, WhiteAttackPos!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, BlackAttackPos!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, animateFlag!: ObservedProperty < Bool >, player!: ObservedProperty < Int64 >, localStorage!: Option < LocalStorage >= None) {
+/* 846.142 */        super(parent, localStorage)
+/* 846.143 */        
+/* 846.144 */        
+/* 846.145 */        this.stateVarDecl_game_ = game
+/* 846.146 */        
+/* 846.147 */        this.stateVarDecl_game_state_ = game_state
+/* 846.148 */        
+/* 846.149 */        this.stateVarDecl_data_ = data
+/* 846.150 */        
+/* 846.151 */        this.stateVarDecl_ai_ = ai
+/* 846.152 */        
+/* 846.153 */        this.stateVarDecl_step_ = step
+/* 846.154 */        
+/* 846.155 */        this.stateVarDecl_WhiteAttackPos_ = WhiteAttackPos
+/* 846.156 */        
+/* 846.157 */        this.stateVarDecl_BlackAttackPos_ = BlackAttackPos
+/* 846.158 */        
+/* 846.159 */        this.stateVarDecl_animateFlag_ = animateFlag
+/* 846.160 */        
+/* 846.161 */        this.stateVarDecl_player_ = player
+/* 846.162 */        
+/* 846.163 */        
+/* 846.164 */        this.stateVarDecl_game_.subscribeEx(this)
+/* 846.165 */        
+/* 846.166 */        this.stateVarDecl_game_state_.subscribeEx(this)
+/* 846.167 */        
+/* 846.168 */        this.stateVarDecl_data_.subscribeEx(this)
+/* 846.169 */        
+/* 846.170 */        this.stateVarDecl_ai_.subscribeEx(this)
+/* 846.171 */        
+/* 846.172 */        this.stateVarDecl_step_.subscribeEx(this)
+/* 846.173 */        
+/* 846.174 */        this.stateVarDecl_WhiteAttackPos_.subscribeEx(this)
+/* 846.175 */        
+/* 846.176 */        this.stateVarDecl_BlackAttackPos_.subscribeEx(this)
+/* 846.177 */        
+/* 846.178 */        this.stateVarDecl_animateFlag_.subscribeEx(this)
+/* 846.179 */        
+/* 846.180 */        this.stateVarDecl_player_.subscribeEx(this)
+/* 846.181 */        
+/* 846.182 */        SubscriberManager.getInstance().add(this)
+/* 846.183 */        
+/* 846.184 */        
+/* 846.185 */        registerSelf()
+/* 846.186 */        parent?.addChildById(id(), this)
+/* 846.187 */    }
+/* 846.188 */    
+/* 846.189 */    
+/* 846.190 */    public override func aboutToBeDeleted() {
+/* 846.191 */        
+/* 846.192 */        this.stateVarDecl_game_.unsubscribeEx(this)
+/* 846.193 */        
+/* 846.194 */        this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 846.195 */        
+/* 846.196 */        this.stateVarDecl_data_.unsubscribeEx(this)
+/* 846.197 */        
+/* 846.198 */        this.stateVarDecl_ai_.unsubscribeEx(this)
+/* 846.199 */        
+/* 846.200 */        this.stateVarDecl_step_.unsubscribeEx(this)
+/* 846.201 */        
+/* 846.202 */        this.stateVarDecl_WhiteAttackPos_.unsubscribeEx(this)
+/* 846.203 */        
+/* 846.204 */        this.stateVarDecl_BlackAttackPos_.unsubscribeEx(this)
+/* 846.205 */        
+/* 846.206 */        this.stateVarDecl_animateFlag_.unsubscribeEx(this)
+/* 846.207 */        
+/* 846.208 */        this.stateVarDecl_player_.unsubscribeEx(this)
+/* 846.209 */        
+/* 846.210 */        SubscriberManager.getInstance().delete(this)
+/* 846.211 */        this.aboutToBeDeletedInternal()
+/* 846.212 */    }
+/* 846.213 */    
+/* 846.214 */    
+/* 846.215 */    func updateWithValueParams(game!: Option < FourAscendGame >= Option < FourAscendGame >.None, game_state!: Option < Board >= Option < Board >.None, data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, ai!: Option < StupidFourAscendPlayer >= Option < StupidFourAscendPlayer >.None, step!: Option < Int64 >= Option < Int64 >.None, WhiteAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, BlackAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, animateFlag!: Option < Bool >= Option < Bool >.None, player!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 846.216 */        
+/* 846.217 */    }
+/* 846.218 */    
+/* 846.219 */    
+/* 846.220 */    public func rerender() {
+/* 846.221 */        this.updateDirtyElements()
+/* 846.222 */    }
+/* 846.223 */    
+/* 846.224 */    
+/* 846.225 */    public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 846.226 */        
+/* 846.227 */        this.stateVarDecl_game_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.228 */        
+/* 846.229 */        this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.230 */        
+/* 846.231 */        this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.232 */        
+/* 846.233 */        this.stateVarDecl_ai_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.234 */        
+/* 846.235 */        this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.236 */        
+/* 846.237 */        this.stateVarDecl_WhiteAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.238 */        
+/* 846.239 */        this.stateVarDecl_BlackAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.240 */        
+/* 846.241 */        this.stateVarDecl_animateFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.242 */        
+/* 846.243 */        this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 846.244 */        
+/* 846.245 */    }
+/* 846.246 */    
+/* 846.247 */    
+/* 846.248 */    public func forceRerender(deep!: Bool = false) {
+/* 846.249 */        this.forceCompleteRerender(deep)
+/* 846.250 */    }
+/* 846.251 */    
+/* 846.252 */    
+/* 846.253 */}
+/* 846.254 */
+/* ===== End of the Emit ===== */
+
+//棋子动画绘制组件
+/* ===== Emitted by MacroCall @Component in draw.cj:890:1 ===== */
+/* 890.1 */public class AttackAnimation <: CustomView {
+/* 890.2 */    
+/* 890.3 */    
+/* 890.4 */    private var stateVarDecl_wp_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 890.5 */    
+/* 890.6 */    
+/* 890.7 */    private mut prop wp: ObservedArrayList < Array < Int64 >> {
+/* 890.8 */        get() {
+/* 890.9 */            return this.stateVarDecl_wp_.get()
+/* 890.10 */        }
+/* 890.11 */        set(v) {
+/* 890.12 */            this.stateVarDecl_wp_.set(v)
+/* 890.13 */        }
+/* 890.14 */    }
+/* 890.15 */    
+/* 890.16 */    
+/* 890.17 */    private var stateVarDecl_bp_: ObservedProperty < ObservedArrayList < Array < Int64 >>>
+/* 890.18 */    
+/* 890.19 */    
+/* 890.20 */    private mut prop bp: ObservedArrayList < Array < Int64 >> {
+/* 890.21 */        get() {
+/* 890.22 */            return this.stateVarDecl_bp_.get()
+/* 890.23 */        }
+/* 890.24 */        set(v) {
+/* 890.25 */            this.stateVarDecl_bp_.set(v)
+/* 890.26 */        }
+/* 890.27 */    }
+/* 890.28 */    
+/* 890.29 */    
+/* 890.30 */    private var stateVarDecl_step_W_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_W_", 0)
+/* 890.31 */    
+/* 890.32 */    
+/* 890.33 */    private mut prop step_W: Int64 {
+/* 890.34 */        get() {
+/* 890.35 */            return this.stateVarDecl_step_W_.get()
+/* 890.36 */        }
+/* 890.37 */        set(v) {
+/* 890.38 */            this.stateVarDecl_step_W_.set(v)
+/* 890.39 */        }
+/* 890.40 */    }
+/* 890.41 */    
+/* 890.42 */    
+/* 890.43 */    private var stateVarDecl_step_B_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_B_", 0)
+/* 890.44 */    
+/* 890.45 */    
+/* 890.46 */    private mut prop step_B: Int64 {
+/* 890.47 */        get() {
+/* 890.48 */            return this.stateVarDecl_step_B_.get()
+/* 890.49 */        }
+/* 890.50 */        set(v) {
+/* 890.51 */            this.stateVarDecl_step_B_.set(v)
+/* 890.52 */        }
+/* 890.53 */    }
+/* 890.54 */    
+/* 890.55 */    
+/* 890.56 */    private var stateVarDecl_animateFlag_: ObservedProperty < Bool >
+/* 890.57 */    
+/* 890.58 */    
+/* 890.59 */    private mut prop animateFlag: Bool {
+/* 890.60 */        get() {
+/* 890.61 */            return this.stateVarDecl_animateFlag_.get()
+/* 890.62 */        }
+/* 890.63 */        set(v) {
+/* 890.64 */            this.stateVarDecl_animateFlag_.set(v)
+/* 890.65 */        }
+/* 890.66 */    }
+/* 890.67 */    
+/* 890.68 */    
+/* 890.69 */    private var stateVarDecl_unopposed_: ObservedProperty < Bool >
+/* 890.70 */    
+/* 890.71 */    
+/* 890.72 */    private mut prop unopposed: Bool {
+/* 890.73 */        get() {
+/* 890.74 */            return this.stateVarDecl_unopposed_.get()
+/* 890.75 */        }
+/* 890.76 */        set(v) {
+/* 890.77 */            this.stateVarDecl_unopposed_.set(v)
+/* 890.78 */        }
+/* 890.79 */    }
+/* 890.80 */    
+/* 890.81 */    
+/* 890.82 */    private var stateVarDecl_onHit_: ObservedProperty < Bool >
+/* 890.83 */    
+/* 890.84 */    
+/* 890.85 */    private mut prop onHit: Bool {
+/* 890.86 */        get() {
+/* 890.87 */            return this.stateVarDecl_onHit_.get()
+/* 890.88 */        }
+/* 890.89 */        set(v) {
+/* 890.90 */            this.stateVarDecl_onHit_.set(v)
+/* 890.91 */        }
+/* 890.92 */    }
+/* 890.93 */    
+/* 890.94 */    
+/* 890.95 */    var Minsize: Int64 = 0
+/* 890.96 */    
+/* 890.97 */    
+/* 890.98 */    var Maxsize: Int64 = 0
+/* 890.99 */    
+/* 890.100 */    
+/* 890.101 */    let animateOpt = AnimateParam(duration: 800, curve: Curve.Smooth, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => AppLog.info("onfinish") }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90))
+/* 890.102 */    
+/* 890.103 */    
+/* 890.104 */    private func WhiteAttackCheck(p: Int64): Float64 {
+/* 890.105 */        if((step_W == 0 && this.animateFlag) || step_W > 0) {
+/* 890.106 */            return 1.0
+/* 890.107 */        }
+/* 890.108 */        else {
+/* 890.109 */            return 0.0
+/* 890.110 */        }
+/* 890.111 */    }
+/* 890.112 */    
+/* 890.113 */    
+/* 890.114 */    private func BlackAttackCheck(p: Int64): Float64 {
+/* 890.115 */        if((step_B == 0 && this.animateFlag) || step_B > 0) {
+/* 890.116 */            return 1.0
+/* 890.117 */        }
+/* 890.118 */        else {
+/* 890.119 */            return 0.0
+/* 890.120 */        }
+/* 890.121 */    }
+/* 890.122 */    
+/* 890.123 */    
+/* 890.124 */    private func getPosX(x: Int64, player: Int64) {
+/* 890.125 */        let m: Random = Random()
+/* 890.126 */        if(! this.animateFlag) {
+/* 890.127 */            return x * 40 + 85
+/* 890.128 */        }
+/* 890.129 */        else {
+/* 890.130 */            if(player == 1 && step_W == 1) {
+/* 890.131 */                return 0 + m.nextInt64(40)
+/* 890.132 */            }
+/* 890.133 */            else if(player == - 1 && step_B == 1) {
+/* 890.134 */                return 450 + m.nextInt64(40)
+/* 890.135 */            }
+/* 890.136 */            else if(step_B == 2 && step_W == 2) {
+/* 890.137 */                return 225
+/* 890.138 */            }
+/* 890.139 */            else if(step_B == 3 && step_W == 3) {
+/* 890.140 */                if(player == 1) {
+/* 890.141 */                    return 500
+/* 890.142 */                }
+/* 890.143 */                else {
+/* 890.144 */                    return 0
+/* 890.145 */                }
+/* 890.146 */            }
+/* 890.147 */            else {
+/* 890.148 */                return x * 40 + 85
+/* 890.149 */            }
+/* 890.150 */        }
+/* 890.151 */    }
+/* 890.152 */    
+/* 890.153 */    
+/* 890.154 */    private func getPosY(x: Int64, y: Int64, player: Int64) {
+/* 890.155 */        let m: Random = Random()
+/* 890.156 */        if(! this.animateFlag) {
+/* 890.157 */            return y * 40 + 15
+/* 890.158 */        }
+/* 890.159 */        else {
+/* 890.160 */            if(player == 1 && step_W == 1) {
+/* 890.161 */                for(i in 0 .. wp.size) {
+/* 890.162 */                    if(wp[i][0] == y && wp[i][1] == x) {
+/* 890.163 */                        return(50 + 350 / wp.size * i)
+/* 890.164 */                    }
+/* 890.165 */                }
+/* 890.166 */                return(50 + 350 + m.nextInt64(10))
+/* 890.167 */            }
+/* 890.168 */            else if(player == - 1 && step_B == 1) {
+/* 890.169 */                for(i in 0 .. bp.size) {
+/* 890.170 */                    if(bp[i][0] == y && bp[i][1] == x) {
+/* 890.171 */                        return(50 + 350 / bp.size * i)
+/* 890.172 */                    }
+/* 890.173 */                }
+/* 890.174 */                return(50 + 350 + m.nextInt64(10))
+/* 890.175 */            }
+/* 890.176 */            else if(step_B == 2 && step_W == 2) {
+/* 890.177 */                if(wp.size == 0 || bp.size == 0) {
+/* 890.178 */                    if(bp.size == 0) {
+/* 890.179 */                        for(i in 0 .. wp.size) {
+/* 890.180 */                            if(wp[i][0] == y && wp[i][1] == x) {
+/* 890.181 */                                return(50 + 350 / this.Maxsize *(i + this.Minsize))
+/* 890.182 */                            }
+/* 890.183 */                        }
+/* 890.184 */                    }
+/* 890.185 */                    else {
+/* 890.186 */                        for(i in 0 .. bp.size) {
+/* 890.187 */                            if(bp[i][0] == y && bp[i][1] == x) {
+/* 890.188 */                                return(50 + 350 / this.Maxsize *(i + this.Minsize))
+/* 890.189 */                            }
+/* 890.190 */                        }
+/* 890.191 */                    }
+/* 890.192 */                }
+/* 890.193 */                else {
+/* 890.194 */                    var min_size = 0
+/* 890.195 */                    var max_size = 0
+/* 890.196 */                    if(wp.size > bp.size) {
+/* 890.197 */                        min_size = bp.size
+/* 890.198 */                        max_size = wp.size
+/* 890.199 */                    }
+/* 890.200 */                    else {
+/* 890.201 */                        min_size = wp.size
+/* 890.202 */                        max_size = bp.size
+/* 890.203 */                    }
+/* 890.204 */                    if(this.Minsize == 0 || this.Maxsize == 0) {
+/* 890.205 */                        this.Minsize = min_size
+/* 890.206 */                        this.Maxsize = max_size
+/* 890.207 */                    }
+/* 890.208 */                    for(i in 0 .. min_size) {
+/* 890.209 */                        if(player == 1) {
+/* 890.210 */                            if(wp[i][0] == y && wp[i][1] == x) {
+/* 890.211 */                                return((50 + 350 / wp.size * i + 50 + 350 / bp.size * i) / 2)
+/* 890.212 */                            }
+/* 890.213 */                        }
+/* 890.214 */                        else {
+/* 890.215 */                            if(bp[i][0] == y && bp[i][1] == x) {
+/* 890.216 */                                return((50 + 350 / wp.size * i + 50 + 350 / bp.size * i) / 2)
+/* 890.217 */                            }
+/* 890.218 */                        }
+/* 890.219 */                    }
+/* 890.220 */                    for(i in min_size .. max_size) {
+/* 890.221 */                        if(max_size == wp.size) {
+/* 890.222 */                            if(wp[i][0] == y && wp[i][1] == x) {
+/* 890.223 */                                return(50 + 350 / wp.size * i)
+/* 890.224 */                            }
+/* 890.225 */                        }
+/* 890.226 */                        else {
+/* 890.227 */                            if(bp[i][0] == y && bp[i][1] == x) {
+/* 890.228 */                                return(50 + 350 / bp.size * i)
+/* 890.229 */                            }
+/* 890.230 */                        }
+/* 890.231 */                    }
+/* 890.232 */                }
+/* 890.233 */                return y * 40 + 15
+/* 890.234 */            }
+/* 890.235 */            else if(step_B == 3 && step_W == 3) {
+/* 890.236 */                return 130
+/* 890.237 */            }
+/* 890.238 */            else {
+/* 890.239 */                return y * 40 + 15
+/* 890.240 */            }
+/* 890.241 */        }
+/* 890.242 */    }
+/* 890.243 */    
+/* 890.244 */    
+/* 890.245 */    
+/* 890.246 */    public func build() {
+/* 890.247 */        
+/* 890.248 */        this.observeComponentCreation({ elmtId, isInitialRender =>
+/* 890.249 */            Stack { this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Array < Int64 >, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.white_Chess, "app.media.white_Chess",[], 20000)).height(30.0).width(30.0).opacity(WhiteAttackCheck(index)).position(x: getPosX(entity[1], 1), y: getPosY(entity[1], entity[0], 1)).onAppear({ => if(this.animateFlag && ! unopposed) {
+/* 890.250 */                animateTo(AnimateParam(duration: 600, curve: Curve.EaseOut, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 400, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 100, curve: Curve.Smooth, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => if(this.wp.size == this.bp.size) {
+/* 890.251 */                    this.step_B = 0
+/* 890.252 */                    this.step_W = 0
+/* 890.253 */                    this.animateFlag = false
+/* 890.254 */                    this.Minsize = 0
+/* 890.255 */                    this.Maxsize = 0
+/* 890.256 */                }
+/* 890.257 */                else {
+/* 890.258 */                    animateTo(AnimateParam(duration: 400, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => this.step_B = 0
+/* 890.259 */                        this.step_W = 0
+/* 890.260 */                        this.animateFlag = false
+/* 890.261 */                        this.wp = ObservedArrayList(ArrayList())
+/* 890.262 */                        this.bp = ObservedArrayList(ArrayList())
+/* 890.263 */                        this.Minsize = 0
+/* 890.264 */                        this.Maxsize = 0
+/* 890.265 */                    this.onHit = true }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_B = 3
+/* 890.266 */                    this.step_W = 3 })
+/* 890.267 */                }
+/* 890.268 */            }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => if(this.step_B == 2 && this.step_W == 2) {
+/* 890.269 */                if(this.wp.size > this.bp.size) {
+/* 890.270 */                    var temp: ObservedArrayList < Array < Int64 >>= ObservedArrayList(ArrayList())
+/* 890.271 */                    for(i in(this.bp.size) ..(this.wp.size)) {
+/* 890.272 */                        temp.append(this.wp[i])
+/* 890.273 */                    }
+/* 890.274 */                    this.wp = temp
+/* 890.275 */                    this.bp = ObservedArrayList(ArrayList())
+/* 890.276 */                }
+/* 890.277 */                else {
+/* 890.278 */                    var temp: ObservedArrayList < Array < Int64 >>= ObservedArrayList(ArrayList())
+/* 890.279 */                    for(i in(this.wp.size) ..(this.bp.size)) {
+/* 890.280 */                        temp.append(this.bp[i])
+/* 890.281 */                    }
+/* 890.282 */                    this.bp = temp
+/* 890.283 */                    this.wp = ObservedArrayList(ArrayList())
+/* 890.284 */                }
+/* 890.285 */            }
+/* 890.286 */        }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_B = 2
+/* 890.287 */        this.step_W = 2 }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => if(this.animateFlag && this.step_W < 1) {
+/* 890.288 */            this.step_W = 1
+/* 890.289 */            if(this.step_B == 0) {
+/* 890.290 */                this.step_B = 1
+/* 890.291 */            }
+/* 890.292 */        }
+/* 890.293 */    })
+/* 890.294 */}
+/* 890.295 */else if(this.animateFlag && unopposed) {
+/* 890.296 */    animateTo(AnimateParam(duration: 600, curve: Curve.EaseOut, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 400, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => this.step_B = 0
+/* 890.297 */        this.step_W = 0
+/* 890.298 */        this.animateFlag = false
+/* 890.299 */        this.wp = ObservedArrayList(ArrayList())
+/* 890.300 */        this.bp = ObservedArrayList(ArrayList())
+/* 890.301 */        this.Minsize = 0
+/* 890.302 */        this.Maxsize = 0
+/* 890.303 */    this.onHit = true }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_W = 3
+/* 890.304 */    this.step_B = 3 }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_W = 1
+/* 890.305 */    this.step_B = 1 })
+/* 890.306 */}
+/* 890.307 */}) }) }
+/* 890.308 */
+/* 890.309 */this.forEachUpdateFunction(elmtId, wp, itemGenFunc: forEachItemGenFunction) } })
+/* 890.310 */this.observeComponentCreation({ elmtId, isInitialRender => ForEach { let forEachItemGenFunction = { entity: Array < Int64 >, index: Int64 => this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.black_Chess, "app.media.black_Chess",[], 20000)).height(30.0).width(30.0).opacity(BlackAttackCheck(index)).position(x: getPosX(entity[1], - 1), y: getPosY(entity[1], entity[0], - 1)).onAppear({ => if(this.animateFlag && ! unopposed) {
+/* 890.311 */animateTo(AnimateParam(duration: 600, curve: Curve.EaseOut, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 400, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 100, curve: Curve.Smooth, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => if(this.wp.size == this.bp.size) {
+/* 890.312 */this.step_B = 0
+/* 890.313 */this.step_W = 0
+/* 890.314 */this.animateFlag = false
+/* 890.315 */this.Minsize = 0
+/* 890.316 */this.Maxsize = 0
+/* 890.317 */}
+/* 890.318 */else {
+/* 890.319 */animateTo(AnimateParam(duration: 400, curve: Curve.EaseIn, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => this.step_B = 0
+/* 890.320 */    this.step_W = 0
+/* 890.321 */    this.animateFlag = false
+/* 890.322 */    this.wp = ObservedArrayList(ArrayList())
+/* 890.323 */    this.bp = ObservedArrayList(ArrayList())
+/* 890.324 */    this.Minsize = 0
+/* 890.325 */    this.Maxsize = 0
+/* 890.326 */this.onHit = true }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_B = 3
+/* 890.327 */this.step_W = 3 })
+/* 890.328 */}
+/* 890.329 */}, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => if(this.step_B == 2 && this.step_W == 2) {
+/* 890.330 */if(this.wp.size > this.bp.size) {
+/* 890.331 */var temp: ObservedArrayList < Array < Int64 >>= ObservedArrayList(ArrayList())
+/* 890.332 */for(i in(this.bp.size) ..(this.wp.size)) {
+/* 890.333 */    temp.append(this.wp[i])
+/* 890.334 */}
+/* 890.335 */this.wp = temp
+/* 890.336 */this.bp = ObservedArrayList(ArrayList())
+/* 890.337 */}
+/* 890.338 */else {
+/* 890.339 */var temp: ObservedArrayList < Array < Int64 >>= ObservedArrayList(ArrayList())
+/* 890.340 */for(i in(this.wp.size) ..(this.bp.size)) {
+/* 890.341 */    temp.append(this.bp[i])
+/* 890.342 */}
+/* 890.343 */this.bp = temp
+/* 890.344 */this.wp = ObservedArrayList(ArrayList())
+/* 890.345 */}
+/* 890.346 */}
+/* 890.347 */}) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_B = 2
+/* 890.348 */this.step_W = 2 }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => if(this.animateFlag && this.step_B < 1) {
+/* 890.349 */this.step_B = 1
+/* 890.350 */if(this.step_W == 0) {
+/* 890.351 */this.step_W = 1
+/* 890.352 */}
+/* 890.353 */}
+/* 890.354 */})
+/* 890.355 */}
+/* 890.356 */else if(this.animateFlag && unopposed) {
+/* 890.357 */animateTo(AnimateParam(duration: 600, curve: Curve.EaseOut, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => animateTo(AnimateParam(duration: 800, curve: Curve.Smooth, delay: 0, iterations: 1, playMode: PlayMode.Alternate, onFinish: { => this.step_B = 0
+/* 890.358 */this.step_W = 0
+/* 890.359 */this.animateFlag = false
+/* 890.360 */this.wp = ObservedArrayList(ArrayList())
+/* 890.361 */this.bp = ObservedArrayList(ArrayList())
+/* 890.362 */this.Minsize = 0
+/* 890.363 */this.Maxsize = 0
+/* 890.364 */this.onHit = true }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_W = 3
+/* 890.365 */this.step_B = 3 }) }, expectedFrameRateRange: ExpectedFrameRateRange(min: 20, max: 120, expected: 90)), { => this.step_W = 1
+/* 890.366 */this.step_B = 1 })
+/* 890.367 */}
+/* 890.368 */}) }) }
+/* 890.369 */
+/* 890.370 */this.forEachUpdateFunction(elmtId, bp, itemGenFunc: forEachItemGenFunction) } }) }.position(x: 0, y: 0).height(800).width(500)
+/* 890.371 */})
+/* 890.372 */
+/* 890.373 */()
+/* 890.374 */
+/* 890.375 */}
+/* 890.376 */
+/* 890.377 */
+/* 890.378 */public init(parent: Option < CustomView >, wp!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, bp!: ObservedProperty < ObservedArrayList < Array < Int64 >>>, step_W!: Option < ObservedProperty < Int64 >>= None, step_B!: Option < ObservedProperty < Int64 >>= None, animateFlag!: ObservedProperty < Bool >, unopposed!: ObservedProperty < Bool >, onHit!: ObservedProperty < Bool >, Minsize!: Option < ObservedProperty < Int64 >>= None, Maxsize!: Option < ObservedProperty < Int64 >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 890.379 */super(parent, localStorage)
+/* 890.380 */
+/* 890.381 */
+/* 890.382 */this.stateVarDecl_wp_ = wp
+/* 890.383 */
+/* 890.384 */this.stateVarDecl_bp_ = bp
+/* 890.385 */
+/* 890.386 */match(step_W) {
+/* 890.387 */case Some(v) => this.stateVarDecl_step_W_ = ObservedProperty < Int64 >("stateVarDecl_step_W_", v.get())
+/* 890.388 */case _ =>()
+/* 890.389 */}
+/* 890.390 */
+/* 890.391 */match(step_B) {
+/* 890.392 */case Some(v) => this.stateVarDecl_step_B_ = ObservedProperty < Int64 >("stateVarDecl_step_B_", v.get())
+/* 890.393 */case _ =>()
+/* 890.394 */}
+/* 890.395 */
+/* 890.396 */this.stateVarDecl_animateFlag_ = animateFlag
+/* 890.397 */
+/* 890.398 */this.stateVarDecl_unopposed_ = unopposed
+/* 890.399 */
+/* 890.400 */this.stateVarDecl_onHit_ = onHit
+/* 890.401 */
+/* 890.402 */match(Minsize) {
+/* 890.403 */case Some(v) => this.Minsize = v.get()
+/* 890.404 */case _ =>()
+/* 890.405 */}
+/* 890.406 */
+/* 890.407 */match(Maxsize) {
+/* 890.408 */case Some(v) => this.Maxsize = v.get()
+/* 890.409 */case _ =>()
+/* 890.410 */}
+/* 890.411 */
+/* 890.412 */
+/* 890.413 */this.stateVarDecl_wp_.subscribeEx(this)
+/* 890.414 */
+/* 890.415 */this.stateVarDecl_bp_.subscribeEx(this)
+/* 890.416 */
+/* 890.417 */this.stateVarDecl_step_W_.subscribeEx(this)
+/* 890.418 */
+/* 890.419 */this.stateVarDecl_step_B_.subscribeEx(this)
+/* 890.420 */
+/* 890.421 */this.stateVarDecl_animateFlag_.subscribeEx(this)
+/* 890.422 */
+/* 890.423 */this.stateVarDecl_unopposed_.subscribeEx(this)
+/* 890.424 */
+/* 890.425 */this.stateVarDecl_onHit_.subscribeEx(this)
+/* 890.426 */
+/* 890.427 */SubscriberManager.getInstance().add(this)
+/* 890.428 */
+/* 890.429 */
+/* 890.430 */registerSelf()
+/* 890.431 */parent?.addChildById(id(), this)
+/* 890.432 */}
+/* 890.433 */
+/* 890.434 */
+/* 890.435 */public override func aboutToBeDeleted() {
+/* 890.436 */
+/* 890.437 */this.stateVarDecl_wp_.unsubscribeEx(this)
+/* 890.438 */
+/* 890.439 */this.stateVarDecl_bp_.unsubscribeEx(this)
+/* 890.440 */
+/* 890.441 */this.stateVarDecl_step_W_.unsubscribeEx(this)
+/* 890.442 */
+/* 890.443 */this.stateVarDecl_step_B_.unsubscribeEx(this)
+/* 890.444 */
+/* 890.445 */this.stateVarDecl_animateFlag_.unsubscribeEx(this)
+/* 890.446 */
+/* 890.447 */this.stateVarDecl_unopposed_.unsubscribeEx(this)
+/* 890.448 */
+/* 890.449 */this.stateVarDecl_onHit_.unsubscribeEx(this)
+/* 890.450 */
+/* 890.451 */SubscriberManager.getInstance().delete(this)
+/* 890.452 */this.aboutToBeDeletedInternal()
+/* 890.453 */}
+/* 890.454 */
+/* 890.455 */
+/* 890.456 */func updateWithValueParams(wp!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, bp!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, step_W!: Option < Int64 >= Option < Int64 >.None, step_B!: Option < Int64 >= Option < Int64 >.None, animateFlag!: Option < Bool >= Option < Bool >.None, unopposed!: Option < Bool >= Option < Bool >.None, onHit!: Option < Bool >= Option < Bool >.None, Minsize!: Option < Int64 >= Option < Int64 >.None, Maxsize!: Option < Int64 >= Option < Int64 >.None): Unit {
+/* 890.457 */
+/* 890.458 */match(step_W) {
+/* 890.459 */case Some(v) => this.step_W = v
+/* 890.460 */case _ =>()
+/* 890.461 */}
+/* 890.462 */
+/* 890.463 */match(step_B) {
+/* 890.464 */case Some(v) => this.step_B = v
+/* 890.465 */case _ =>()
+/* 890.466 */}
+/* 890.467 */
+/* 890.468 */}
+/* 890.469 */
+/* 890.470 */
+/* 890.471 */public func rerender() {
+/* 890.472 */this.updateDirtyElements()
+/* 890.473 */}
+/* 890.474 */
+/* 890.475 */
+/* 890.476 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 890.477 */
+/* 890.478 */this.stateVarDecl_wp_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.479 */
+/* 890.480 */this.stateVarDecl_bp_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.481 */
+/* 890.482 */this.stateVarDecl_step_W_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.483 */
+/* 890.484 */this.stateVarDecl_step_B_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.485 */
+/* 890.486 */this.stateVarDecl_animateFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.487 */
+/* 890.488 */this.stateVarDecl_unopposed_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.489 */
+/* 890.490 */this.stateVarDecl_onHit_.purgeDependencyOnElmtId(rmElmtId)
+/* 890.491 */
+/* 890.492 */}
+/* 890.493 */
+/* 890.494 */
+/* 890.495 */public func forceRerender(deep!: Bool = false) {
+/* 890.496 */this.forceCompleteRerender(deep)
+/* 890.497 */}
+/* 890.498 */
+/* 890.499 */
+/* 890.500 */}
+/* 890.501 */
 /* ===== End of the Emit ===== */
