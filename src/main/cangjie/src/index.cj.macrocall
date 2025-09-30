@@ -15,274 +15,357 @@ import ohos.router.*
 
 //所需的类型定义
 type ObservedMatrix = ObservedArray<Int64>
+
 type OpacityMatrix = ObservedArray<Float64>
-type Board = (Array<Array<Int64>>,
-                Array<Array<Int64>>,
-                Array<Array<Int64>>,
-                Int64,
-                Int64,
-                Int64)
+
+type Board = (Array<Array<Int64>>, Array<Array<Int64>>, Array<Array<Int64>>, Int64, Int64, Int64)
 
 //游戏初始化
-var game :FourAscendGame = FourAscendGame(9, 6, 6)
-var ai :StupidFourAscendPlayer = StupidFourAscendPlayer(game)
+var game: FourAscendGame = FourAscendGame(9, 6, 6)
+var ai: StupidFourAscendPlayer = StupidFourAscendPlayer(game)
 
-/* ===== Emitted by MacroCall @Entry in index.cj:30:1 ===== */
-/* 30.1 */class EntryView <: CustomView {
-/* 30.2 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >= ObservedProperty < ObservedMatrix >("stateVarDecl_data_", ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 })))
-/* 30.3 */    private mut prop data: ObservedMatrix {
-/* 30.4 */        get() {
-/* 30.5 */            return this.stateVarDecl_data_.get()
-/* 30.6 */        }
-/* 30.7 */        set(v) {
-/* 30.8 */            this.stateVarDecl_data_.set(v)
-/* 30.9 */        }
-/* 30.10 */    }
-/* 30.11 */    private var stateVarDecl_opacityArray_: ObservedProperty < OpacityMatrix >= ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", ObservedArray < Float64 >(Array < Float64 >(81, { _ => 0.8 })))
-/* 30.12 */    private mut prop opacityArray: OpacityMatrix {
-/* 30.13 */        get() {
-/* 30.14 */            return this.stateVarDecl_opacityArray_.get()
-/* 30.15 */        }
-/* 30.16 */        set(v) {
-/* 30.17 */            this.stateVarDecl_opacityArray_.set(v)
-/* 30.18 */        }
-/* 30.19 */    }
-/* 30.20 */    private var stateVarDecl_game_state_: ObservedProperty < Board >= ObservedProperty < Board >("stateVarDecl_game_state_", game.getInitBoard())
-/* 30.21 */    private mut prop game_state: Board {
-/* 30.22 */        get() {
-/* 30.23 */            return this.stateVarDecl_game_state_.get()
-/* 30.24 */        }
-/* 30.25 */        set(v) {
-/* 30.26 */            this.stateVarDecl_game_state_.set(v)
-/* 30.27 */        }
-/* 30.28 */    }
-/* 30.29 */    private var stateVarDecl_player_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_player_", 1)
-/* 30.30 */    private mut prop player: Int64 {
-/* 30.31 */        get() {
-/* 30.32 */            return this.stateVarDecl_player_.get()
-/* 30.33 */        }
-/* 30.34 */        set(v) {
-/* 30.35 */            this.stateVarDecl_player_.set(v)
-/* 30.36 */        }
-/* 30.37 */    }
-/* 30.38 */    private var stateVarDecl_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_", 0)
-/* 30.39 */    private mut prop step: Int64 {
-/* 30.40 */        get() {
-/* 30.41 */            return this.stateVarDecl_step_.get()
-/* 30.42 */        }
-/* 30.43 */        set(v) {
-/* 30.44 */            this.stateVarDecl_step_.set(v)
-/* 30.45 */        }
-/* 30.46 */    }
-/* 30.47 */    private var stateVarDecl_WelFontOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", 0.8)
-/* 30.48 */    private mut prop WelFontOpacity: Float64 {
-/* 30.49 */        get() {
-/* 30.50 */            return this.stateVarDecl_WelFontOpacity_.get()
-/* 30.51 */        }
-/* 30.52 */        set(v) {
-/* 30.53 */            this.stateVarDecl_WelFontOpacity_.set(v)
-/* 30.54 */        }
-/* 30.55 */    }
-/* 30.56 */    private var stateVarDecl_WelOpacity_: ObservedProperty < Float64 >= ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", 1.0)
-/* 30.57 */    private mut prop WelOpacity: Float64 {
-/* 30.58 */        get() {
-/* 30.59 */            return this.stateVarDecl_WelOpacity_.get()
-/* 30.60 */        }
-/* 30.61 */        set(v) {
-/* 30.62 */            this.stateVarDecl_WelOpacity_.set(v)
-/* 30.63 */        }
-/* 30.64 */    }
-/* 30.65 */    protected override func aboutToAppear() {
-/* 30.66 */        Font.registerFont(familyName: __GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003), familySrc: CJResource(0, 30000, "ProggyTinySZ.ttf",["ProggyTinySZ.ttf"], moduleName: "", bundleName: "", moduleType: ""))
-/* 30.67 */    }
-/* 30.68 */    public func build() {
-/* 30.69 */        this.observeComponentCreation({ elmtId, isInitialRender => Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
-/* 30.70 */        this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 0) {
-/* 30.71 */            this.ifElseBranchUpdateFunction(0, { => match(WelcomePage(this, step: stateVarDecl_step_, WelFontOpacity: stateVarDecl_WelFontOpacity_, WelOpacity: stateVarDecl_WelOpacity_)) {
-/* 30.72 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.73 */                CustomView.create(cv)
-/* 30.74 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.75 */                case vb: ViewBuilder => vb.build()
-/* 30.76 */                case _ => LegalCallCheck.check(WelcomePage(this, step: stateVarDecl_step_, WelFontOpacity: stateVarDecl_WelFontOpacity_, WelOpacity: stateVarDecl_WelOpacity_))
-/* 30.77 */            } })
-/* 30.78 */        }
-/* 30.79 */        else if(step == 1) {
-/* 30.80 */            this.ifElseBranchUpdateFunction(1, { => match(MenuPage(this, step: stateVarDecl_step_)) {
-/* 30.81 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.82 */                CustomView.create(cv)
-/* 30.83 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.84 */                case vb: ViewBuilder => vb.build()
-/* 30.85 */                case _ => LegalCallCheck.check(MenuPage(this, step: stateVarDecl_step_))
-/* 30.86 */            } })
-/* 30.87 */        }
-/* 30.88 */        else if(step == 2) {
-/* 30.89 */            this.ifElseBranchUpdateFunction(2, { => match(chessGrid(this)) {
-/* 30.90 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.91 */                CustomView.create(cv)
-/* 30.92 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.93 */                case vb: ViewBuilder => vb.build()
-/* 30.94 */                case _ => LegalCallCheck.check(chessGrid(this))
-/* 30.95 */            }
-/* 30.96 */            match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, mode: ObservedProperty("", 1), AI: ObservedProperty("", ai))) {
-/* 30.97 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.98 */                CustomView.create(cv)
-/* 30.99 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.100 */                case vb: ViewBuilder => vb.build()
-/* 30.101 */                case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, mode: ObservedProperty("", 1), AI: ObservedProperty("", ai)))
-/* 30.102 */            }
-/* 30.103 */            match(playerstate(this, game_state: stateVarDecl_game_state_)) {
-/* 30.104 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.105 */                CustomView.create(cv)
-/* 30.106 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.107 */                case vb: ViewBuilder => vb.build()
-/* 30.108 */                case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_))
-/* 30.109 */            } })
-/* 30.110 */        }
-/* 30.111 */        else if(step == 3) {
-/* 30.112 */            this.ifElseBranchUpdateFunction(3, { => match(chessGrid(this)) {
-/* 30.113 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.114 */                CustomView.create(cv)
-/* 30.115 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.116 */                case vb: ViewBuilder => vb.build()
-/* 30.117 */                case _ => LegalCallCheck.check(chessGrid(this))
-/* 30.118 */            }
-/* 30.119 */            match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, mode: ObservedProperty("", 2), AI: ObservedProperty("", ai), opacityArray: stateVarDecl_opacityArray_)) {
-/* 30.120 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.121 */                CustomView.create(cv)
-/* 30.122 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.123 */                case vb: ViewBuilder => vb.build()
-/* 30.124 */                case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, mode: ObservedProperty("", 2), AI: ObservedProperty("", ai), opacityArray: stateVarDecl_opacityArray_))
-/* 30.125 */            }
-/* 30.126 */            match(playerstate(this, game_state: stateVarDecl_game_state_)) {
-/* 30.127 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.128 */                CustomView.create(cv)
-/* 30.129 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.130 */                case vb: ViewBuilder => vb.build()
-/* 30.131 */                case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_))
-/* 30.132 */            } })
-/* 30.133 */        }
-/* 30.134 */        else if(step == 4) {
-/* 30.135 */            this.ifElseBranchUpdateFunction(4, { => match(GameEndPage(this, game: ObservedProperty("", game), step: stateVarDecl_step_)) {
-/* 30.136 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
-/* 30.137 */                CustomView.create(cv)
-/* 30.138 */                ViewStackProcessor.StopGetAccessRecording()
-/* 30.139 */                case vb: ViewBuilder => vb.build()
-/* 30.140 */                case _ => LegalCallCheck.check(GameEndPage(this, game: ObservedProperty("", game), step: stateVarDecl_step_))
-/* 30.141 */            } })
-/* 30.142 */        }
-/* 30.143 */        else if(step == 5) {
-/* 30.144 */            this.ifElseBranchUpdateFunction(5, { => })
-/* 30.145 */        }
-/* 30.146 */        else {
-/* 30.147 */            If.branchId(6)
-/* 30.148 */        }
-/* 30.149 */    } }) }.width(100.percent).height(100.percent) })
-/* 30.150 */    ()
-/* 30.151 */}
-/* 30.152 */public init(parent: Option < CustomView >, data!: Option < ObservedProperty < ObservedMatrix >>= None, opacityArray!: Option < ObservedProperty < OpacityMatrix >>= None, game_state!: Option < ObservedProperty < Board >>= None, player!: Option < ObservedProperty < Int64 >>= None, step!: Option < ObservedProperty < Int64 >>= None, WelFontOpacity!: Option < ObservedProperty < Float64 >>= None, WelOpacity!: Option < ObservedProperty < Float64 >>= None, localStorage!: Option < LocalStorage >= None) {
-/* 30.153 */    super(parent, localStorage)
-/* 30.154 */    match(data) {
-/* 30.155 */        case Some(v) => this.stateVarDecl_data_ = ObservedProperty < ObservedMatrix >("stateVarDecl_data_", v.get())
-/* 30.156 */        case _ =>()
-/* 30.157 */    }
-/* 30.158 */    match(opacityArray) {
-/* 30.159 */        case Some(v) => this.stateVarDecl_opacityArray_ = ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", v.get())
-/* 30.160 */        case _ =>()
-/* 30.161 */    }
-/* 30.162 */    match(game_state) {
-/* 30.163 */        case Some(v) => this.stateVarDecl_game_state_ = ObservedProperty < Board >("stateVarDecl_game_state_", v.get())
-/* 30.164 */        case _ =>()
-/* 30.165 */    }
-/* 30.166 */    match(player) {
-/* 30.167 */        case Some(v) => this.stateVarDecl_player_ = ObservedProperty < Int64 >("stateVarDecl_player_", v.get())
-/* 30.168 */        case _ =>()
-/* 30.169 */    }
-/* 30.170 */    match(step) {
-/* 30.171 */        case Some(v) => this.stateVarDecl_step_ = ObservedProperty < Int64 >("stateVarDecl_step_", v.get())
-/* 30.172 */        case _ =>()
-/* 30.173 */    }
-/* 30.174 */    match(WelFontOpacity) {
-/* 30.175 */        case Some(v) => this.stateVarDecl_WelFontOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelFontOpacity_", v.get())
-/* 30.176 */        case _ =>()
-/* 30.177 */    }
-/* 30.178 */    match(WelOpacity) {
-/* 30.179 */        case Some(v) => this.stateVarDecl_WelOpacity_ = ObservedProperty < Float64 >("stateVarDecl_WelOpacity_", v.get())
-/* 30.180 */        case _ =>()
-/* 30.181 */    }
-/* 30.182 */    this.stateVarDecl_data_.subscribeEx(this)
-/* 30.183 */    this.stateVarDecl_opacityArray_.subscribeEx(this)
-/* 30.184 */    this.stateVarDecl_game_state_.subscribeEx(this)
-/* 30.185 */    this.stateVarDecl_player_.subscribeEx(this)
-/* 30.186 */    this.stateVarDecl_step_.subscribeEx(this)
-/* 30.187 */    this.stateVarDecl_WelFontOpacity_.subscribeEx(this)
-/* 30.188 */    this.stateVarDecl_WelOpacity_.subscribeEx(this)
-/* 30.189 */    SubscriberManager.getInstance().add(this)
-/* 30.190 */    registerSelf()
-/* 30.191 */    parent?.addChildById(id(), this)
-/* 30.192 */}
-/* 30.193 */public override func aboutToBeDeleted() {
-/* 30.194 */    this.stateVarDecl_data_.unsubscribeEx(this)
-/* 30.195 */    this.stateVarDecl_opacityArray_.unsubscribeEx(this)
-/* 30.196 */    this.stateVarDecl_game_state_.unsubscribeEx(this)
-/* 30.197 */    this.stateVarDecl_player_.unsubscribeEx(this)
-/* 30.198 */    this.stateVarDecl_step_.unsubscribeEx(this)
-/* 30.199 */    this.stateVarDecl_WelFontOpacity_.unsubscribeEx(this)
-/* 30.200 */    this.stateVarDecl_WelOpacity_.unsubscribeEx(this)
-/* 30.201 */    SubscriberManager.getInstance().delete(this)
-/* 30.202 */    this.aboutToBeDeletedInternal()
-/* 30.203 */}
-/* 30.204 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, opacityArray!: Option < OpacityMatrix >= Option < OpacityMatrix >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, WelFontOpacity!: Option < Float64 >= Option < Float64 >.None, WelOpacity!: Option < Float64 >= Option < Float64 >.None): Unit {
-/* 30.205 */    match(data) {
-/* 30.206 */        case Some(v) => this.data = v
-/* 30.207 */        case _ =>()
-/* 30.208 */    }
-/* 30.209 */    match(opacityArray) {
-/* 30.210 */        case Some(v) => this.opacityArray = v
-/* 30.211 */        case _ =>()
-/* 30.212 */    }
-/* 30.213 */    match(game_state) {
-/* 30.214 */        case Some(v) => this.game_state = v
-/* 30.215 */        case _ =>()
-/* 30.216 */    }
-/* 30.217 */    match(player) {
-/* 30.218 */        case Some(v) => this.player = v
-/* 30.219 */        case _ =>()
-/* 30.220 */    }
-/* 30.221 */    match(step) {
-/* 30.222 */        case Some(v) => this.step = v
-/* 30.223 */        case _ =>()
-/* 30.224 */    }
-/* 30.225 */    match(WelFontOpacity) {
-/* 30.226 */        case Some(v) => this.WelFontOpacity = v
-/* 30.227 */        case _ =>()
-/* 30.228 */    }
-/* 30.229 */    match(WelOpacity) {
-/* 30.230 */        case Some(v) => this.WelOpacity = v
-/* 30.231 */        case _ =>()
-/* 30.232 */    }
-/* 30.233 */}
-/* 30.234 */public func rerender() {
-/* 30.235 */    this.updateDirtyElements()
-/* 30.236 */}
-/* 30.237 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
-/* 30.238 */    this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.239 */    this.stateVarDecl_opacityArray_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.240 */    this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.241 */    this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.242 */    this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.243 */    this.stateVarDecl_WelFontOpacity_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.244 */    this.stateVarDecl_WelOpacity_.purgeDependencyOnElmtId(rmElmtId)
-/* 30.245 */}
-/* 30.246 */public func forceRerender(deep!: Bool = false) {
-/* 30.247 */    this.forceCompleteRerender(deep)
-/* 30.248 */}
-/* 30.249 */}
-/* 30.250 */
-/* 30.251 */public func appEntry_0(): Bool {
-/* 30.252 */let view = EntryView(Option < CustomView >.None)
-/* 30.253 */loadNativeView(view)
-/* 30.254 */}
-/* 30.255 */
-/* 30.256 */let a_p_1 = CJEntry.getInstance().registerEntry("EntryView", appEntry_0)
-/* 30.257 */
+/* ===== Emitted by MacroCall @Entry in index.cj:27:1 ===== */
+/* 27.1 */class EntryView <: CustomView {
+/* 27.2 */    private var stateVarDecl_data_: ObservedProperty < ObservedMatrix >= ObservedProperty < ObservedMatrix >("stateVarDecl_data_", ObservedArray < Int64 >(Array < Int64 >(81, { _ => 0 })))
+/* 27.3 */    private mut prop data: ObservedMatrix {
+/* 27.4 */        get() {
+/* 27.5 */            return this.stateVarDecl_data_.get()
+/* 27.6 */        }
+/* 27.7 */        set(v) {
+/* 27.8 */            this.stateVarDecl_data_.set(v)
+/* 27.9 */        }
+/* 27.10 */    }
+/* 27.11 */    private var stateVarDecl_opacityArray_: ObservedProperty < OpacityMatrix >= ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", ObservedArray < Float64 >(Array < Float64 >(81, { _ => 0.8 })))
+/* 27.12 */    private mut prop opacityArray: OpacityMatrix {
+/* 27.13 */        get() {
+/* 27.14 */            return this.stateVarDecl_opacityArray_.get()
+/* 27.15 */        }
+/* 27.16 */        set(v) {
+/* 27.17 */            this.stateVarDecl_opacityArray_.set(v)
+/* 27.18 */        }
+/* 27.19 */    }
+/* 27.20 */    private var stateVarDecl_game_state_: ObservedProperty < Board >= ObservedProperty < Board >("stateVarDecl_game_state_", game.getInitBoard())
+/* 27.21 */    private mut prop game_state: Board {
+/* 27.22 */        get() {
+/* 27.23 */            return this.stateVarDecl_game_state_.get()
+/* 27.24 */        }
+/* 27.25 */        set(v) {
+/* 27.26 */            this.stateVarDecl_game_state_.set(v)
+/* 27.27 */        }
+/* 27.28 */    }
+/* 27.29 */    private var stateVarDecl_player_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_player_", 1)
+/* 27.30 */    private mut prop player: Int64 {
+/* 27.31 */        get() {
+/* 27.32 */            return this.stateVarDecl_player_.get()
+/* 27.33 */        }
+/* 27.34 */        set(v) {
+/* 27.35 */            this.stateVarDecl_player_.set(v)
+/* 27.36 */        }
+/* 27.37 */    }
+/* 27.38 */    private var stateVarDecl_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_step_", 0)
+/* 27.39 */    private mut prop step: Int64 {
+/* 27.40 */        get() {
+/* 27.41 */            return this.stateVarDecl_step_.get()
+/* 27.42 */        }
+/* 27.43 */        set(v) {
+/* 27.44 */            this.stateVarDecl_step_.set(v)
+/* 27.45 */        }
+/* 27.46 */    }
+/* 27.47 */    private var stateVarDecl_pre_step_: ObservedProperty < Int64 >= ObservedProperty < Int64 >("stateVarDecl_pre_step_", 0)
+/* 27.48 */    private mut prop pre_step: Int64 {
+/* 27.49 */        get() {
+/* 27.50 */            return this.stateVarDecl_pre_step_.get()
+/* 27.51 */        }
+/* 27.52 */        set(v) {
+/* 27.53 */            this.stateVarDecl_pre_step_.set(v)
+/* 27.54 */        }
+/* 27.55 */    }
+/* 27.56 */    private var stateVarDecl_WhiteAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>= ObservedProperty < ObservedArrayList < Array < Int64 >>>("stateVarDecl_WhiteAttackPos_", ObservedArrayList(ArrayList()))
+/* 27.57 */    private mut prop WhiteAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 27.58 */        get() {
+/* 27.59 */            return this.stateVarDecl_WhiteAttackPos_.get()
+/* 27.60 */        }
+/* 27.61 */        set(v) {
+/* 27.62 */            this.stateVarDecl_WhiteAttackPos_.set(v)
+/* 27.63 */        }
+/* 27.64 */    }
+/* 27.65 */    private var stateVarDecl_BlackAttackPos_: ObservedProperty < ObservedArrayList < Array < Int64 >>>= ObservedProperty < ObservedArrayList < Array < Int64 >>>("stateVarDecl_BlackAttackPos_", ObservedArrayList(ArrayList()))
+/* 27.66 */    private mut prop BlackAttackPos: ObservedArrayList < Array < Int64 >> {
+/* 27.67 */        get() {
+/* 27.68 */            return this.stateVarDecl_BlackAttackPos_.get()
+/* 27.69 */        }
+/* 27.70 */        set(v) {
+/* 27.71 */            this.stateVarDecl_BlackAttackPos_.set(v)
+/* 27.72 */        }
+/* 27.73 */    }
+/* 27.74 */    private var stateVarDecl_animateFlag_: ObservedProperty < Bool >= ObservedProperty < Bool >("stateVarDecl_animateFlag_", false)
+/* 27.75 */    private mut prop animateFlag: Bool {
+/* 27.76 */        get() {
+/* 27.77 */            return this.stateVarDecl_animateFlag_.get()
+/* 27.78 */        }
+/* 27.79 */        set(v) {
+/* 27.80 */            this.stateVarDecl_animateFlag_.set(v)
+/* 27.81 */        }
+/* 27.82 */    }
+/* 27.83 */    private var stateVarDecl_unopposed_: ObservedProperty < Bool >= ObservedProperty < Bool >("stateVarDecl_unopposed_", false)
+/* 27.84 */    private mut prop unopposed: Bool {
+/* 27.85 */        get() {
+/* 27.86 */            return this.stateVarDecl_unopposed_.get()
+/* 27.87 */        }
+/* 27.88 */        set(v) {
+/* 27.89 */            this.stateVarDecl_unopposed_.set(v)
+/* 27.90 */        }
+/* 27.91 */    }
+/* 27.92 */    private var stateVarDecl_onHit_: ObservedProperty < Bool >= ObservedProperty < Bool >("stateVarDecl_onHit_", false)
+/* 27.93 */    private mut prop onHit: Bool {
+/* 27.94 */        get() {
+/* 27.95 */            return this.stateVarDecl_onHit_.get()
+/* 27.96 */        }
+/* 27.97 */        set(v) {
+/* 27.98 */            this.stateVarDecl_onHit_.set(v)
+/* 27.99 */        }
+/* 27.100 */    }
+/* 27.101 */    protected override func aboutToAppear() {
+/* 27.102 */        Font.registerFont(familyName: __GenerateResource__("", "", "", app.string.ProggyTinySZ, "app.string.ProggyTinySZ",[], 10003), familySrc: CJResource(0, 30000, "ProggyTinySZ.ttf",["ProggyTinySZ.ttf"], moduleName: "", bundleName: "", moduleType: ""))
+/* 27.103 */        Font.registerFont(familyName: __GenerateResource__("", "", "", app.string.pixelfont, "app.string.pixelfont",[], 10003), familySrc: CJResource(0, 30000, "pixelfont.ttf",["pixelfont.ttf"], moduleName: "", bundleName: "", moduleType: ""))
+/* 27.104 */    }
+/* 27.105 */    public func build() {
+/* 27.106 */        this.observeComponentCreation({ elmtId, isInitialRender => Column { this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.background4, "app.media.background4",[], 20000)).height(400).width(860).position(x: 0, y: 0) })
+/* 27.107 */        this.observeComponentCreation({ elmtId, isInitialRender => If { if(step == 0) {
+/* 27.108 */            this.ifElseBranchUpdateFunction(0, { => match(WelcomePage(this, step: stateVarDecl_step_)) {
+/* 27.109 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.110 */                CustomView.create(cv)
+/* 27.111 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.112 */                case vb: ViewBuilder => vb.build()
+/* 27.113 */                case _ => LegalCallCheck.check(WelcomePage(this, step: stateVarDecl_step_))
+/* 27.114 */            } })
+/* 27.115 */        }
+/* 27.116 */        else if(step == 1) {
+/* 27.117 */            this.ifElseBranchUpdateFunction(1, { => match(MenuPage(this, step: stateVarDecl_step_, pre_step: stateVarDecl_pre_step_)) {
+/* 27.118 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.119 */                CustomView.create(cv)
+/* 27.120 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.121 */                case vb: ViewBuilder => vb.build()
+/* 27.122 */                case _ => LegalCallCheck.check(MenuPage(this, step: stateVarDecl_step_, pre_step: stateVarDecl_pre_step_))
+/* 27.123 */            } })
+/* 27.124 */        }
+/* 27.125 */        else if(step == 2 || step == 3) {
+/* 27.126 */            this.ifElseBranchUpdateFunction(2, { => match(chessGrid(this)) {
+/* 27.127 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.128 */                CustomView.create(cv)
+/* 27.129 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.130 */                case vb: ViewBuilder => vb.build()
+/* 27.131 */                case _ => LegalCallCheck.check(chessGrid(this))
+/* 27.132 */            }
+/* 27.133 */            match(playerstate(this, game_state: stateVarDecl_game_state_, onHit: stateVarDecl_onHit_, step: stateVarDecl_step_)) {
+/* 27.134 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.135 */                CustomView.create(cv)
+/* 27.136 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.137 */                case vb: ViewBuilder => vb.build()
+/* 27.138 */                case _ => LegalCallCheck.check(playerstate(this, game_state: stateVarDecl_game_state_, onHit: stateVarDecl_onHit_, step: stateVarDecl_step_))
+/* 27.139 */            }
+/* 27.140 */            this.observeComponentCreation({ elmtId, isInitialRender => Stack { match(AttackAnimation(this, wp: stateVarDecl_WhiteAttackPos_, bp: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, unopposed: stateVarDecl_unopposed_, onHit: stateVarDecl_onHit_)) {
+/* 27.141 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.142 */                CustomView.create(cv)
+/* 27.143 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.144 */                case vb: ViewBuilder => vb.build()
+/* 27.145 */                case _ => LegalCallCheck.check(AttackAnimation(this, wp: stateVarDecl_WhiteAttackPos_, bp: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, unopposed: stateVarDecl_unopposed_, onHit: stateVarDecl_onHit_))
+/* 27.146 */            }
+/* 27.147 */            match(backarrow(this, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, data: stateVarDecl_data_, ai: ObservedProperty("", ai), step: stateVarDecl_step_, WhiteAttackPos: stateVarDecl_WhiteAttackPos_, BlackAttackPos: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, player: stateVarDecl_player_)) {
+/* 27.148 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.149 */                CustomView.create(cv)
+/* 27.150 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.151 */                case vb: ViewBuilder => vb.build()
+/* 27.152 */                case _ => LegalCallCheck.check(backarrow(this, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, data: stateVarDecl_data_, ai: ObservedProperty("", ai), step: stateVarDecl_step_, WhiteAttackPos: stateVarDecl_WhiteAttackPos_, BlackAttackPos: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, player: stateVarDecl_player_))
+/* 27.153 */            }
+/* 27.154 */            match(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, AI: ObservedProperty("", ai), wp: stateVarDecl_WhiteAttackPos_, bp: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, unopposed: stateVarDecl_unopposed_)) {
+/* 27.155 */                case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.156 */                CustomView.create(cv)
+/* 27.157 */                ViewStackProcessor.StopGetAccessRecording()
+/* 27.158 */                case vb: ViewBuilder => vb.build()
+/* 27.159 */                case _ => LegalCallCheck.check(testboard(this, data: stateVarDecl_data_, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, player: stateVarDecl_player_, step: stateVarDecl_step_, opacityArray: stateVarDecl_opacityArray_, AI: ObservedProperty("", ai), wp: stateVarDecl_WhiteAttackPos_, bp: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, unopposed: stateVarDecl_unopposed_))
+/* 27.160 */            }
+/* 27.161 */            this.observeComponentCreation({ elmtId, isInitialRender => If { if(animateFlag) {
+/* 27.162 */                this.ifElseBranchUpdateFunction(0, { => this.observeComponentCreation({ elmtId, isInitialRender => Rect(height: 400, width: 400).position(x: 50, y: 5).opacity(0.0) }) })
+/* 27.163 */            }
+/* 27.164 */            else {
+/* 27.165 */                If.branchId(1)
+/* 27.166 */            }
+/* 27.167 */        } }) } }) })
+/* 27.168 */    }
+/* 27.169 */    else if(step == 4) {
+/* 27.170 */        this.ifElseBranchUpdateFunction(3, { => match(GameEndPage(this, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, data: stateVarDecl_data_, ai: ObservedProperty("", ai), step: stateVarDecl_step_, WhiteAttackPos: stateVarDecl_WhiteAttackPos_, BlackAttackPos: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, player: stateVarDecl_player_, backto: stateVarDecl_pre_step_)) {
+/* 27.171 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.172 */            CustomView.create(cv)
+/* 27.173 */            ViewStackProcessor.StopGetAccessRecording()
+/* 27.174 */            case vb: ViewBuilder => vb.build()
+/* 27.175 */            case _ => LegalCallCheck.check(GameEndPage(this, game: ObservedProperty("", game), game_state: stateVarDecl_game_state_, data: stateVarDecl_data_, ai: ObservedProperty("", ai), step: stateVarDecl_step_, WhiteAttackPos: stateVarDecl_WhiteAttackPos_, BlackAttackPos: stateVarDecl_BlackAttackPos_, animateFlag: stateVarDecl_animateFlag_, player: stateVarDecl_player_, backto: stateVarDecl_pre_step_))
+/* 27.176 */        } })
+/* 27.177 */    }
+/* 27.178 */    else if(step == 5) {
+/* 27.179 */        this.ifElseBranchUpdateFunction(4, { => match(teachpage(this, step: stateVarDecl_step_)) {
+/* 27.180 */            case cv: CustomView => ViewStackProcessor.StartGetAccessRecordingFor(ViewStackProcessor.AllocateNewElmetIdForNextComponent())
+/* 27.181 */            CustomView.create(cv)
+/* 27.182 */            ViewStackProcessor.StopGetAccessRecording()
+/* 27.183 */            case vb: ViewBuilder => vb.build()
+/* 27.184 */            case _ => LegalCallCheck.check(teachpage(this, step: stateVarDecl_step_))
+/* 27.185 */        }
+/* 27.186 */        this.observeComponentCreation({ elmtId, isInitialRender => Image(__GenerateResource__("", "", "", app.media.backarrow, "app.media.backarrow",[], 20000)).height(45).width(50).position(x: 50, y: 30).onClick({ evt => this.step = 1 }) }) })
+/* 27.187 */    }
+/* 27.188 */    else {
+/* 27.189 */        If.branchId(5)
+/* 27.190 */    }
+/* 27.191 */} }) }.width(100.percent).height(100.percent) })
+/* 27.192 */()
+/* 27.193 */}
+/* 27.194 */public init(parent: Option < CustomView >, data!: Option < ObservedProperty < ObservedMatrix >>= None, opacityArray!: Option < ObservedProperty < OpacityMatrix >>= None, game_state!: Option < ObservedProperty < Board >>= None, player!: Option < ObservedProperty < Int64 >>= None, step!: Option < ObservedProperty < Int64 >>= None, pre_step!: Option < ObservedProperty < Int64 >>= None, WhiteAttackPos!: Option < ObservedProperty < ObservedArrayList < Array < Int64 >>>>= None, BlackAttackPos!: Option < ObservedProperty < ObservedArrayList < Array < Int64 >>>>= None, animateFlag!: Option < ObservedProperty < Bool >>= None, unopposed!: Option < ObservedProperty < Bool >>= None, onHit!: Option < ObservedProperty < Bool >>= None, localStorage!: Option < LocalStorage >= None) {
+/* 27.195 */super(parent, localStorage)
+/* 27.196 */match(data) {
+/* 27.197 */    case Some(v) => this.stateVarDecl_data_ = ObservedProperty < ObservedMatrix >("stateVarDecl_data_", v.get())
+/* 27.198 */    case _ =>()
+/* 27.199 */}
+/* 27.200 */match(opacityArray) {
+/* 27.201 */    case Some(v) => this.stateVarDecl_opacityArray_ = ObservedProperty < OpacityMatrix >("stateVarDecl_opacityArray_", v.get())
+/* 27.202 */    case _ =>()
+/* 27.203 */}
+/* 27.204 */match(game_state) {
+/* 27.205 */    case Some(v) => this.stateVarDecl_game_state_ = ObservedProperty < Board >("stateVarDecl_game_state_", v.get())
+/* 27.206 */    case _ =>()
+/* 27.207 */}
+/* 27.208 */match(player) {
+/* 27.209 */    case Some(v) => this.stateVarDecl_player_ = ObservedProperty < Int64 >("stateVarDecl_player_", v.get())
+/* 27.210 */    case _ =>()
+/* 27.211 */}
+/* 27.212 */match(step) {
+/* 27.213 */    case Some(v) => this.stateVarDecl_step_ = ObservedProperty < Int64 >("stateVarDecl_step_", v.get())
+/* 27.214 */    case _ =>()
+/* 27.215 */}
+/* 27.216 */match(pre_step) {
+/* 27.217 */    case Some(v) => this.stateVarDecl_pre_step_ = ObservedProperty < Int64 >("stateVarDecl_pre_step_", v.get())
+/* 27.218 */    case _ =>()
+/* 27.219 */}
+/* 27.220 */match(WhiteAttackPos) {
+/* 27.221 */    case Some(v) => this.stateVarDecl_WhiteAttackPos_ = ObservedProperty < ObservedArrayList < Array < Int64 >>>("stateVarDecl_WhiteAttackPos_", v.get())
+/* 27.222 */    case _ =>()
+/* 27.223 */}
+/* 27.224 */match(BlackAttackPos) {
+/* 27.225 */    case Some(v) => this.stateVarDecl_BlackAttackPos_ = ObservedProperty < ObservedArrayList < Array < Int64 >>>("stateVarDecl_BlackAttackPos_", v.get())
+/* 27.226 */    case _ =>()
+/* 27.227 */}
+/* 27.228 */match(animateFlag) {
+/* 27.229 */    case Some(v) => this.stateVarDecl_animateFlag_ = ObservedProperty < Bool >("stateVarDecl_animateFlag_", v.get())
+/* 27.230 */    case _ =>()
+/* 27.231 */}
+/* 27.232 */match(unopposed) {
+/* 27.233 */    case Some(v) => this.stateVarDecl_unopposed_ = ObservedProperty < Bool >("stateVarDecl_unopposed_", v.get())
+/* 27.234 */    case _ =>()
+/* 27.235 */}
+/* 27.236 */match(onHit) {
+/* 27.237 */    case Some(v) => this.stateVarDecl_onHit_ = ObservedProperty < Bool >("stateVarDecl_onHit_", v.get())
+/* 27.238 */    case _ =>()
+/* 27.239 */}
+/* 27.240 */this.stateVarDecl_data_.subscribeEx(this)
+/* 27.241 */this.stateVarDecl_opacityArray_.subscribeEx(this)
+/* 27.242 */this.stateVarDecl_game_state_.subscribeEx(this)
+/* 27.243 */this.stateVarDecl_player_.subscribeEx(this)
+/* 27.244 */this.stateVarDecl_step_.subscribeEx(this)
+/* 27.245 */this.stateVarDecl_pre_step_.subscribeEx(this)
+/* 27.246 */this.stateVarDecl_WhiteAttackPos_.subscribeEx(this)
+/* 27.247 */this.stateVarDecl_BlackAttackPos_.subscribeEx(this)
+/* 27.248 */this.stateVarDecl_animateFlag_.subscribeEx(this)
+/* 27.249 */this.stateVarDecl_unopposed_.subscribeEx(this)
+/* 27.250 */this.stateVarDecl_onHit_.subscribeEx(this)
+/* 27.251 */SubscriberManager.getInstance().add(this)
+/* 27.252 */registerSelf()
+/* 27.253 */parent?.addChildById(id(), this)
+/* 27.254 */}
+/* 27.255 */public override func aboutToBeDeleted() {
+/* 27.256 */this.stateVarDecl_data_.unsubscribeEx(this)
+/* 27.257 */this.stateVarDecl_opacityArray_.unsubscribeEx(this)
+/* 27.258 */this.stateVarDecl_game_state_.unsubscribeEx(this)
+/* 27.259 */this.stateVarDecl_player_.unsubscribeEx(this)
+/* 27.260 */this.stateVarDecl_step_.unsubscribeEx(this)
+/* 27.261 */this.stateVarDecl_pre_step_.unsubscribeEx(this)
+/* 27.262 */this.stateVarDecl_WhiteAttackPos_.unsubscribeEx(this)
+/* 27.263 */this.stateVarDecl_BlackAttackPos_.unsubscribeEx(this)
+/* 27.264 */this.stateVarDecl_animateFlag_.unsubscribeEx(this)
+/* 27.265 */this.stateVarDecl_unopposed_.unsubscribeEx(this)
+/* 27.266 */this.stateVarDecl_onHit_.unsubscribeEx(this)
+/* 27.267 */SubscriberManager.getInstance().delete(this)
+/* 27.268 */this.aboutToBeDeletedInternal()
+/* 27.269 */}
+/* 27.270 */func updateWithValueParams(data!: Option < ObservedMatrix >= Option < ObservedMatrix >.None, opacityArray!: Option < OpacityMatrix >= Option < OpacityMatrix >.None, game_state!: Option < Board >= Option < Board >.None, player!: Option < Int64 >= Option < Int64 >.None, step!: Option < Int64 >= Option < Int64 >.None, pre_step!: Option < Int64 >= Option < Int64 >.None, WhiteAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, BlackAttackPos!: Option < ObservedArrayList < Array < Int64 >>>= Option < ObservedArrayList < Array < Int64 >>>.None, animateFlag!: Option < Bool >= Option < Bool >.None, unopposed!: Option < Bool >= Option < Bool >.None, onHit!: Option < Bool >= Option < Bool >.None): Unit {
+/* 27.271 */match(data) {
+/* 27.272 */    case Some(v) => this.data = v
+/* 27.273 */    case _ =>()
+/* 27.274 */}
+/* 27.275 */match(opacityArray) {
+/* 27.276 */    case Some(v) => this.opacityArray = v
+/* 27.277 */    case _ =>()
+/* 27.278 */}
+/* 27.279 */match(game_state) {
+/* 27.280 */    case Some(v) => this.game_state = v
+/* 27.281 */    case _ =>()
+/* 27.282 */}
+/* 27.283 */match(player) {
+/* 27.284 */    case Some(v) => this.player = v
+/* 27.285 */    case _ =>()
+/* 27.286 */}
+/* 27.287 */match(step) {
+/* 27.288 */    case Some(v) => this.step = v
+/* 27.289 */    case _ =>()
+/* 27.290 */}
+/* 27.291 */match(pre_step) {
+/* 27.292 */    case Some(v) => this.pre_step = v
+/* 27.293 */    case _ =>()
+/* 27.294 */}
+/* 27.295 */match(WhiteAttackPos) {
+/* 27.296 */    case Some(v) => this.WhiteAttackPos = v
+/* 27.297 */    case _ =>()
+/* 27.298 */}
+/* 27.299 */match(BlackAttackPos) {
+/* 27.300 */    case Some(v) => this.BlackAttackPos = v
+/* 27.301 */    case _ =>()
+/* 27.302 */}
+/* 27.303 */match(animateFlag) {
+/* 27.304 */    case Some(v) => this.animateFlag = v
+/* 27.305 */    case _ =>()
+/* 27.306 */}
+/* 27.307 */match(unopposed) {
+/* 27.308 */    case Some(v) => this.unopposed = v
+/* 27.309 */    case _ =>()
+/* 27.310 */}
+/* 27.311 */match(onHit) {
+/* 27.312 */    case Some(v) => this.onHit = v
+/* 27.313 */    case _ =>()
+/* 27.314 */}
+/* 27.315 */}
+/* 27.316 */public func rerender() {
+/* 27.317 */this.updateDirtyElements()
+/* 27.318 */}
+/* 27.319 */public func purgeVariableDependenciesOnElmtId(rmElmtId: Int64) {
+/* 27.320 */this.stateVarDecl_data_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.321 */this.stateVarDecl_opacityArray_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.322 */this.stateVarDecl_game_state_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.323 */this.stateVarDecl_player_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.324 */this.stateVarDecl_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.325 */this.stateVarDecl_pre_step_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.326 */this.stateVarDecl_WhiteAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.327 */this.stateVarDecl_BlackAttackPos_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.328 */this.stateVarDecl_animateFlag_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.329 */this.stateVarDecl_unopposed_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.330 */this.stateVarDecl_onHit_.purgeDependencyOnElmtId(rmElmtId)
+/* 27.331 */}
+/* 27.332 */public func forceRerender(deep!: Bool = false) {
+/* 27.333 */this.forceCompleteRerender(deep)
+/* 27.334 */}
+/* 27.335 */}
+/* 27.336 */
+/* 27.337 */public func appEntry_0(): Bool {
+/* 27.338 */let view = EntryView(Option < CustomView >.None)
+/* 27.339 */loadNativeView(view)
+/* 27.340 */}
+/* 27.341 */
+/* 27.342 */let a_p_1 = CJEntry.getInstance().registerEntry("EntryView", appEntry_0)
+/* 27.343 */
 /* ===== End of the Emit ===== */

@@ -6,6 +6,7 @@ public class AppString {
 	public var ProggyTinySZ = 16777248
 	public var app_name = 16777216
 	public var module_desc = 16777222
+	public var pixelfont = 16777252
 }
 
 public class AppColor {
@@ -40,6 +41,12 @@ public class AppMedia {
 	public var player = 16777244
 	public var player_onHit = 16777251
 	public var startIcon = 16777224
+	public var teach1 = 16777256
+	public var teach2 = 16777257
+	public var teach3 = 16777258
+	public var teach4 = 16777259
+	public var teach5 = 16777260
+	public var teach6 = 16777261
 	public var titleBackground = 16777245
 	public var white_Chess = 16777246
 }

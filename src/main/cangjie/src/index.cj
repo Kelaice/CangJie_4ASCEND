@@ -59,6 +59,10 @@ class EntryView {
             familyName: @r(app.string.ProggyTinySZ),
             familySrc: @rawfile("ProggyTinySZ.ttf")
         )
+        Font.registerFont(
+            familyName: @r(app.string.pixelfont),
+            familySrc: @rawfile("pixelfont.ttf")
+        )
     }
 
     func build() {
@@ -127,7 +131,13 @@ class EntryView {
                     backto: this.pre_step
                 )
             } else if (step == 5) { //教学界面
+                teachpage(step :this.step)
 
+                Image(@r(app.media.backarrow))
+                .height(45)
+                .width(50)
+                .position(x: 50, y: 30)
+                .onClick({evt=>this.step = 1})
             }
         }.width(100.percent).height(100.percent)
     }

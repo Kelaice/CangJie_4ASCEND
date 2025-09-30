@@ -110,6 +110,8 @@ public class FourAscendGame {
         var is_defence_turn: Bool = nc.any(ascend_state_copy, -player)
         //防御阶段
         if (is_defence_turn) {
+            ascend_state_copy[row][col] = 0
+
             var defence_power = ascend(
                 pieces_copy,
                 magic_plants_copy,
@@ -119,10 +121,9 @@ public class FourAscendGame {
                 player,
                 false
             )
-            ascend_state_copy[row][col] = 0
 
-            var attack_power = 0
             //计算所有升华棋子的总攻击力
+            var attack_power = 0
             for (row in 0..ascend_state_copy.size) {
                 for (col in 0..ascend_state_copy[0].size) {
                     if (ascend_state_copy[row][col] == -player) {
@@ -131,26 +132,30 @@ public class FourAscendGame {
                 }
             }
             var damage = abs(attack_power - defence_power)
+
+            //单方面进攻指示器
             if (defence_power == 0) {
                 this.unopposed = true
-                if (player == 1) {
-                    var temp: ObservedArrayList<Array<Int64>> = ObservedArrayList(ArrayList())
-                    for (i in 0..bp.size) {
-                        if (row != bp[i][0] || col != bp[i][1]) {
-                            temp.append(bp[i])
-                        }
-                    }
-                    bp = temp
-                } else if (player == -1) {
-                    var temp: ObservedArrayList<Array<Int64>> = ObservedArrayList(ArrayList())
-                    for (i in 0..wp.size) {
-                        if (row != wp[i][0] || col != wp[i][1]) {
-                            temp.append(wp[i])
-                        }
-                    }
-                    wp = temp
-                }
             }
+            //清除被占据的升华棋子
+            if (player == 1) {
+                var temp: ObservedArrayList<Array<Int64>> = ObservedArrayList(ArrayList())
+                for (i in 0..bp.size) {
+                    if (row != bp[i][0] || col != bp[i][1]) {
+                        temp.append(bp[i])
+                    }
+                }
+                bp = temp
+            } else if (player == -1) {
+                var temp: ObservedArrayList<Array<Int64>> = ObservedArrayList(ArrayList())
+                for (i in 0..wp.size) {
+                    if (row != wp[i][0] || col != wp[i][1]) {
+                        temp.append(wp[i])
+                    }
+                }
+                wp = temp
+            }
+            //动画播放指示器
             this.animateFlag = true
 
             //结算血量

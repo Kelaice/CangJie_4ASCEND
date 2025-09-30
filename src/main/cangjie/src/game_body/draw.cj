@@ -286,8 +286,21 @@ public class playerstate {
     @Prop
     var game_state: Board
 
-    var y_pos = 180
-    var x_pos = 100
+    var y_pos: Int64 = 180
+    var x_pos: Int64 = 100
+
+    @State
+    var player_posX: Int64 = 90
+    @State
+    var player_posY: Int64 = 100
+    @State
+    var player_angel: Float32 = 0.0
+    @State
+    var enemy_posX: Int64 = 690
+    @State
+    var enemy_posY: Int64 = 102
+    @State
+    var enemy_angel: Float32 = 0.0
 
     @State
     var opc = 0.0
@@ -342,11 +355,37 @@ public class playerstate {
                             playMode: PlayMode.Alternate,
                             onFinish: {
                                 =>
-                                if (hp1 <= 0 || hp2 <= 0) {
-                                    this.step = 4
-                                }
                                 this.player_flash_opa = 0.0
                                 this.player_flash = false
+                                if (hp1 <= 0 || hp2 <= 0) {
+                                    animateTo(
+                                        AnimateParam(
+                                            duration: 1000,
+                                            curve: Curve.EaseOut,
+                                            delay: 0,
+                                            iterations: 1, // 设置-1表示动画无限循环
+                                            playMode: PlayMode.Alternate,
+                                            onFinish: {
+                                                =>
+                                                this.step = 4
+                                                this.player_posX = 90
+                                                this.player_posY = 100
+                                                this.player_angel = 0.0
+                                            },
+                                            expectedFrameRateRange: ExpectedFrameRateRange(
+                                                min: 20,
+                                                max: 120,
+                                                expected: 90
+                                            )
+                                        ),
+                                        {
+                                            =>
+                                            this.player_posX = -200
+                                            this.player_posY = 0
+                                            this.player_angel = -720.0
+                                        }
+                                    )
+                                }
                             },
                             expectedFrameRateRange: ExpectedFrameRateRange(
                                 min: 20,
@@ -360,7 +399,7 @@ public class playerstate {
                     .objectFit(ImageFit.Contain)
                     .opacity(player_flash_opa)
                     .animationEnd()
-            }.position(x: x_pos - 10, y: y_pos - 80).height(62).width(63)
+            }.position(x: player_posX, y: player_posY).height(62).width(63).rotate(player_angel)
 
             Image(@r(app.media.HP_Image)).position(x: x_pos, y: y_pos).height(37).width(40)
 
@@ -373,8 +412,7 @@ public class playerstate {
                         iterations: 1,
                         playMode: PlayMode.Alternate,
                         onFinish: {
-                            =>
-                            this.onHit = false
+                            => this.onHit = false
                         },
                         expectedFrameRateRange: ExpectedFrameRateRange(
                             min: 20,
@@ -404,11 +442,37 @@ public class playerstate {
                             playMode: PlayMode.Alternate,
                             onFinish: {
                                 =>
-                                if (hp1 <= 0 || hp2 <= 0) {
-                                    this.step = 4
-                                }
                                 this.enemy_flash_opa = 0.0
                                 this.enemy_flash = false
+                                if (hp1 <= 0 || hp2 <= 0) {
+                                    animateTo(
+                                        AnimateParam(
+                                            duration: 1000,
+                                            curve: Curve.EaseOut,
+                                            delay: 100,
+                                            iterations: 1, // 设置-1表示动画无限循环
+                                            playMode: PlayMode.Alternate,
+                                            onFinish: {
+                                                =>
+                                                this.step = 4
+                                                this.enemy_posX = 690
+                                                this.enemy_posY = 102
+                                                this.enemy_angel = 0.0
+                                            },
+                                            expectedFrameRateRange: ExpectedFrameRateRange(
+                                                min: 20,
+                                                max: 120,
+                                                expected: 90
+                                            )
+                                        ),
+                                        {
+                                            =>
+                                            this.enemy_posX = 900
+                                            this.enemy_posY = 0
+                                            this.enemy_angel = 720.0
+                                        }
+                                    )
+                                }
                             },
                             expectedFrameRateRange: ExpectedFrameRateRange(
                                 min: 20,
@@ -422,7 +486,7 @@ public class playerstate {
                     .objectFit(ImageFit.Contain)
                     .opacity(enemy_flash_opa)
                     .animationEnd()
-            }.position(x: x_pos + 600 - 10, y: y_pos - 78).height(62).width(63)
+            }.position(x: enemy_posX, y: enemy_posY).height(62).width(63).rotate(enemy_angel)
 
             Image(@r(app.media.HP_Image)).position(x: x_pos + 600, y: y_pos).height(37).width(40)
 
@@ -435,8 +499,7 @@ public class playerstate {
                         iterations: 1,
                         playMode: PlayMode.Alternate,
                         onFinish: {
-                            =>
-                            this.onHit = false
+                            => this.onHit = false
                         },
                         expectedFrameRateRange: ExpectedFrameRateRange(
                             min: 20,
@@ -460,7 +523,7 @@ public class playerstate {
                         AnimateParam(
                             duration: 300,
                             curve: Curve.Linear,
-                            delay: 0,
+                            delay: 100,
                             iterations: 1, // 设置-1表示动画无限循环
                             playMode: PlayMode.Alternate,
                             onFinish: {
@@ -653,7 +716,7 @@ public class MenuPage {
                                 playMode: PlayMode.Alternate,
                                 onFinish: {
                                     =>
-                                    this.step = 2
+                                    this.step = 5
                                     PVP_Button_X = 325
                                     PVP_Button_Y = 150
                                     Learn_Button_X = 325
@@ -908,6 +971,116 @@ public class GameEndPage {
     }
 }
 
+//教学页面绘制组件
+@Component
+public class teachpage {
+    @Link
+    var step :Int64
+    @State
+    var teach_page :Int64 = 1
+
+    var fontsize :Int64 = 25
+    var posX :Int64 = 230
+    var posY :Int64 = 20
+
+    func build() {
+        Stack{
+
+            if(teach_page == 1) {
+                Text("欢迎来到4ASCEND！\n这是一个新手教学\n点击屏幕以进入下一页")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: 295, y: 140)
+            }
+            else if(teach_page == 2) {
+                Image(@r(app.media.teach1))
+                .height(360)
+                .width(360)
+                .position(x: 250, y: 10)
+
+                Text("屏幕上的是一个9x9的棋盘\n点击屏幕，白黑双方轮流落子\n(现在不可以哦)")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: 250, y: 20)
+            }
+            else if(teach_page == 3) {
+                Image(@r(app.media.teach2))
+                .height(360)
+                .width(360)
+                .position(x: 250, y: 10)
+
+                Text("4个及以上的棋子连成一线时，\n棋子将进入ASCEND状态\n此时，该名玩家进入攻击阶段")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: posX, y: posY)
+            }
+            else if(teach_page == 4) {
+                Image(@r(app.media.teach3))
+                .height(350)
+                .width(740)
+                .position(x: 60, y: 10)
+
+                Text("下一名玩家自动进入防御状态\n落子之后，双方进行战斗，结算血量\n玩家的状态在两侧显示")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: posX -10, y: posY)
+            }
+            else if(teach_page == 5) {
+                Image(@r(app.media.teach4))
+                .height(348)
+                .width(738)
+                .position(x: 60, y: 10)
+
+                Text("防御玩家可以占据攻击玩家的升华棋子\n这会使得这枚棋子不参与攻击力计算")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: posX -20, y: posY)
+            }
+            else if(teach_page == 6) {
+                Image(@r(app.media.teach5))
+                .height(350)
+                .width(740)
+                .position(x: 60, y: 10)
+
+                Text("棋盘上会随机生成金色的魔法植物\n占据了该位置的棋子，攻击力/防御力+1")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: posX -20, y: posY)
+            }
+            else if(teach_page == 7) {
+                Image(@r(app.media.teach6))
+                .height(350)
+                .width(740)
+                .position(x: 60, y: 10)
+
+                Text("把对方的血量降到零吧！\n棋盘满时，棋子多的一方也将获胜")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: posX, y: 150)
+            }
+            else if(teach_page == 8) {
+                Text("现在点击左上方按钮返回，\n开始你的4ASCEND战斗吧！")
+                .fontFamily(@r(app.string.pixelfont))
+                .textAlign(TextAlign.Center)
+                .fontSize(fontsize)
+                .position(x: 270, y: 150)
+            }
+
+            Rect(height: 5000, width:5000)
+            .opacity(0)
+            .onClick({evt=> if(teach_page<8){teach_page++}})
+
+        }
+    }
+}
+
 //返回按钮绘制组件
 @Component
 public class backarrow {
@@ -1013,9 +1186,9 @@ public class AttackAnimation {
             return x * 40 + 85
         } else {
             if (player == 1 && step_W == 1) {
-                return 0 + m.nextInt64(40)
+                return 0 + m.nextInt64(100)
             } else if (player == -1 && step_B == 1) {
-                return 450 + m.nextInt64(40)
+                return 450 + m.nextInt64(100)
             } else if (step_B == 2 && step_W == 2) {
                 return 225
             } else if (step_B == 3 && step_W == 3) {
@@ -1494,3 +1667,4 @@ public class AttackAnimation {
         }.position(x: 0, y: 0).height(800).width(500)
     }
 }
+
